@@ -1,0 +1,183 @@
+"use client"
+import { useMemo, useState } from "react";
+import { Cell, RadialBar, RadialBarChart, Tooltip } from "recharts";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { RADIAL_DATA } from "./data";
+import { ChartCard } from "./ChartCard";
+import { useChartEntrance } from "@/hooks/use-chart-entrance";
+
+const RADIAL_SCALE = [
+  "hsl(var(--primary))",
+  "hsl(24 100% 56%)",
+  "hsl(28 100% 62%)",
+  "hsl(32 100% 68%)",
+  "hsl(36 100% 74%)",
+  "hsl(40 100% 80%)",
+];
+
+const RadialTooltip = ({ active, payload }) => {
+  if (!active || !payload?.length) return null;
+
+  const item = payload[0]?.payload;
+  if (!item) return null;
+
+  return (
+    <div className="rounded-xl border border-border/60 bg-popover/95 px-3 py-2 text-popover-foreground shadow-md backdrop-blur">
+      <div
+        className="text-xs font-semibold"
+        style={{ color: item.fill }}
+      >
+        {item.name}
+      </div>
+      <div className="mt-1 text-xs text-muted-foreground">
+        Visitors:{" "}
+        <span className="font-semibold text-foreground">
+          {item.visitors.toLocaleString()}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const RadialChartLabel = () => {
+  const [hovered, setHovered] = useState(null);
+  const { ref, shouldAnimate, animationKey } = useChartEntrance();
+
+  const radialData = useMemo(
+    () =>
+      RADIAL_DATA.map((item, i) => ({
+        ...item,
+        fill: RADIAL_SCALE[i % RADIAL_SCALE.length],
+      })),
+    []
+  );
+
+  const total = radialData.reduce((sum, item) => sum + item.visitors, 0);
+  const activeItem = hovered !== null ? radialData[hovered] : null;
+
+  return (
+    <ChartCard
+      title="Traffic Breakdown"
+      subtitle="January – June 2024"
+      footer="Trending up by 5.2% this month"
+      footerSub="Showing total visitors for the last 6 months"
+    >
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="secondary" className="rounded-full">
+            {radialData.length} Sources
+          </Badge>
+
+          <Badge variant="outline" className="rounded-full">
+            Total: {total.toLocaleString()}
+          </Badge>
+        </div>
+
+        <div className="text-right">
+          <p className="text-xs text-muted-foreground">Focused source</p>
+          <p className="text-sm font-medium">
+            {activeItem ? activeItem.name : "All channels"}
+          </p>
+        </div>
+      </div>
+
+      <div ref={ref} className="rounded-2xl border border-border/60 bg-background/40 p-4">
+        <div className="relative flex justify-center">
+          <RadialBarChart
+            key={`radial-chart-${animationKey}`}
+            width={260}
+            height={260}
+            cx={130}
+            cy={130}
+            innerRadius={34}
+            outerRadius={114}
+            data={[...radialData].reverse()}
+            startAngle={90}
+            endAngle={-270}
+            barSize={14}
+            barGap={4}
+          >
+            <RadialBar
+              minAngle={15}
+              dataKey="visitors"
+              cornerRadius={8}
+              background={{ fill: "var(--muted) / 0.45" }}
+              onMouseLeave={() => setHovered(null)}
+              isAnimationActive={shouldAnimate}
+              animationBegin={0}
+              animationDuration={850}
+            >
+              {radialData.map((item, i) => {
+                const reversedIndex = radialData.length - 1 - i;
+                const dimmed =
+                  hovered !== null && hovered !== reversedIndex;
+
+                return (
+                  <Cell
+                    key={item.name}
+                    fill={item.fill}
+                    fillOpacity={dimmed ? 0.28 : 1}
+                    onMouseEnter={() => setHovered(reversedIndex)}
+                  />
+                );
+              })}
+            </RadialBar>
+
+            <Tooltip content={<RadialTooltip />} />
+          </RadialBarChart>
+
+          <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+            <div className="text-2xl font-bold tracking-tight">
+              {activeItem
+                ? activeItem.visitors.toLocaleString()
+                : total.toLocaleString()}
+            </div>
+            <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+              {activeItem ? activeItem.name : "Visitors"}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 space-y-2">
+        {radialData.map((item, i) => {
+          const active = hovered === i;
+
+          return (
+            <button
+              key={item.name}
+              type="button"
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onFocus={() => setHovered(i)}
+              onBlur={() => setHovered(null)}
+              className={cn(
+                "flex w-full items-center cursor-pointer justify-between rounded-xl border px-3 py-2 text-left transition-colors",
+                active
+                  ? "border-primary/20 bg-primary/10"
+                  : "border-transparent hover:bg-accent/40"
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className="inline-block h-2.5 w-2.5 rounded-sm"
+                  style={{ backgroundColor: item.fill }}
+                />
+                <span className="text-sm text-muted-foreground">
+                  {item.name}
+                </span>
+              </div>
+
+              <span className="text-sm font-semibold">
+                {item.visitors.toLocaleString()}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </ChartCard>
+  );
+};
+
+export default RadialChartLabel;
