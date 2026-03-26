@@ -32,6 +32,44 @@
   --radius: 1rem;
 
   --chart-2: hsl(24 95% 65%);
+  --shell-glow-a: color-mix(in srgb, hsl(24 100% 50%) 14%, transparent);
+  --shell-glow-b: color-mix(in srgb, hsl(262 83% 58%) 10%, transparent);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --background: hsl(36 33% 97%);
+  --foreground: hsl(220 18% 16%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(220 18% 16%);
+
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(220 18% 16%);
+
+  --primary: hsl(24 100% 50%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  --secondary: hsl(34 38% 92%);
+  --secondary-foreground: hsl(220 18% 20%);
+
+  --muted: hsl(35 32% 93%);
+  --muted-foreground: hsl(220 10% 42%);
+
+  --accent: hsl(34 44% 90%);
+  --accent-foreground: hsl(220 18% 16%);
+
+  --destructive: hsl(0 71% 54%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  --border: hsl(32 24% 84%);
+  --input: hsl(32 24% 84%);
+  --ring: hsl(24 100% 50%);
+
+  --chart-2: hsl(24 95% 65%);
+  --shell-glow-a: color-mix(in srgb, hsl(24 100% 50%) 16%, transparent);
+  --shell-glow-b: color-mix(in srgb, hsl(35 72% 80%) 26%, transparent);
+  color-scheme: light;
 }
 
 @theme inline {
@@ -82,6 +120,13 @@
 
 * {
   border-color: var(--border);
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    fill 220ms ease,
+    stroke 220ms ease,
+    box-shadow 220ms ease;
 }
 
 body {

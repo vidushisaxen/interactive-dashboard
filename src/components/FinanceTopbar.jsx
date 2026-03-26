@@ -4,11 +4,13 @@ import {
   Bell,
   ChevronDown,
   LogOut,
+  MoonStar,
   MoveRight,
   ReceiptText,
   Search,
   SendHorizontal,
   Settings,
+  SunMedium,
   User,
 } from "lucide-react";
 
@@ -41,7 +43,7 @@ import TransferMoneySheet from "./TransferMoneySheet";
 import SettingsSheet from "./SettingsSheet";
 import LogoutDialog from "./LogoutDialog";
 
-const FinanceTopbar = ({ onNav }) => {
+const FinanceTopbar = ({ onNav, theme = "dark", onToggleTheme }) => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [openMoveMoney, setOpenMoveMoney] = useState(false);
@@ -107,6 +109,38 @@ const FinanceTopbar = ({ onNav }) => {
           </div>
 
           <div className="flex items-center gap-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={onToggleTheme}
+                  className="h-11 w-11 rounded-2xl cursor-pointer"
+                >
+                  <span className="relative flex h-4.5 w-4.5 items-center justify-center overflow-hidden">
+                    <SunMedium
+                      className={`absolute h-4.5 w-4.5 transition-all duration-300 ${
+                        theme === "light"
+                          ? "rotate-0 scale-100 opacity-100"
+                          : "-rotate-90 scale-0 opacity-0"
+                      }`}
+                    />
+                    <MoonStar
+                      className={`absolute h-4.5 w-4.5 transition-all duration-300 ${
+                        theme === "dark"
+                          ? "rotate-0 scale-100 opacity-100"
+                          : "rotate-90 scale-0 opacity-0"
+                      }`}
+                    />
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              </TooltipContent>
+            </Tooltip>
+
             <Button
               type="button"
               variant="outline"
