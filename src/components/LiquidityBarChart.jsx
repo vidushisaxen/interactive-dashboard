@@ -18,10 +18,14 @@ export default function LiquidityBarChart({
   dataKey = "value",
   xKey = "label",
 }) {
-  const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
+  const { ref, isChartVisible, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
   const minHeight = typeof height === "number" ? height : 170;
   const barSize =
     data.length >= 18 ? 40 : data.length >= 14 ? 45 : data.length >= 10 ? 50 : 60;
+
+  if (!isChartVisible) {
+    return <div ref={ref} className="min-w-0 w-full" style={{ height }} aria-hidden="true" />;
+  }
 
   return (
     <div ref={ref} className="min-w-0 w-full" style={{ height }}>

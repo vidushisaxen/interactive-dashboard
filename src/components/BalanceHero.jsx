@@ -49,7 +49,7 @@ const BalanceHero = ({
               variant="outline"
               size="icon"
               onClick={onToggleHidden}
-              className="h-10 w-10 rounded-2xl cursor-pointer"
+              className="h-10 w-10 rounded-xl cursor-pointer"
             >
               {hidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
             </Button>
@@ -64,17 +64,17 @@ const BalanceHero = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 xl:max-w-[34rem] xl:justify-end">
-            <Button type="button" variant="outline" onClick={onMoveMoney} className="h-11 cursor-pointer rounded-2xl">
+            <Button type="button" variant="outline" onClick={onMoveMoney} className="h-11 cursor-pointer rounded-xl">
               <MoveRight className="mr-2 h-4 w-4" />
               Move Money
             </Button>
 
-            <Button type="button" variant="outline" onClick={onRequest} className="h-11 cursor-pointer rounded-2xl">
+            <Button type="button" variant="outline" onClick={onRequest} className="h-11 cursor-pointer rounded-xl">
               <ReceiptText className="mr-2 h-4 w-4" />
               Request
             </Button>
 
-            <Button type="button" onClick={onTransfer} className="h-11 cursor-pointer rounded-2xl">
+            <Button type="button" onClick={onTransfer} className="h-11 cursor-pointer rounded-xl">
               Transfer
               <SendHorizontal className="ml-2 h-4 w-4" />
             </Button>

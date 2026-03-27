@@ -30,14 +30,14 @@ import { SIDEBAR_PRIMARY_ITEMS } from "./dashboard-data";
 
 const sidebarTween = {
   ...smoothTween,
-  duration: 0.52,
-  ease: [0.2, 0.9, 0.2, 1],
+  duration: 0.34,
+  ease: [0.22, 1, 0.36, 1],
 };
 
 const labelTween = {
   ...smoothTween,
-  duration: 0.42,
-  ease: [0.24, 0.92, 0.24, 1],
+  duration: 0.28,
+  ease: [0.22, 1, 0.36, 1],
 };
 
 function NavItem({ item, danger = false, active = false, expanded = false }) {
@@ -50,7 +50,7 @@ function NavItem({ item, danger = false, active = false, expanded = false }) {
         type="button"
         variant="ghost"
         className={cn(
-          "my-2 h-11 w-full cursor-pointer rounded-xl text-sm font-medium transition-all duration-300 ease-out",
+          "my-2 h-11 w-full cursor-pointer rounded-lg text-sm font-medium transition-all duration-300 ease-out",
           expanded ? "justify-start px-3" : "justify-center px-0",
           active &&
             "bg-primary text-primary-foreground ring-1 ring-(--sidebar-active-ring) shadow-sm hover:bg-primary/90 hover:text-primary-foreground",
@@ -92,7 +92,7 @@ function ActionItem({ icon: Icon, label, onClick, danger = false, expanded = fal
       variant="ghost"
       onClick={onClick}
       className={cn(
-        "h-11 w-full cursor-pointer rounded-xl text-sm font-medium transition-all duration-300 ease-out",
+        "h-11 w-full cursor-pointer rounded-lg text-sm font-medium transition-all duration-300 ease-out",
         expanded ? "justify-start px-3" : "justify-center px-0",
         danger
           ? "text-destructive hover:bg-destructive/10"
@@ -178,15 +178,16 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
     closeTimerRef.current = setTimeout(() => {
       onExpandedChange?.(false);
       closeTimerRef.current = null;
-    }, 240);
+    }, 120);
   };
 
   return (
     <>
       <motion.aside
-        className="fixed left-0 top-0 z-50 h-screen border-r border-border/60 bg-background/95 backdrop-blur-xl"
+        className="fixed left-0 top-0 z-50 h-screen w-[88px] border-r border-border/60 bg-background/95 backdrop-blur-xl"
         onMouseEnter={handleExpand}
         onMouseLeave={handleCollapse}
+        initial={false}
         animate={{ width: expanded ? 240 : 88 }}
         transition={
           prefersReducedMotion
@@ -196,6 +197,7 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
       >
         <motion.div
           className="flex h-full flex-col py-5"
+          initial={false}
           animate={{
             paddingLeft: expanded ? 16 : 12,
             paddingRight: expanded ? 16 : 12,
@@ -211,16 +213,17 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
               <Button
                 variant="ghost"
                 className={cn(
-                  "h-auto w-full cursor-pointer rounded-2xl py-2 transition-all duration-300 ease-out hover:bg-transparent",
+                  "h-auto w-full cursor-pointer rounded-xl py-2 transition-all duration-300 ease-out hover:bg-transparent",
                   expanded ? "justify-start px-2" : "justify-center px-2"
                 )}
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
                       <span className="text-base font-black">Q</span>
                     </div>
                     <motion.div
                       className="min-w-0 overflow-hidden text-left"
+                      initial={false}
                       animate={{
                         marginLeft: expanded ? 0 : 0,
                         maxWidth: expanded ? 140 : 0,

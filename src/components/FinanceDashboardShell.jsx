@@ -11,13 +11,11 @@ import LoginScreen from "./LoginScreen";
 
 const shellTween = {
   ...smoothTween,
-  duration: 0.52,
-  ease: [0.2, 0.9, 0.2, 1],
+  duration: 0.34,
+  ease: [0.22, 1, 0.36, 1],
 };
 
 const AUTH_STORAGE_KEY = "quantro-authenticated";
-const VALID_USER_ID = "quantro-admin";
-const VALID_PASSWORD = "Quantro@2026";
 
 const FinanceDashboardShell = ({ children }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
@@ -42,17 +40,9 @@ const FinanceDashboardShell = ({ children }) => {
     return () => window.cancelAnimationFrame(frameId);
   }, []);
 
-  const handleLogin = ({ userId, password }) => {
-    const success =
-      userId.trim() === VALID_USER_ID && password === VALID_PASSWORD;
-
-    if (!success) {
-      return false;
-    }
-
+  const handleLogin = () => {
     window.sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
     setIsAuthenticated(true);
-    return true;
   };
 
   const handleLogout = () => {
@@ -76,7 +66,8 @@ const FinanceDashboardShell = ({ children }) => {
         />
 
         <motion.div
-          className="min-h-screen"
+          className="ml-[88px] min-h-screen"
+          initial={false}
           animate={{ marginLeft: sidebarExpanded ? 240 : 88 }}
           transition={
             prefersReducedMotion

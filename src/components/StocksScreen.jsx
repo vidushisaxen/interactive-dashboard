@@ -32,7 +32,7 @@ const StocksScreen = () => {
           {STOCK_MARKET_HIGHLIGHTS.map((item) => (
             <div
               key={item.label}
-              className="rounded-2xl border border-border/60 bg-background/50 px-4 py-3"
+              className="rounded-xl border border-border/60 bg-background/50 px-4 py-3"
             >
               <p className="text-xs uppercase tracking-widest text-muted-foreground">
                 {item.label}
@@ -65,7 +65,7 @@ const StocksScreen = () => {
               </CardDescription>
             </div>
 
-            <div className="rounded-2xl border border-border/60 bg-background/45 px-4 py-3">
+            <div className="rounded-xl border border-border/60 bg-background/45 px-4 py-3">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <TimerReset className="h-4 w-4 text-primary" />
                 Refreshing live

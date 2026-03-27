@@ -54,7 +54,7 @@ const LineChartMultiple = () => {
         <ExportCsvButton
           fileName="quantro_line_chart_multiple"
           rows={LINE_DATA}
-          className="rounded-xl"
+          className="rounded-lg"
         />
       }
     >
@@ -71,7 +71,7 @@ const LineChartMultiple = () => {
                 size="sm"
                 onClick={() => toggleSeries(series.key)}
                 className={cn(
-                  "h-9 rounded-xl px-3 cursor-pointer",
+                  "h-9 rounded-lg px-3 cursor-pointer",
                   active && "border-primary/20 bg-primary text-primary-foreground hover:bg-primary/90"
                 )}
               >

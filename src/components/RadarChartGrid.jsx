@@ -31,7 +31,7 @@ const RadarChartGrid = () => {
         <ExportCsvButton
           fileName="quantro_radar_chart"
           rows={RADAR_DATA}
-          className="rounded-xl"
+          className="rounded-lg"
         />
       }
     >
@@ -51,7 +51,7 @@ const RadarChartGrid = () => {
         </div>
       </div>
 
-      <div ref={ref} className="min-w-0 rounded-2xl border border-border/60 bg-background/40 p-4">
+      <div ref={ref} className="min-w-0 rounded-xl border border-border/60 bg-background/40 p-4">
         <ResponsiveContainer
           width="100%"
           height={250}

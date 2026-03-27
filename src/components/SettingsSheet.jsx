@@ -71,7 +71,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
     >
       <div className="space-y-6">
         <AnimatedSlideIn direction="right" duration={0.55}>
-          <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-muted/30 p-4">
+          <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/30 p-4">
             <div className="space-y-1">
               <AnimatedTextReveal y={14} blur="6px" duration={0.45}>
                 <p className="text-sm font-medium">Workspace settings</p>
@@ -98,7 +98,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
         </AnimatedSlideIn>
 
         <AnimatedSlideIn direction="right" duration={0.48} delay={0.05}>
-          <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4">
+          <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
             <p className="text-sm font-medium">Workspace status</p>
             <p className="mt-1 text-xs text-muted-foreground">
               {lastSaved}
@@ -139,6 +139,66 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                 {group.items.map((item, itemIndex) => {
                   const Icon = item.icon;
 
+                  const isToggle = item.kind === "toggle";
+
+                  const rowClassName =
+                    "flex w-full items-center justify-between rounded-xl border border-border/60 bg-background/60 px-4 py-3 text-left transition-colors hover:bg-accent/40";
+
+                  const rowContent = (
+                    <>
+                      <div className="flex items-center gap-3">
+                        <AnimatedFadeUp delay={0.02 * itemIndex} duration={0.4}>
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted text-muted-foreground">
+                            <Icon className="h-4.5 w-4.5" />
+                          </div>
+                        </AnimatedFadeUp>
+
+                        <div className="space-y-0.5">
+                          <AnimatedTextReveal
+                            y={10}
+                            blur="4px"
+                            duration={0.35}
+                          >
+                            <div className="text-sm font-medium">
+                              {item.label}
+                            </div>
+                          </AnimatedTextReveal>
+
+                          <AnimatedTextReveal
+                            y={10}
+                            blur="4px"
+                            duration={0.35}
+                            delay={0.04}
+                          >
+                            <div className="text-xs text-muted-foreground">
+                              {isToggle
+                                ? getSettingValue(item.key)
+                                  ? "Enabled"
+                                  : "Disabled"
+                                : settings[item.key]}
+                            </div>
+                          </AnimatedTextReveal>
+                        </div>
+                      </div>
+
+                      <AnimatedFadeUp delay={0.05} duration={0.35}>
+                        {isToggle ? (
+                          <Switch
+                            checked={getSettingValue(item.key)}
+                            onCheckedChange={(checked) =>
+                              handleToggle(item.key, checked)
+                            }
+                            onClick={(event) => event.stopPropagation()}
+                          />
+                        ) : (
+                          <span className="inline-flex h-8 items-center rounded-lg border border-border/60 px-3 text-xs font-medium text-primary">
+                            Edit
+                          </span>
+                        )}
+                      </AnimatedFadeUp>
+                    </>
+                  );
+
                   return (
                     <AnimatedSlideIn
                       key={item.label}
@@ -146,69 +206,32 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                       duration={0.45}
                       delay={0.1 + itemIndex * 0.05}
                     >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (item.kind === "choice") {
-                            cycleSetting(item.key);
-                            return;
+                      {isToggle ? (
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          onClick={() =>
+                            handleToggle(item.key, !getSettingValue(item.key))
                           }
-
-                          handleToggle(item.key, !getSettingValue(item.key));
-                        }}
-                        className="flex w-full items-center cursor-pointer justify-between rounded-2xl border border-border/60 bg-background/60 px-4 py-3 text-left transition-colors hover:bg-accent/40"
-                      >
-                        <div className="flex items-center gap-3">
-                          <AnimatedFadeUp delay={0.02 * itemIndex} duration={0.4}>
-                            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
-                              <Icon className="h-4.5 w-4.5" />
-                            </div>
-                          </AnimatedFadeUp>
-
-                          <div className="space-y-0.5">
-                            <AnimatedTextReveal
-                              y={10}
-                              blur="4px"
-                              duration={0.35}
-                            >
-                              <div className="text-sm font-medium">
-                                {item.label}
-                              </div>
-                            </AnimatedTextReveal>
-
-                            <AnimatedTextReveal
-                              y={10}
-                              blur="4px"
-                              duration={0.35}
-                              delay={0.04}
-                            >
-                              <div className="text-xs text-muted-foreground">
-                                {item.kind === "toggle"
-                                  ? getSettingValue(item.key)
-                                    ? "Enabled"
-                                    : "Disabled"
-                                  : settings[item.key]}
-                              </div>
-                            </AnimatedTextReveal>
-                          </div>
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              handleToggle(item.key, !getSettingValue(item.key));
+                            }
+                          }}
+                          className={`${rowClassName} cursor-pointer`}
+                        >
+                          {rowContent}
                         </div>
-
-                        <AnimatedFadeUp delay={0.05} duration={0.35}>
-                          {item.kind === "toggle" ? (
-                            <Switch
-                              checked={getSettingValue(item.key)}
-                              onCheckedChange={(checked) =>
-                                handleToggle(item.key, checked)
-                              }
-                              onClick={(event) => event.stopPropagation()}
-                            />
-                          ) : (
-                            <span className="inline-flex h-8 items-center rounded-xl border border-border/60 px-3 text-xs font-medium text-primary">
-                              Edit
-                            </span>
-                          )}
-                        </AnimatedFadeUp>
-                      </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => cycleSetting(item.key)}
+                          className={`${rowClassName} cursor-pointer`}
+                        >
+                          {rowContent}
+                        </button>
+                      )}
                     </AnimatedSlideIn>
                   );
                 })}
@@ -227,7 +250,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="rounded-2xl cursor-pointer"
+              className="rounded-xl cursor-pointer"
             >
               <X className="mr-2 h-4 w-4" />
               Close
@@ -235,14 +258,15 @@ const SettingsSheet = ({ open, onOpenChange }) => {
 
             <Button
               type="button"
-              onClick={() =>
+              onClick={() => {
                 setLastSaved(
                   `Saved ${settings.language} preferences with ${
                     settings.notifications ? "notifications on" : "notifications muted"
                   }.`
-                )
-              }
-              className="rounded-2xl cursor-pointer"
+                );
+                onOpenChange(false);
+              }}
+              className="rounded-xl cursor-pointer"
             >
               <Check className="mr-2 h-4 w-4" />
               Save changes

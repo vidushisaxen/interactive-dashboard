@@ -9,24 +9,45 @@ import {
   useRef,
   useState,
 } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useReducedMotion } from "motion/react";
 import AppLoader from "./AppLoader";
 
 const ThemeContext = createContext(null);
 const STORAGE_KEY = "interactive-dashboard-theme";
 const LOADER_STORAGE_KEY = "quantro-loader-seen";
-const THEME_SWITCH_MS = 180;
-const THEME_OVERLAY_MS = 760;
 const LOADER_MS = 1500;
+
+function applyDirectionalTheme(nextTheme, direction = "ltr") {
+  const root = document.documentElement;
+  const elements = Array.from(document.querySelectorAll(".themed"));
+
+  const maxX = window.innerWidth || 1;
+
+  elements.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    const x = direction === "ltr" ? rect.left : maxX - rect.right;
+    const normalized = Math.max(0, Math.min(1, x / maxX));
+    const delay = Math.round(normalized * 280);
+
+    el.style.transitionDelay = `${delay}ms`;
+  });
+
+  requestAnimationFrame(() => {
+    root.dataset.theme = nextTheme;
+  });
+
+  window.setTimeout(() => {
+    elements.forEach((el) => {
+      el.style.transitionDelay = "";
+    });
+  }, 800);
+}
 
 export function ThemeProvider({ children }) {
   const prefersReducedMotion = useReducedMotion();
   const [theme, setTheme] = useState("dark");
-  const [transitionTarget, setTransitionTarget] = useState(null);
-  const [transitionDirection, setTransitionDirection] = useState("ltr");
   const [showLoader, setShowLoader] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const timeoutsRef = useRef([]);
   const nextDirectionRef = useRef("ltr");
 
   useEffect(() => {
@@ -40,6 +61,7 @@ export function ThemeProvider({ children }) {
       const nextTheme = savedTheme || systemTheme;
 
       setTheme(nextTheme);
+      document.documentElement.dataset.theme = nextTheme;
 
       const hasSeenLoader = window.sessionStorage.getItem(LOADER_STORAGE_KEY);
 
@@ -53,23 +75,14 @@ export function ThemeProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
     if (isMounted) {
+      document.documentElement.dataset.theme = theme;
       window.localStorage.setItem(STORAGE_KEY, theme);
     }
   }, [isMounted, theme]);
 
   useEffect(() => {
-    return () => {
-      timeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
-      timeoutsRef.current = [];
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!showLoader) {
-      return;
-    }
+    if (!showLoader) return;
 
     const timeoutId = window.setTimeout(
       () => setShowLoader(false),
@@ -79,45 +92,22 @@ export function ThemeProvider({ children }) {
     return () => window.clearTimeout(timeoutId);
   }, [prefersReducedMotion, showLoader]);
 
-  const clearThemeTimers = useCallback(() => {
-    timeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
-    timeoutsRef.current = [];
-  }, []);
-
   const applyTheme = useCallback(
     (nextTheme) => {
-      if (!nextTheme || nextTheme === theme) {
-        return;
-      }
-
-      clearThemeTimers();
+      if (!nextTheme || nextTheme === theme) return;
 
       if (prefersReducedMotion) {
         setTheme(nextTheme);
-        setTransitionTarget(null);
         return;
       }
 
       const direction = nextDirectionRef.current;
       nextDirectionRef.current = direction === "ltr" ? "rtl" : "ltr";
 
-      setTransitionDirection(direction);
-      setTransitionTarget(nextTheme);
-
-      timeoutsRef.current.push(
-        window.setTimeout(() => {
-          setTheme(nextTheme);
-        }, THEME_SWITCH_MS)
-      );
-
-      timeoutsRef.current.push(
-        window.setTimeout(() => {
-          setTransitionTarget(null);
-          timeoutsRef.current = [];
-        }, THEME_OVERLAY_MS)
-      );
+      setTheme(nextTheme);
+      applyDirectionalTheme(nextTheme, direction);
     },
-    [clearThemeTimers, prefersReducedMotion, theme]
+    [prefersReducedMotion, theme]
   );
 
   const value = useMemo(
@@ -132,52 +122,7 @@ export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={value}>
       {children}
-      <AnimatePresence>
-        {showLoader ? (
-          <AppLoader key="quantro-loader" reducedMotion={prefersReducedMotion} />
-        ) : null}
-
-        {transitionTarget ? (
-          <motion.div
-            key={`${transitionTarget}-${transitionDirection}`}
-            className="pointer-events-none fixed inset-0 z-200 overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            aria-hidden="true"
-          >
-            <motion.span
-              className="absolute inset-y-0 left-0 w-full shadow-2xl"
-              style={{
-                backgroundColor:
-                  transitionTarget === "dark"
-                    ? "rgb(0 0 0)"
-                    : "rgb(255 255 255)",
-              }}
-              initial={{
-                x: transitionDirection === "ltr" ? "-100%" : "100%",
-                opacity: 1,
-                scale: 1.02,
-              }}
-              animate={{
-                x: "0%",
-                opacity: 1,
-                scale: 1,
-              }}
-              exit={{
-                x: transitionDirection === "ltr" ? "100%" : "-100%",
-                opacity: 1,
-                scale: 1.02,
-              }}
-              transition={{
-                duration: 0.62,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            />
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      {showLoader ? <AppLoader reducedMotion={prefersReducedMotion} /> : null}
     </ThemeContext.Provider>
   );
 }

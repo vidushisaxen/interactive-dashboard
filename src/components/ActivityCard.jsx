@@ -69,7 +69,7 @@ const ActivityCard = () => {
                 type="button"
                 onClick={() => setActiveMetric(key)}
                 className={cn(
-                  "min-w-40 rounded-2xl cursor-pointer  border p-4 text-left transition-colors",
+                  "min-w-40 rounded-xl cursor-pointer  border p-4 text-left transition-colors",
                   "bg-background/40 hover:bg-accent/40",
                   active
                     ? "border-primary/40 bg-primary/5"
@@ -98,7 +98,7 @@ const ActivityCard = () => {
           })}
         </div>
 
-        <div className="rounded-2xl border border-border/60 bg-background/50 p-4">
+        <div className="rounded-xl border border-border/60 bg-background/50 p-4">
           <div className="mb-3 flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground">Overview</p>
@@ -113,7 +113,7 @@ const ActivityCard = () => {
               <ExportCsvButton
                 fileName={`quantro_activity_${activeMetric}_${activeRange.toLowerCase().replace(/\s+/g, "_")}`}
                 rows={chartData}
-                className="rounded-xl"
+                className="rounded-lg"
               />
             </div>
           </div>

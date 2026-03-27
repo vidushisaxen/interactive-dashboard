@@ -36,13 +36,13 @@ function TransferMoneySkeleton() {
         <Skeleton className="h-4 w-96 max-w-full" />
       </div>
 
-      <Skeleton className="h-24 w-full rounded-3xl" />
+      <Skeleton className="h-24 w-full rounded-2xl" />
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-3xl xl:col-span-3" />
+        <Skeleton className="h-96 w-full rounded-2xl xl:col-span-3" />
         <div className="space-y-6 xl:col-span-2">
-          <Skeleton className="h-56 w-full rounded-3xl" />
-          <Skeleton className="h-96 w-full rounded-3xl" />
+          <Skeleton className="h-56 w-full rounded-2xl" />
+          <Skeleton className="h-96 w-full rounded-2xl" />
         </div>
       </div>
     </section>
@@ -92,7 +92,7 @@ const TransferMoneyScreen = () => {
       </header>
 
       <AnimatedFadeUp delay={0.08}>
-        <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
           <p className="text-sm font-medium">Transfer status</p>
           <p className="mt-1 text-xs text-muted-foreground">
             {transferStatus}
@@ -127,7 +127,7 @@ const TransferMoneyScreen = () => {
                           type="button"
                           onClick={() => setTransferType(item.id)}
                           className={cn(
-                            "rounded-2xl border p-4 text-left transition-colors",
+                            "rounded-xl border p-4 text-left transition-colors",
                             "hover:bg-accent/40",
                             active
                               ? "border-primary/30 bg-primary/5"
@@ -136,7 +136,7 @@ const TransferMoneyScreen = () => {
                         >
                           <div
                             className={cn(
-                              "mb-3 flex h-10 w-10 items-center justify-center rounded-2xl",
+                              "mb-3 flex h-10 w-10 items-center justify-center rounded-xl",
                               active
                                 ? "bg-primary/10 text-primary"
                                 : "bg-muted text-muted-foreground"
@@ -194,9 +194,9 @@ const TransferMoneyScreen = () => {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-border/60 bg-muted/20 p-4">
+                <div className="rounded-xl border border-border/60 bg-muted/20 p-4">
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5 rounded-2xl bg-primary/10 p-2 text-primary">
+                    <div className="mt-0.5 rounded-xl bg-primary/10 p-2 text-primary">
                       <ShieldCheck className="h-4 w-4" />
                     </div>
                     <div className="space-y-1">
@@ -216,7 +216,7 @@ const TransferMoneyScreen = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    className="rounded-2xl"
+                    className="rounded-xl"
                     onClick={() =>
                       setTransferStatus(
                         "Draft saved. Beneficiary and amount details are ready for final review."
@@ -228,7 +228,7 @@ const TransferMoneyScreen = () => {
                   <Button
                     type="button"
                     disabled={!canSubmit}
-                    className="rounded-2xl"
+                    className="rounded-xl"
                     onClick={() =>
                       setTransferStatus(
                         `${transferType === "bank" ? "Bank transfer" : "Personal transfer"} ready for $${amountValue.toFixed(2)} to ${form.recipient}.`
@@ -281,7 +281,7 @@ const TransferMoneyScreen = () => {
                 {TRANSFER_BENEFICIARIES.map((item) => (
                   <div
                     key={`${item.name}-${item.amount}`}
-                    className="flex items-center justify-between gap-4 rounded-2xl border border-border/60 p-4"
+                    className="flex items-center justify-between gap-4 rounded-xl border border-border/60 p-4"
                   >
                     <div>
                       <p className="text-sm font-medium">{item.name}</p>
@@ -295,7 +295,7 @@ const TransferMoneyScreen = () => {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="mt-1 h-7 rounded-xl px-2"
+                        className="mt-1 h-7 rounded-lg px-2"
                         onClick={() =>
                           setForm((prev) => ({
                             ...prev,
@@ -327,14 +327,14 @@ const Field = ({ icon: Icon, label, placeholder, value, onChange }) => (
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="h-12 rounded-2xl pl-11"
+        className="h-12 rounded-xl pl-11"
       />
     </div>
   </div>
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>

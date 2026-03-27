@@ -39,7 +39,7 @@ const TransactionsCard = ({
                 amount: item.amount,
                 direction: item.positive ? "credit" : "debit",
               }))}
-              className="rounded-xl"
+              className="rounded-lg"
             />
 
             <Button
@@ -47,7 +47,7 @@ const TransactionsCard = ({
               variant="outline"
               size="sm"
               onClick={onFilter}
-              className="rounded-xl cursor-pointer"
+              className="rounded-lg cursor-pointer"
             >
               <Filter className="mr-2 h-4 w-4" />
               Filter
@@ -58,7 +58,7 @@ const TransactionsCard = ({
               variant="ghost"
               size="sm"
               onClick={onViewAll}
-              className="rounded-xl text-primary cursor-pointer"
+              className="rounded-lg text-primary cursor-pointer"
             >
               View all
             </Button>
@@ -77,11 +77,11 @@ const TransactionsCard = ({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectTransaction?.(item)}
-                className="flex w-full items-center gap-3 cursor-pointer rounded-2xl border border-border/60 bg-background/50 px-4 py-3 text-left transition-colors hover:bg-accent/40"
+                className="flex w-full items-center gap-3 cursor-pointer rounded-xl border border-border/60 bg-background/50 px-4 py-3 text-left transition-colors hover:bg-accent/40"
               >
                 <div
                   className={cn(
-                    "flex h-11 w-11 items-center justify-center rounded-2xl",
+                    "flex h-11 w-11 items-center justify-center rounded-xl",
                     positive
                       ? "bg-[var(--status-success-soft)] text-[var(--status-success)]"
                       : "bg-primary/10 text-primary"

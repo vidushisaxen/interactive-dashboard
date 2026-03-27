@@ -141,7 +141,7 @@ const FinanceTopbar = ({
                 onBlur={() => {
                   window.setTimeout(() => setSearchFocused(false), 120);
                 }}
-                className="h-11 w-[320px] rounded-2xl pl-10"
+                className="h-11 w-[320px] rounded-xl pl-10"
               />
 
               <AnimatePresence>
@@ -151,7 +151,7 @@ const FinanceTopbar = ({
                     animate="visible"
                     exit="exit"
                     variants={searchDropdownVariants}
-                    className="absolute left-0 top-[calc(100%+10px)] z-50 w-full rounded-2xl border border-border/60 bg-popover/96 p-2 shadow-lg backdrop-blur"
+                    className="absolute left-0 top-[calc(100%+10px)] z-50 w-full rounded-xl border border-border/60 bg-popover/96 p-2 shadow-lg backdrop-blur"
                   >
                     <motion.p
                       variants={searchItemVariants}
@@ -169,7 +169,7 @@ const FinanceTopbar = ({
                               onSearchChange?.(term);
                               setSearchFocused(false);
                             }}
-                            className="flex w-full items-center rounded-xl px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-primary hover:text-primary-foreground"
+                            className="flex w-full items-center rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-primary hover:text-primary-foreground"
                           >
                             <Search className="mr-2 h-3.5 w-3.5 shrink-0" />
                             {term}
@@ -232,21 +232,21 @@ const FinanceTopbar = ({
               </TooltipContent>
             </Tooltip>
 
-            <Button asChild variant="outline" className="h-11 rounded-2xl">
+            <Button asChild variant="outline" className="h-11 rounded-xl">
               <Link href="/move-money">
                 <MoveRight className="mr-2 h-4 w-4" />
                 Move Money
               </Link>
             </Button>
 
-            <Button asChild variant="outline" className="h-11 rounded-2xl">
+            <Button asChild variant="outline" className="h-11 rounded-xl">
               <Link href="/request">
                 <ReceiptText className="mr-2 h-4 w-4" />
                 Request
               </Link>
             </Button>
 
-            <Button asChild className="h-11 rounded-2xl">
+            <Button asChild className="h-11 rounded-xl">
               <Link href="/transfer">
                 Transfer
                 <SendHorizontal className="ml-2 h-4 w-4" />
@@ -258,7 +258,7 @@ const FinanceTopbar = ({
                 <Button
                   type="button"
                   variant="outline"
-                  className="ml-2 h-11 rounded-2xl px-3 cursor-pointer"
+                  className="ml-2 h-11 rounded-xl px-3 cursor-pointer"
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarFallback className="text-xs font-bold">
@@ -275,7 +275,7 @@ const FinanceTopbar = ({
               <DropdownMenuContent
                 align="end"
                 sideOffset={10}
-                className="w-56 rounded-2xl border border-border/60 bg-popover/95 p-2 shadow-lg backdrop-blur"
+                className="w-56 rounded-xl border border-border/60 bg-popover/95 p-2 shadow-lg backdrop-blur"
               >
                 <motion.div
                   initial={{ opacity: 0, y: -8, scale: 0.96 }}
@@ -283,7 +283,7 @@ const FinanceTopbar = ({
                   transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                   className="space-y-2"
                 >
-                  <div className="rounded-2xl border border-border/60 bg-background/70 p-3">
+                  <div className="rounded-xl border border-border/60 bg-background/70 p-3">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
                         <AvatarFallback className="text-sm font-bold">
@@ -303,7 +303,7 @@ const FinanceTopbar = ({
 
                   <DropdownMenuItem
                     onClick={() => handleProfileAction("profile")}
-                    className="rounded-xl px-3 py-2"
+                    className="rounded-lg px-3 py-2"
                   >
                     <User className="mr-2 h-4 w-4" />
                     Open profile

@@ -56,7 +56,7 @@ const PieChartStacked = () => {
             value: item.value,
             fill: item.fill,
           }))}
-          className="rounded-xl"
+          className="rounded-lg"
         />
       }
     >
@@ -82,7 +82,7 @@ const PieChartStacked = () => {
       </div>
 
       <div ref={ref} className="flex justify-center">
-        <div className="rounded-2xl border border-border/60 bg-background/40 p-4">
+        <div className="rounded-xl border border-border/60 bg-background/40 p-4">
           <PieChart key={`pie-stacked-${animationKey}`} width={280} height={250}>
             <Pie
               data={outer}

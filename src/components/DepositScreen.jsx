@@ -32,14 +32,14 @@ function DepositSkeleton() {
       </div>
 
       <div className="grid grid-cols-1 items-start gap-6 2xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-3xl" />
+        <Skeleton className="h-96 w-full rounded-2xl" />
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-            <Skeleton className="h-72 w-full rounded-3xl" />
-            <Skeleton className="h-72 w-full rounded-3xl" />
-            <Skeleton className="h-72 w-full rounded-3xl" />
+            <Skeleton className="h-72 w-full rounded-2xl" />
+            <Skeleton className="h-72 w-full rounded-2xl" />
+            <Skeleton className="h-72 w-full rounded-2xl" />
           </div>
-          <Skeleton className="h-96 w-full rounded-3xl" />
+          <Skeleton className="h-96 w-full rounded-2xl" />
         </div>
       </div>
     </section>
@@ -86,7 +86,7 @@ const DepositScreen = () => {
       </AnimatedFadeUp>
 
       <AnimatedFadeUp delay={0.04}>
-        <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
           <p className="text-sm font-medium">Deposit status</p>
           <p className="mt-1 text-xs text-muted-foreground">
             {depositStatus}
@@ -189,14 +189,14 @@ const DepositScreen = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-4 text-sm">
-                  <div className="rounded-xl border border-border/60 bg-muted/30 p-4">
+                  <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">ETH → cBNB</span>
                       <span className="font-semibold">1 ETH = 5.845 cBNB</span>
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-border/60 bg-muted/30 p-4">
+                  <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">cBNB → ETH</span>
                       <span className="font-semibold">1 cBNB = 0.171 ETH</span>
@@ -204,7 +204,7 @@ const DepositScreen = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-xl border border-border/60 p-4">
+                    <div className="rounded-lg border border-border/60 p-4">
                       <p className="text-xs text-muted-foreground">
                         Estimated Price Impact
                       </p>
@@ -213,7 +213,7 @@ const DepositScreen = () => {
                       </p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 p-4">
+                    <div className="rounded-lg border border-border/60 p-4">
                       <p className="text-xs text-muted-foreground">
                         Swap Fee Tier
                       </p>
@@ -234,7 +234,7 @@ const DepositScreen = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  <div className="rounded-xl border border-border/60 bg-muted/30 p-4">
+                  <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
                     <p className="text-xs text-muted-foreground">
                       Your projected share
                     </p>
@@ -244,14 +244,14 @@ const DepositScreen = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="rounded-xl border border-border/60 p-4">
+                    <div className="rounded-lg border border-border/60 p-4">
                       <p className="text-xs text-muted-foreground">
                         LP Tokens Minted
                       </p>
                       <p className="mt-1 font-semibold">124.82 LP</p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 p-4">
+                    <div className="rounded-lg border border-border/60 p-4">
                       <p className="text-xs text-muted-foreground">
                         Position Rank
                       </p>
@@ -259,7 +259,7 @@ const DepositScreen = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-border/60 p-4 text-sm">
+                  <div className="rounded-lg border border-border/60 p-4 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">
                         Share growth at this step
@@ -284,12 +284,12 @@ const DepositScreen = () => {
 
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-xl border border-border/60 p-4">
+                    <div className="rounded-lg border border-border/60 p-4">
                       <p className="text-xs text-muted-foreground">ETH Locked</p>
                       <p className="mt-1 text-base font-semibold">2.08685 ETH</p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 p-4">
+                    <div className="rounded-lg border border-border/60 p-4">
                       <p className="text-xs text-muted-foreground">
                         cBNB Locked
                       </p>
@@ -297,14 +297,14 @@ const DepositScreen = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-border/60 bg-muted/30 p-4">
+                  <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
                     <p className="text-xs text-muted-foreground">
                       Estimated deposit value
                     </p>
                     <p className="mt-1 text-xl font-semibold">$8,426.40</p>
                   </div>
 
-                  <div className="flex items-center justify-between rounded-xl border border-border/60 p-4 text-sm">
+                  <div className="flex items-center justify-between rounded-lg border border-border/60 p-4 text-sm">
                     <div>
                       <p className="text-xs text-muted-foreground">
                         Claimable Fees
@@ -391,28 +391,28 @@ const DepositScreen = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                  <div className="rounded-xl border border-border/60 p-4">
+                  <div className="rounded-lg border border-border/60 p-4">
                     <p className="text-xs text-muted-foreground">Current Step</p>
                     <p className="mt-1 text-base font-semibold">
                       {currentStep.step}
                     </p>
                   </div>
 
-                  <div className="rounded-xl border border-border/60 p-4">
+                  <div className="rounded-lg border border-border/60 p-4">
                     <p className="text-xs text-muted-foreground">Progress Rate</p>
                     <p className="mt-1 text-base font-semibold">
                       {currentStep.progress}%
                     </p>
                   </div>
 
-                  <div className="rounded-xl border border-border/60 p-4">
+                  <div className="rounded-lg border border-border/60 p-4">
                     <p className="text-xs text-muted-foreground">Liquidity Factor</p>
                     <p className="mt-1 text-base font-semibold">
                       {currentStep.multiplier}x
                     </p>
                   </div>
 
-                  <div className="rounded-xl border border-border/60 p-4">
+                  <div className="rounded-lg border border-border/60 p-4">
                     <p className="text-xs text-muted-foreground">Estimated Growth</p>
                     <p className="mt-1 text-base font-semibold text-primary">
                       +{Math.round(currentStep.multiplier * 100)}%
@@ -420,12 +420,12 @@ const DepositScreen = () => {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-border/60 p-4">
+                <div className="rounded-xl border border-border/60 p-4">
                   <div className="mb-4 flex justify-end">
                     <ExportCsvButton
                       fileName={`quantro_deposit_step_${String(currentStep.step).toLowerCase().replace(/\s+/g, "_")}`}
                       rows={chartData}
-                      className="rounded-xl"
+                      className="rounded-lg"
                     />
                   </div>
                   <LiquidityBarChart

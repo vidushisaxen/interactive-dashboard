@@ -52,6 +52,7 @@ export function useChartEntrance() {
 
   return {
     ref,
+    isChartVisible: prefersReducedMotion || animationKey > 0,
     shouldAnimate: !prefersReducedMotion && animationKey > 0,
     animationKey,
     animationDelay,

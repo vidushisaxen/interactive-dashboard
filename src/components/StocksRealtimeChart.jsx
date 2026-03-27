@@ -198,7 +198,7 @@ const StocksRealtimeChart = ({ activeRange, onRangeChange }) => {
               type="button"
               onClick={() => toggleSeries(stock.key)}
               className={cn(
-                "rounded-2xl border p-4 text-left transition-colors cursor-pointer",
+                "rounded-xl border p-4 text-left transition-colors cursor-pointer",
                 active
                   ? "border-primary/30 bg-primary/5"
                   : "border-border/60 bg-background/40 hover:bg-primary hover:text-primary-foreground"

@@ -36,7 +36,7 @@ function PoolsListSkeleton() {
         {Array.from({ length: 6 }).map((_, index) => (
           <div
             key={index}
-            className="grid grid-cols-1 gap-4 rounded-3xl px-5 py-5 lg:grid-cols-5"
+            className="grid grid-cols-1 gap-4 rounded-2xl px-5 py-5 lg:grid-cols-5"
           >
             <div className="flex items-center gap-3">
               <Skeleton className="h-10 w-10 rounded-full" />
@@ -125,11 +125,11 @@ const PoolsList = ({ onSelectPool }) => {
                   volume_24h: pool.volume24h,
                   apr: pool.apr,
                 }))}
-                className="rounded-xl"
+                className="rounded-lg"
               />
             </div>
 
-            <div className="mb-3 hidden rounded-3xl bg-background/35 px-5 py-4 text-xs uppercase tracking-widest text-muted-foreground lg:grid lg:grid-cols-5">
+            <div className="mb-3 hidden rounded-2xl bg-background/35 px-5 py-4 text-xs uppercase tracking-widest text-muted-foreground lg:grid lg:grid-cols-5">
               <span>Pool</span>
               <span>Type</span>
               <span className="text-right">Liquidity</span>
@@ -147,7 +147,7 @@ const PoolsList = ({ onSelectPool }) => {
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.15 }}
                   onClick={() => onSelectPool?.(pool)}
-                  className="grid w-full grid-cols-1 gap-4 rounded-3xl bg-card/92 px-5 py-5 text-left transition-colors hover:bg-accent/30 lg:grid-cols-5 lg:items-center"
+                  className="grid w-full grid-cols-1 gap-4 rounded-2xl bg-card/92 px-5 py-5 text-left transition-colors hover:bg-accent/30 lg:grid-cols-5 lg:items-center"
                 >
                   <PoolPair pool={pool} />
 

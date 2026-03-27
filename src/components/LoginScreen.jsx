@@ -12,19 +12,10 @@ import { Badge } from "@/components/ui/badge";
 const LoginScreen = ({ onLogin }) => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const success = onLogin?.({ userId, password });
-
-    if (!success) {
-      setError("Invalid ID or password. Please use the assigned credentials.");
-      return;
-    }
-
-    setError("");
+    onLogin?.({ userId, password });
   };
 
   return (
@@ -36,7 +27,7 @@ const LoginScreen = ({ onLogin }) => {
         transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 w-full max-w-md"
       >
-        <Card className="overflow-hidden rounded-4xl border-border/60 bg-card/96 shadow-2xl backdrop-blur">
+        <Card className="overflow-hidden rounded-3xl border-border/60 bg-card/96 shadow-2xl backdrop-blur">
           <CardContent className="space-y-6 p-8">
             <div className="space-y-3 text-center">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-[22px] bg-primary text-primary-foreground shadow-sm">
@@ -50,7 +41,7 @@ const LoginScreen = ({ onLogin }) => {
                   Welcome to Quantro
                 </h1>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Sign in to access your personal finance dashboard.
+                  Use any demo ID and password to enter the personal finance dashboard.
                 </p>
               </div>
             </div>
@@ -64,7 +55,7 @@ const LoginScreen = ({ onLogin }) => {
                     value={userId}
                     onChange={(event) => setUserId(event.target.value)}
                     placeholder="Enter your user ID"
-                    className="h-12 rounded-2xl pl-10"
+                    className="h-12 rounded-xl pl-10"
                   />
                 </div>
               </div>
@@ -78,18 +69,12 @@ const LoginScreen = ({ onLogin }) => {
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     placeholder="Enter your password"
-                    className="h-12 rounded-2xl pl-10"
+                    className="h-12 rounded-xl pl-10"
                   />
                 </div>
               </div>
 
-              {error ? (
-                <p className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-                  {error}
-                </p>
-              ) : null}
-
-              <Button type="submit" className="h-12 w-full rounded-2xl">
+              <Button type="submit" className="h-12 w-full rounded-xl">
                 <ShieldCheck className="mr-2 h-4 w-4" />
                 Login To Dashboard
               </Button>

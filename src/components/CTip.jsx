@@ -10,7 +10,7 @@ const CTip = ({
   const displayLabel = labelFormatter ? labelFormatter(label) : label;
 
   return (
-    <div className="min-w-40 rounded-xl border border-border/60 bg-popover/95 px-3 py-2.5 text-popover-foreground shadow-md backdrop-blur">
+    <div className="min-w-40 rounded-lg border border-border/60 bg-popover/95 px-3 py-2.5 text-popover-foreground shadow-md backdrop-blur">
       {displayLabel ? (
         <div className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
           {displayLabel}

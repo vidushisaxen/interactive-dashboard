@@ -20,7 +20,7 @@ export function ChartCard({ title, description, children, className, action }) {
       </CardHeader>
 
       <CardContent className="pt-1">
-        <div className="rounded-xl bg-background/40 p-1">
+        <div className="rounded-lg bg-background/40 p-1">
           {children}
         </div>
       </CardContent>

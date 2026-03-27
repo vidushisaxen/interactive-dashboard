@@ -50,7 +50,7 @@ const SidePanel = ({
             variant="outline"
             size="icon"
             onClick={onClose}
-            className="h-10 w-10 rounded-2xl cursor-pointer"
+            className="h-10 w-10 rounded-xl cursor-pointer"
           >
             <X className="h-4 w-4" />
           </Button>

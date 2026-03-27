@@ -26,11 +26,11 @@ function PoolOverviewSkeleton() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <Skeleton className="h-72 w-full rounded-3xl" />
-        <Skeleton className="h-72 w-full rounded-3xl" />
+        <Skeleton className="h-72 w-full rounded-2xl" />
+        <Skeleton className="h-72 w-full rounded-2xl" />
       </div>
 
-      <Skeleton className="h-96 w-full rounded-3xl" />
+      <Skeleton className="h-96 w-full rounded-2xl" />
     </section>
   );
 }
@@ -156,7 +156,7 @@ const PoolOverview = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => setActiveChart(t)}
-                        className={`rounded-xl border-border/60 cursor-pointer transition-all duration-300 ease-in ${
+                        className={`rounded-lg border-border/60 cursor-pointer transition-all duration-300 ease-in ${
                           isActive
                             ? "border-primary/40 bg-primary text-primary-foreground "
                             : "hover:bg-primary hover:text-primary-foreground"
@@ -169,7 +169,7 @@ const PoolOverview = () => {
                 })}
               </div>
 
-              <div className="flex flex-wrap gap-1 rounded-xl border border-border/60 p-1">
+              <div className="flex flex-wrap gap-1 rounded-lg border border-border/60 p-1">
                 {["1H", "4H", "1D", "1W", "1M", "6M"].map((t, index) => {
                   const isActive = activeTime === t;
 
@@ -179,7 +179,7 @@ const PoolOverview = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => setActiveTime(t)}
-                        className={`h-8 cursor-pointer rounded-lg px-3 text-xs transition-all duration-300 ease-in ${
+                        className={`h-8 cursor-pointer rounded-md px-3 text-xs transition-all duration-300 ease-in ${
                           isActive
                             ? "bg-primary text-primary-foreground"
                             : "hover:bg-primary hover:text-primary-foreground"
@@ -222,7 +222,7 @@ const PoolOverview = () => {
               <ExportCsvButton
                 fileName={`quantro_pool_overview_${activeChart.toLowerCase()}_${activeTime.toLowerCase()}`}
                 rows={chartData}
-                className="rounded-xl"
+                className="rounded-lg"
               />
             </div>
 

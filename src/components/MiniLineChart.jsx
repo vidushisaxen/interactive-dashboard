@@ -18,11 +18,11 @@ const MiniLineChart = ({
   xKey = "label",
   height = "100%",
 }) => {
-  const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
+  const { ref, isChartVisible, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
 
   if (!data?.length) {
     return (
-      <div className="flex h-full min-h-45 items-center justify-center rounded-2xl border border-border/60 bg-background/40 text-sm text-muted-foreground">
+      <div className="flex h-full min-h-45 items-center justify-center rounded-xl border border-border/60 bg-background/40 text-sm text-muted-foreground">
         No chart data available
       </div>
     );
@@ -37,6 +37,10 @@ const MiniLineChart = ({
   const range = max - min;
   const padding = range > 0 ? range * 0.18 : Math.max(max * 0.08, 1);
   const minHeight = typeof height === "number" ? height : 180;
+
+  if (!isChartVisible) {
+    return <div ref={ref} className="h-full min-w-0 w-full" style={{ height }} aria-hidden="true" />;
+  }
 
   return (
     <div ref={ref} className="h-full min-w-0 w-full" style={{ height }}>

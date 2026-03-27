@@ -41,32 +41,6 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
       subtitle="Your latest account updates and alerts"
     >
       <div className="space-y-6">
-        <AnimatedSlideIn direction="right" duration={0.55}>
-          <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-muted/30 p-4">
-            <div className="space-y-1">
-              <AnimatedTextReveal y={14} blur="6px" duration={0.45}>
-                <p className="text-sm font-medium">Inbox</p>
-              </AnimatedTextReveal>
-
-              <AnimatedTextReveal
-                y={14}
-                blur="6px"
-                duration={0.45}
-                delay={0.05}
-              >
-                <p className="text-xs text-muted-foreground">
-                  Stay updated with account activity and reports.
-                </p>
-              </AnimatedTextReveal>
-            </div>
-
-            <AnimatedFadeUp delay={0.08} duration={0.4}>
-              <Badge variant="secondary" className="rounded-full">
-                {unreadCount} New
-              </Badge>
-            </AnimatedFadeUp>
-          </div>
-        </AnimatedSlideIn>
 
         <AnimatedSlideIn direction="right" duration={0.5} delay={0.06}>
           <div className="flex items-center justify-between">
@@ -85,7 +59,7 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
                     prev.map((item) => ({ ...item, unread: false }))
                   )
                 }
-                className="rounded-xl cursor-pointer"
+                className="rounded-lg cursor-pointer"
               >
                 <CheckCheck className="mr-2 h-4 w-4" />
                 Mark all
@@ -96,7 +70,7 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
 
         {activeNotification ? (
           <AnimatedSlideIn direction="right" duration={0.45} delay={0.08}>
-            <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4">
+            <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
               <p className="text-sm font-medium">{activeNotification.title}</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {activeNotification.text}
@@ -128,11 +102,11 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
                         setActiveId(item.id);
                         markAsRead(item.id);
                       }}
-                      className="w-full rounded-2xl cursor-pointer border border-border/60 bg-background/60 p-4 text-left transition-colors hover:bg-accent/40"
+                      className="w-full rounded-xl cursor-pointer border border-border/60 bg-background/60 p-4 text-left transition-colors hover:bg-accent/40"
                     >
                       <div className="flex gap-3">
                         <AnimatedFadeUp delay={0.02} duration={0.35}>
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                             <Icon className="h-4.5 w-4.5" />
                           </div>
                         </AnimatedFadeUp>

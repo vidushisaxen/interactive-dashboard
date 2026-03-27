@@ -24,7 +24,7 @@ const RadialTooltip = ({ active, payload }) => {
   if (!item) return null;
 
   return (
-    <div className="rounded-xl border border-border/60 bg-popover/95 px-3 py-2 text-popover-foreground shadow-md backdrop-blur">
+    <div className="rounded-lg border border-border/60 bg-popover/95 px-3 py-2 text-popover-foreground shadow-md backdrop-blur">
       <div
         className="text-xs font-semibold"
         style={{ color: item.fill }}
@@ -68,7 +68,7 @@ const RadialChartLabel = () => {
             source: item.name,
             visitors: item.visitors,
           }))}
-          className="rounded-xl"
+          className="rounded-lg"
         />
       }
     >
@@ -91,7 +91,7 @@ const RadialChartLabel = () => {
         </div>
       </div>
 
-      <div ref={ref} className="rounded-2xl border border-border/60 bg-background/40 p-4">
+      <div ref={ref} className="rounded-xl border border-border/60 bg-background/40 p-4">
         <div className="relative flex justify-center">
           <RadialBarChart
             key={`radial-chart-${animationKey}`}
@@ -162,7 +162,7 @@ const RadialChartLabel = () => {
               onFocus={() => setHovered(i)}
               onBlur={() => setHovered(null)}
               className={cn(
-                "flex w-full items-center cursor-pointer justify-between rounded-xl border px-3 py-2 text-left transition-colors",
+                "flex w-full items-center cursor-pointer justify-between rounded-lg border px-3 py-2 text-left transition-colors",
                 active
                   ? "border-primary/20 bg-primary/10"
                   : "border-transparent hover:bg-accent/40"
@@ -170,7 +170,7 @@ const RadialChartLabel = () => {
             >
               <div className="flex items-center gap-3">
                 <span
-                  className="inline-block h-2.5 w-2.5 rounded-sm"
+                  className="inline-block h-2.5 w-2.5 rounded"
                   style={{ backgroundColor: item.fill }}
                 />
                 <span className="text-sm text-muted-foreground">

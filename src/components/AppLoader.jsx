@@ -16,7 +16,7 @@ const AppLoader = ({ reducedMotion = false }) => {
       aria-hidden="true"
     >
       <motion.div
-        className="w-full max-w-xs rounded-3xl"
+        className="w-full max-w-xs rounded-2xl"
         initial={{ opacity: 0, y: 16, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -10, scale: 0.98 }}
@@ -24,7 +24,7 @@ const AppLoader = ({ reducedMotion = false }) => {
       >
         <div className="mb-5 flex items-center justify-center gap-3">
           <motion.div
-            className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm"
+            className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm"
             initial={{ scale: 0.92, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.36, ease: loaderEase }}
