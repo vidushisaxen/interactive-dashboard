@@ -4,23 +4,24 @@ import { Cell, Pie, PieChart } from "recharts";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PIE_DATA } from "./data";
+import ExportCsvButton from "./ExportCsvButton";
+import { PIE_DATA } from "./dashboard-data";
 import ActiveShape from "./ActiveShape";
 import { ChartCard } from "./ChartCard";
 import { useChartEntrance } from "@/hooks/use-chart-entrance";
 
 const PIE_SCALE = [
-  "var(--primary)",
-  "hsl(24 100% 56%)",
-  "hsl(28 100% 62%)",
-  "hsl(32 100% 68%)",
-  "hsl(36 100% 74%)",
-  "hsl(40 100% 80%)",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+  "var(--chart-6)",
 ];
 
 const PieChartStacked = () => {
   const [active, setActive] = useState(0);
-  const { ref, shouldAnimate, animationKey } = useChartEntrance();
+  const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
 
   const pieData = useMemo(
     () =>
@@ -46,9 +47,18 @@ const PieChartStacked = () => {
   return (
     <ChartCard
       title="Allocation Breakdown"
-      subtitle="January – June 2024"
-      footer="Trending up by 5.2% this month"
-      footerSub="Showing total distribution for the last 6 months"
+      description="Showing total distribution for the last 6 months"
+      action={
+        <ExportCsvButton
+          fileName="quantro_pie_chart"
+          rows={pieData.map((item) => ({
+            name: item.name,
+            value: item.value,
+            fill: item.fill,
+          }))}
+          className="rounded-xl"
+        />
+      }
     >
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
@@ -84,7 +94,7 @@ const PieChartStacked = () => {
               strokeWidth={2}
               stroke="var(--border)"
               isAnimationActive={shouldAnimate}
-              animationBegin={0}
+              animationBegin={animationDelay}
               animationDuration={700}
             >
               {outer.map((entry, i) => (
@@ -109,7 +119,7 @@ const PieChartStacked = () => {
               strokeWidth={2}
               stroke="var(--background)"
               isAnimationActive={shouldAnimate}
-              animationBegin={140}
+              animationBegin={animationDelay + 140}
               animationDuration={700}
             >
               {pieData.map((entry, i) => (
@@ -132,9 +142,9 @@ const PieChartStacked = () => {
               size="sm"
               onClick={() => setActive(i)}
               className={cn(
-                "h-8 rounded-full px-3 text-[11px]",
+                "h-8 cursor-pointer rounded-full px-3 text-[11px]",
                 isActive &&
-                  "border border-primary/20 cursor-pointer bg-primary/10 text-primary-foreground hover:bg-primary/80"
+                  "border border-primary/20 bg-primary text-primary-foreground hover:bg-primary/90"
               )}
             >
               <span

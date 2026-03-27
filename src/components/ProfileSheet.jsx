@@ -4,11 +4,6 @@ import {
   CheckCircle2,
   CircleHelp,
   Crown,
-  LogOut,
-  Settings,
-  ShieldCheck,
-  UserRound,
-  Wallet,
 } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -25,25 +20,12 @@ import {
   AnimatedTextReveal,
   AnimatedFadeUp,
 } from "@/lib/animations";
-
-const actions = [
-  { id: "profile", label: "Profile", icon: UserRound },
-  { id: "wallet", label: "Connected Accounts", icon: Wallet },
-  { id: "security", label: "Security", icon: ShieldCheck },
-];
-
-const actionDetails = {
-  profile: "Profile details are ready to edit.",
-  wallet: "Two connected accounts are synced to this workspace.",
-  security: "2FA and security checks are currently active.",
-};
+import { PROFILE_ACTION_DETAILS, PROFILE_ACTIONS } from "./dashboard-data";
 
 const ProfileSheet = ({
   open,
   onOpenChange,
   onNav,
-  onOpenSettings,
-  onOpenLogout,
 }) => {
   const [openHelp, setOpenHelp] = useState(false);
   const [selectedAction, setSelectedAction] = useState("profile");
@@ -103,7 +85,7 @@ const ProfileSheet = ({
                         delay={0.05}
                       >
                         <p className="mt-1 text-sm text-muted-foreground">
-                          james@traderly.finance
+                          james@quantro.finance
                         </p>
                       </AnimatedTextReveal>
 
@@ -153,17 +135,17 @@ const ProfileSheet = ({
 
                   <div>
                     <p className="text-sm font-medium">
-                      {actions.find((item) => item.id === selectedAction)?.label}
+                      {PROFILE_ACTIONS.find((item) => item.id === selectedAction)?.label}
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {actionDetails[selectedAction]}
+                      {PROFILE_ACTION_DETAILS[selectedAction]}
                     </p>
                   </div>
                 </div>
               </AnimatedSlideIn>
 
               <div className="space-y-3">
-                {actions.map((item, index) => {
+                {PROFILE_ACTIONS.map((item, index) => {
                   const Icon = item.icon;
 
                   return (
@@ -198,26 +180,6 @@ const ProfileSheet = ({
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => {
-                      onOpenChange(false);
-                      onOpenSettings?.();
-                    }}
-                    className="h-12 w-full justify-start cursor-pointer rounded-2xl"
-                  >
-                    <AnimatedFadeUp delay={0.02} duration={0.3}>
-                      <Settings className="mr-3 h-4 w-4" />
-                    </AnimatedFadeUp>
-
-                    <AnimatedTextReveal y={8} blur="3px" duration={0.3}>
-                      <span>Settings</span>
-                    </AnimatedTextReveal>
-                  </Button>
-                </AnimatedSlideIn>
-
-                <AnimatedSlideIn direction="right" duration={0.45} delay={0.33}>
-                  <Button
-                    type="button"
-                    variant="outline"
                     onClick={() => setOpenHelp(true)}
                     className="h-12 w-full justify-start cursor-pointer rounded-2xl"
                   >
@@ -237,23 +199,9 @@ const ProfileSheet = ({
               </AnimatedSlideIn>
 
               <AnimatedSlideIn direction="up" duration={0.45} delay={0.42}>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => {
-                    onOpenChange(false);
-                    onOpenLogout?.();
-                  }}
-                  className="h-12 w-full justify-start cursor-pointer rounded-2xl"
-                >
-                  <AnimatedFadeUp delay={0.02} duration={0.3}>
-                    <LogOut className="mr-3 h-4 w-4" />
-                  </AnimatedFadeUp>
-
-                  <AnimatedTextReveal y={8} blur="3px" duration={0.3}>
-                    <span>Sign out</span>
-                  </AnimatedTextReveal>
-                </Button>
+                <p className="text-xs text-muted-foreground">
+                  Settings and sign out are available from the sidebar to keep account actions in one place.
+                </p>
               </AnimatedSlideIn>
             </motion.div>
           )}

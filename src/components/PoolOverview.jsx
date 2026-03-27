@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import ExportCsvButton from "./ExportCsvButton";
 import {
   Card,
   CardContent,
@@ -12,16 +13,9 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import MiniLineChart from "./MiniLineChart";
-import { CHART_RAW } from "./data";
+import { CHART_RAW, POOL_STAT_META, sliceChartDataByRange } from "./dashboard-data";
 import { AnimatedFadeUp, AnimatedTextReveal } from "@/lib/animations";
 import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
-
-const statMeta = {
-  Liquidity: { value: "24,828", sub: "Liquidity", change: "▲ 4.86%" },
-  Volume: { value: "25,010", sub: "Volume", change: "▲ 3.21%" },
-  ETH: { value: "5.84", sub: "ETH", change: "▲ 1.18%" },
-  GEH: { value: "0.172", sub: "GEH", change: "▼ 0.84%" },
-};
 
 function PoolOverviewSkeleton() {
   return (
@@ -32,11 +26,11 @@ function PoolOverviewSkeleton() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <Skeleton className="h-[280px] w-full rounded-[28px]" />
-        <Skeleton className="h-[280px] w-full rounded-[28px]" />
+        <Skeleton className="h-72 w-full rounded-3xl" />
+        <Skeleton className="h-72 w-full rounded-3xl" />
       </div>
 
-      <Skeleton className="h-[460px] w-full rounded-[28px]" />
+      <Skeleton className="h-96 w-full rounded-3xl" />
     </section>
   );
 }
@@ -47,11 +41,11 @@ const PoolOverview = () => {
   const loading = useScreenSkeleton();
 
   const chartData = useMemo(
-    () => CHART_RAW[activeChart] || [],
-    [activeChart]
+    () => sliceChartDataByRange(CHART_RAW[activeChart] || [], activeTime),
+    [activeChart, activeTime]
   );
 
-  const currentStat = statMeta[activeChart];
+  const currentStat = POOL_STAT_META[activeChart];
 
   if (loading) {
     return <PoolOverviewSkeleton />;
@@ -165,7 +159,7 @@ const PoolOverview = () => {
                         className={`rounded-xl border-border/60 cursor-pointer transition-all duration-300 ease-in ${
                           isActive
                             ? "border-primary/40 bg-primary text-primary-foreground "
-                            : "hover:bg-muted"
+                            : "hover:bg-primary hover:text-primary-foreground"
                         }`}
                       >
                         {t}
@@ -185,10 +179,10 @@ const PoolOverview = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => setActiveTime(t)}
-                        className={`h-8 rounded-lg px-3 text-[11px] cursor-pointer trsnition-all duration-300 ease-in ${
+                        className={`h-8 cursor-pointer rounded-lg px-3 text-xs transition-all duration-300 ease-in ${
                           isActive
                             ? "bg-primary text-primary-foreground"
-                            : "hover:bg-muted"
+                            : "hover:bg-primary hover:text-primary-foreground"
                         }`}
                       >
                         {t}
@@ -222,6 +216,14 @@ const PoolOverview = () => {
                   </span>
                 </div>
               </AnimatedTextReveal>
+            </div>
+
+            <div className="flex justify-end">
+              <ExportCsvButton
+                fileName={`quantro_pool_overview_${activeChart.toLowerCase()}_${activeTime.toLowerCase()}`}
+                rows={chartData}
+                className="rounded-xl"
+              />
             </div>
 
             <Separator />

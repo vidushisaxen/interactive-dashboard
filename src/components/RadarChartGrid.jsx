@@ -9,13 +9,14 @@ import {
 } from "recharts";
 
 import { Badge } from "@/components/ui/badge";
-import { RADAR_DATA } from "./data";
+import ExportCsvButton from "./ExportCsvButton";
+import { RADAR_DATA } from "./dashboard-data";
 import CTip from "./CTip";
 import { ChartCard } from "./ChartCard";
 import { useChartEntrance } from "@/hooks/use-chart-entrance";
 
 const RadarChartGrid = () => {
-  const { ref, shouldAnimate, animationKey } = useChartEntrance();
+  const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
   const average =
     Math.round(
       RADAR_DATA.reduce((sum, item) => sum + (item.desktop || 0), 0) /
@@ -25,9 +26,14 @@ const RadarChartGrid = () => {
   return (
     <ChartCard
       title="Radar Performance"
-      subtitle="Showing total visitors for the last 6 months"
-      footer="Trending up by 5.2% this month"
-      footerSub="January – June 2024"
+      description="Showing total visitors for the last 6 months"
+      action={
+        <ExportCsvButton
+          fileName="quantro_radar_chart"
+          rows={RADAR_DATA}
+          className="rounded-xl"
+        />
+      }
     >
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
@@ -59,7 +65,7 @@ const RadarChartGrid = () => {
           >
             <PolarGrid
               gridType="circle"
-              stroke="var(--border) / 0.7"
+              stroke="var(--chart-grid)"
             />
 
             <PolarAngleAxis
@@ -70,7 +76,7 @@ const RadarChartGrid = () => {
             <PolarRadiusAxis
               angle={90}
               domain={[0, 300]}
-              tick={{ fill: "var(--muted-foreground) / 0.7", fontSize: 9 }}
+              tick={{ fill: "var(--chart-series-muted)", fontSize: 9 }}
               axisLine={false}
               tickLine={false}
             />
@@ -78,17 +84,17 @@ const RadarChartGrid = () => {
             <Radar
               name="Visitors"
               dataKey="desktop"
-              stroke="var(--primary)"
-              fill="var(--primary)"
+              stroke="var(--chart-1)"
+              fill="var(--chart-1)"
               fillOpacity={0.16}
               strokeWidth={2.5}
-              dot={{ fill: "var(--primary)", r: 3 }}
+              dot={{ fill: "var(--chart-1)", r: 3 }}
               activeDot={{
-                fill: "var(--primary)",
+                fill: "var(--chart-1)",
                 r: 5,
               }}
               isAnimationActive={shouldAnimate}
-              animationBegin={0}
+              animationBegin={animationDelay}
               animationDuration={800}
             />
 

@@ -3,17 +3,18 @@ import { useMemo, useState } from "react";
 import { Cell, RadialBar, RadialBarChart, Tooltip } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { RADIAL_DATA } from "./data";
+import { RADIAL_DATA } from "./dashboard-data";
 import { ChartCard } from "./ChartCard";
 import { useChartEntrance } from "@/hooks/use-chart-entrance";
+import ExportCsvButton from "./ExportCsvButton";
 
 const RADIAL_SCALE = [
-  "hsl(var(--primary))",
-  "hsl(24 100% 56%)",
-  "hsl(28 100% 62%)",
-  "hsl(32 100% 68%)",
-  "hsl(36 100% 74%)",
-  "hsl(40 100% 80%)",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+  "var(--chart-6)",
 ];
 
 const RadialTooltip = ({ active, payload }) => {
@@ -42,7 +43,7 @@ const RadialTooltip = ({ active, payload }) => {
 
 const RadialChartLabel = () => {
   const [hovered, setHovered] = useState(null);
-  const { ref, shouldAnimate, animationKey } = useChartEntrance();
+  const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
 
   const radialData = useMemo(
     () =>
@@ -59,9 +60,17 @@ const RadialChartLabel = () => {
   return (
     <ChartCard
       title="Traffic Breakdown"
-      subtitle="January – June 2024"
-      footer="Trending up by 5.2% this month"
-      footerSub="Showing total visitors for the last 6 months"
+      description="Showing total visitors for the last 6 months"
+      action={
+        <ExportCsvButton
+          fileName="quantro_radial_chart"
+          rows={radialData.map((item) => ({
+            source: item.name,
+            visitors: item.visitors,
+          }))}
+          className="rounded-xl"
+        />
+      }
     >
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
@@ -102,10 +111,10 @@ const RadialChartLabel = () => {
               minAngle={15}
               dataKey="visitors"
               cornerRadius={8}
-              background={{ fill: "var(--muted) / 0.45" }}
+              background={{ fill: "var(--chart-ring-bg)" }}
               onMouseLeave={() => setHovered(null)}
               isAnimationActive={shouldAnimate}
-              animationBegin={0}
+              animationBegin={animationDelay}
               animationDuration={850}
             >
               {radialData.map((item, i) => {
@@ -133,7 +142,7 @@ const RadialChartLabel = () => {
                 ? activeItem.visitors.toLocaleString()
                 : total.toLocaleString()}
             </div>
-            <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+            <div className="text-xs uppercase tracking-widest text-muted-foreground">
               {activeItem ? activeItem.name : "Visitors"}
             </div>
           </div>

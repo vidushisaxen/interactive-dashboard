@@ -18,7 +18,7 @@ const MiniLineChart = ({
   xKey = "label",
   height = "100%",
 }) => {
-  const { ref, shouldAnimate, animationKey } = useChartEntrance();
+  const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
 
   if (!data?.length) {
     return (
@@ -53,14 +53,14 @@ const MiniLineChart = ({
         >
           <defs>
             <linearGradient id="mini-line-fill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ff5f00" stopOpacity={0.22} />
-              <stop offset="100%" stopColor="#ff5f00" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="var(--chart-area-start)" />
+              <stop offset="100%" stopColor="var(--chart-area-end)" />
             </linearGradient>
           </defs>
 
           <CartesianGrid
             vertical={false}
-            stroke="var(--border) / 0.7"
+            stroke="var(--chart-grid)"
             strokeDasharray="3 3"
           />
 
@@ -81,7 +81,7 @@ const MiniLineChart = ({
 
           <Tooltip
             content={<CTip />}
-            cursor={{ stroke: "var(--primary)", strokeWidth: 1 }}
+            cursor={{ stroke: "var(--chart-1)", strokeWidth: 1 }}
           />
 
           <Area
@@ -90,24 +90,24 @@ const MiniLineChart = ({
             stroke="none"
             fill="url(#mini-line-fill)"
             isAnimationActive={shouldAnimate}
-            animationBegin={0}
+            animationBegin={animationDelay}
             animationDuration={700}
           />
 
           <Line
             type="linear"
             dataKey={dataKey}
-            stroke="var(--primary)"
+            stroke="var(--chart-1)"
             strokeWidth={3}
             dot={false}
             activeDot={{
               r: 5,
-              fill: "var(--primary)",
+              fill: "var(--chart-1)",
               stroke: "var(--background)",
               strokeWidth: 2,
             }}
             isAnimationActive={shouldAnimate}
-            animationBegin={120}
+            animationBegin={animationDelay + 120}
             animationDuration={700}
           />
         </LineChart>

@@ -2,13 +2,7 @@
 
 import { useState } from "react";
 import {
-  Bell,
   Check,
-  CreditCard,
-  Globe,
-  Lock,
-  MoonStar,
-  ShieldCheck,
   X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -21,29 +15,12 @@ import {
   AnimatedTextReveal,
   AnimatedFadeUp,
 } from "@/lib/animations";
-
-const settingsGroups = [
-  {
-    title: "Preferences",
-    items: [
-      { icon: MoonStar, label: "Appearance", key: "appearance", kind: "toggle" },
-      { icon: Globe, label: "Language", key: "language", kind: "choice" },
-      { icon: Bell, label: "Notifications", key: "notifications", kind: "toggle" },
-    ],
-  },
-  {
-    title: "Security",
-    items: [
-      { icon: Lock, label: "Password", key: "password", kind: "choice" },
-      { icon: ShieldCheck, label: "2FA", key: "twoFactor", kind: "toggle" },
-      { icon: CreditCard, label: "Payment Methods", key: "payments", kind: "choice" },
-    ],
-  },
-];
+import { useTheme } from "./ThemeProvider";
+import { SETTINGS_CHOICE_OPTIONS, SETTINGS_GROUPS } from "./dashboard-data";
 
 const SettingsSheet = ({ open, onOpenChange }) => {
+  const { theme, toggleTheme } = useTheme();
   const [settings, setSettings] = useState({
-    appearance: false,
     language: "English",
     notifications: true,
     password: "Updated 14 days ago",
@@ -55,12 +32,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
   );
 
   const cycleSetting = (key) => {
-    const options = {
-      language: ["English", "Spanish", "French"],
-      password: ["Updated 14 days ago", "Reset available", "Needs review"],
-      payments: ["3 linked", "4 linked", "1 primary card"],
-    };
-    const values = options[key];
+    const values = SETTINGS_CHOICE_OPTIONS[key];
     if (!values) return;
 
     setSettings((prev) => {
@@ -73,6 +45,21 @@ const SettingsSheet = ({ open, onOpenChange }) => {
       };
     });
   };
+
+  const handleToggle = (key, checked) => {
+    if (key === "appearance") {
+      toggleTheme();
+      return;
+    }
+
+    setSettings((prev) => ({
+      ...prev,
+      [key]: Boolean(checked),
+    }));
+  };
+
+  const getSettingValue = (key) =>
+    key === "appearance" ? theme === "dark" : settings[key];
 
   return (
     <SidePanel
@@ -119,7 +106,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
           </div>
         </AnimatedSlideIn>
 
-        {settingsGroups.map((group, index) => (
+        {SETTINGS_GROUPS.map((group, index) => (
           <AnimatedSlideIn
             key={group.title}
             direction="right"
@@ -164,12 +151,10 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                         onClick={() => {
                           if (item.kind === "choice") {
                             cycleSetting(item.key);
-                          } else {
-                            setSettings((prev) => ({
-                              ...prev,
-                              [item.key]: !prev[item.key],
-                            }));
+                            return;
                           }
+
+                          handleToggle(item.key, !getSettingValue(item.key));
                         }}
                         className="flex w-full items-center cursor-pointer justify-between rounded-2xl border border-border/60 bg-background/60 px-4 py-3 text-left transition-colors hover:bg-accent/40"
                       >
@@ -199,7 +184,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                             >
                               <div className="text-xs text-muted-foreground">
                                 {item.kind === "toggle"
-                                  ? settings[item.key]
+                                  ? getSettingValue(item.key)
                                     ? "Enabled"
                                     : "Disabled"
                                   : settings[item.key]}
@@ -211,12 +196,9 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                         <AnimatedFadeUp delay={0.05} duration={0.35}>
                           {item.kind === "toggle" ? (
                             <Switch
-                              checked={settings[item.key]}
+                              checked={getSettingValue(item.key)}
                               onCheckedChange={(checked) =>
-                                setSettings((prev) => ({
-                                  ...prev,
-                                  [item.key]: checked,
-                                }))
+                                handleToggle(item.key, checked)
                               }
                               onClick={(event) => event.stopPropagation()}
                             />

@@ -23,8 +23,9 @@ const BalanceHero = ({
 }) => {
   return (
     <Card className="border-border/60 shadow-sm">
-      <CardContent className="flex flex-col gap-6 p-6 lg:flex-row lg:items-start lg:justify-between lg:p-7">
-        <div className="min-w-0">
+      <CardContent className="flex flex-col gap-8 p-6 lg:p-7">
+        <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
+          <div className="min-w-0 flex-1">
           <Badge variant="secondary" className="mb-3 rounded-full">
             Available Balance
           </Badge>
@@ -60,27 +61,28 @@ const BalanceHero = ({
               {hidden ? "Hidden" : lastTransaction}
             </span>
           </p>
-        </div>
+          </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <Button type="button" variant="outline" onClick={onMoveMoney} className="h-11 cursor-pointer rounded-2xl">
-            <MoveRight className="mr-2 h-4 w-4" />
-            Move Money
-          </Button>
+          <div className="flex flex-wrap items-center gap-2 xl:max-w-[34rem] xl:justify-end">
+            <Button type="button" variant="outline" onClick={onMoveMoney} className="h-11 cursor-pointer rounded-2xl">
+              <MoveRight className="mr-2 h-4 w-4" />
+              Move Money
+            </Button>
 
-          <Button type="button" variant="outline" onClick={onRequest} className="h-11 cursor-pointer rounded-2xl">
-            <ReceiptText className="mr-2 h-4 w-4" />
-            Request
-          </Button>
+            <Button type="button" variant="outline" onClick={onRequest} className="h-11 cursor-pointer rounded-2xl">
+              <ReceiptText className="mr-2 h-4 w-4" />
+              Request
+            </Button>
 
-          <Button type="button" onClick={onTransfer} className="h-11 cursor-pointer rounded-2xl">
-            Transfer
-            <SendHorizontal className="ml-2 h-4 w-4" />
-          </Button>
+            <Button type="button" onClick={onTransfer} className="h-11 cursor-pointer rounded-2xl">
+              Transfer
+              <SendHorizontal className="ml-2 h-4 w-4" />
+            </Button>
 
-          <Button type="button" variant="outline" size="icon" onClick={onMoveMoney} className="h-11 w-11 cursor-pointer rounded-2xl">
-            <Plus className="h-4 w-4" />
-          </Button>
+            <Button type="button" variant="outline" size="icon" onClick={onMoveMoney} className="h-11 w-11 cursor-pointer rounded-full">
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

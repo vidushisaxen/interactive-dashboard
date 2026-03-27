@@ -2,11 +2,7 @@
 
 import { useMemo, useState } from "react";
 import {
-  Bell,
   CheckCheck,
-  CreditCard,
-  TrendingUp,
-  Wallet,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,45 +16,11 @@ import {
   AnimatedTextReveal,
   AnimatedFadeUp,
 } from "@/lib/animations";
-
-const items = [
-  {
-    id: 1,
-    icon: Wallet,
-    title: "Salary credited",
-    text: "$3,850.00 received into your main balance",
-    time: "2 mins ago",
-    unread: true,
-  },
-  {
-    id: 2,
-    icon: CreditCard,
-    title: "Card charged",
-    text: "Apple subscription payment of $12.99 completed",
-    time: "20 mins ago",
-    unread: true,
-  },
-  {
-    id: 3,
-    icon: TrendingUp,
-    title: "Savings goal updated",
-    text: "Your emergency fund is now 82% complete",
-    time: "1 hour ago",
-    unread: false,
-  },
-  {
-    id: 4,
-    icon: Bell,
-    title: "Monthly report ready",
-    text: "Your spending breakdown for this month is available",
-    time: "3 hours ago",
-    unread: false,
-  },
-];
+import { NOTIFICATION_ITEMS } from "./dashboard-data";
 
 const NotificationsSheet = ({ open, onOpenChange }) => {
-  const [notifications, setNotifications] = useState(items);
-  const [activeId, setActiveId] = useState(items[0]?.id ?? null);
+  const [notifications, setNotifications] = useState(NOTIFICATION_ITEMS);
+  const [activeId, setActiveId] = useState(NOTIFICATION_ITEMS[0]?.id ?? null);
   const unreadCount = notifications.filter((item) => item.unread).length;
   const activeNotification = useMemo(
     () => notifications.find((item) => item.id === activeId) ?? notifications[0],
@@ -109,7 +71,7 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
         <AnimatedSlideIn direction="right" duration={0.5} delay={0.06}>
           <div className="flex items-center justify-between">
             <AnimatedTextReveal y={10} blur="4px" duration={0.35}>
-              <p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
                 Recent updates
               </p>
             </AnimatedTextReveal>
@@ -201,7 +163,7 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
                               duration={0.35}
                               delay={0.03}
                             >
-                              <span className="shrink-0 text-[11px] text-muted-foreground">
+                              <span className="shrink-0 text-xs text-muted-foreground">
                                 {item.time}
                               </span>
                             </AnimatedTextReveal>

@@ -1,54 +1,16 @@
-import {
-  ArrowDownLeft,
-  ArrowUpRight,
-  ChevronRight,
-  Filter,
-} from "lucide-react";
+import { ChevronRight, Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-
-const defaultTransactions = [
-  {
-    id: 1,
-    title: "Salary Deposit",
-    subtitle: "Today • Bank Transfer",
-    amount: "+$3,850.00",
-    positive: true,
-    icon: ArrowDownLeft,
-  },
-  {
-    id: 2,
-    title: "Apple Subscription",
-    subtitle: "Today • Recurring Payment",
-    amount: "-$12.99",
-    positive: false,
-    icon: ArrowUpRight,
-  },
-  {
-    id: 3,
-    title: "Transfer to Savings",
-    subtitle: "Yesterday • Internal Move",
-    amount: "-$540.00",
-    positive: false,
-    icon: ArrowUpRight,
-  },
-  {
-    id: 4,
-    title: "Freelance Payment",
-    subtitle: "Yesterday • Incoming",
-    amount: "+$920.00",
-    positive: true,
-    icon: ArrowDownLeft,
-  },
-];
+import ExportCsvButton from "./ExportCsvButton";
+import { TRANSACTION_CARD_ITEMS } from "./dashboard-data";
 
 const TransactionsCard = ({
   title = "Recent Transactions",
   subtitle = "Your latest activity and movements",
-  transactions = defaultTransactions,
+  transactions = TRANSACTION_CARD_ITEMS,
   onFilter,
   onSelectTransaction,
   onViewAll,
@@ -69,6 +31,17 @@ const TransactionsCard = ({
           </div>
 
           <div className="flex items-center gap-2">
+            <ExportCsvButton
+              fileName="quantro_transactions"
+              rows={transactions.map((item) => ({
+                title: item.title,
+                subtitle: item.subtitle,
+                amount: item.amount,
+                direction: item.positive ? "credit" : "debit",
+              }))}
+              className="rounded-xl"
+            />
+
             <Button
               type="button"
               variant="outline"
@@ -110,7 +83,7 @@ const TransactionsCard = ({
                   className={cn(
                     "flex h-11 w-11 items-center justify-center rounded-2xl",
                     positive
-                      ? "bg-emerald-500/10 text-emerald-500"
+                      ? "bg-[var(--status-success-soft)] text-[var(--status-success)]"
                       : "bg-primary/10 text-primary"
                   )}
                 >
@@ -128,7 +101,7 @@ const TransactionsCard = ({
                   <div
                     className={cn(
                       "text-base font-semibold",
-                      positive ? "text-emerald-500" : "text-foreground"
+                      positive ? "text-[var(--status-success)]" : "text-foreground"
                     )}
                   >
                     {item.amount}

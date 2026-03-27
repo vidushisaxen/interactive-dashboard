@@ -18,8 +18,10 @@ export default function LiquidityBarChart({
   dataKey = "value",
   xKey = "label",
 }) {
-  const { ref, shouldAnimate, animationKey } = useChartEntrance();
+  const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
   const minHeight = typeof height === "number" ? height : 170;
+  const barSize =
+    data.length >= 18 ? 40 : data.length >= 14 ? 45 : data.length >= 10 ? 50 : 60;
 
   return (
     <div ref={ref} className="min-w-0 w-full" style={{ height }}>
@@ -32,12 +34,13 @@ export default function LiquidityBarChart({
         <BarChart
           key={`liquidity-bar-${animationKey}`}
           data={data}
-          margin={{ top: 8, right: 4, left: 0, bottom: 0 }}
-          barCategoryGap="10%"
+          margin={{ top: 8, right: 0, left: -8, bottom: 0 }}
+          barCategoryGap="2%"
+          width={40}
         >
           <CartesianGrid
             vertical={false}
-            stroke="var(--border) / 0.65"
+            stroke="var(--chart-grid-strong)"
             strokeDasharray="3 3"
           />
 
@@ -46,22 +49,23 @@ export default function LiquidityBarChart({
             tickLine={false}
             axisLine={false}
             tickMargin={8}
+            minTickGap={10}
             tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
           />
 
           <YAxis hide />
 
           <Tooltip
-            cursor={{ fill: "hsl(var(--muted) / 0.7)" }}
+            cursor={{ fill: "var(--chart-cursor)" }}
             content={<CTip />}
           />
 
           <Bar
             dataKey={dataKey}
             radius={[12, 12, 0, 0]}
-            barSize={44}
+            barSize={barSize}
             isAnimationActive={shouldAnimate}
-            animationBegin={0}
+            animationBegin={animationDelay}
             animationDuration={750}
           >
             {data.map((entry, index) => (
@@ -69,8 +73,8 @@ export default function LiquidityBarChart({
                 key={`cell-${index}`}
                 fill={
                   index === data.length - 1
-                    ? "var(--primary)"
-                    : "var(--primary)"
+                    ? "var(--chart-1)"
+                    : "var(--chart-1)"
                 }
               />
             ))}

@@ -10,6 +10,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import ExportCsvButton from "./ExportCsvButton";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
@@ -18,44 +19,9 @@ import { Slider } from "@/components/ui/slider";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import LiquidityBarChart from "./LiquidityBarChart";
-import { BAR_RAW } from "./data";
+import { BAR_RAW, DEPOSIT_STEP_CONTENT } from "./dashboard-data";
 import { AnimatedFadeUp } from "@/lib/animations";
 import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
-
-const STEP_CONTENT = [
-  {
-    step: 1,
-    title: "Initialize deposit",
-    description:
-      "Start by selecting your token amounts and previewing the estimated pool position.",
-    progress: 25,
-    multiplier: 0.4,
-  },
-  {
-    step: 2,
-    title: "Increase contribution",
-    description:
-      "As you move forward, your simulated liquidity allocation grows across the pool.",
-    progress: 50,
-    multiplier: 0.65,
-  },
-  {
-    step: 3,
-    title: "Optimize position",
-    description:
-      "Your pool share becomes stronger and the projected bar distribution increases.",
-    progress: 75,
-    multiplier: 0.85,
-  },
-  {
-    step: 4,
-    title: "Ready to confirm",
-    description:
-      "Final review step before submitting the liquidity deposit into the pool.",
-    progress: 100,
-    multiplier: 1,
-  },
-];
 
 function DepositSkeleton() {
   return (
@@ -65,15 +31,15 @@ function DepositSkeleton() {
         <Skeleton className="h-4 w-96 max-w-full" />
       </div>
 
-      <div className="grid grid-cols-1 items-start gap-6 2xl:grid-cols-[22rem_minmax(0,1fr)]">
-        <Skeleton className="h-[420px] w-full rounded-[28px]" />
+      <div className="grid grid-cols-1 items-start gap-6 2xl:grid-cols-5">
+        <Skeleton className="h-96 w-full rounded-3xl" />
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-            <Skeleton className="h-[280px] w-full rounded-[28px]" />
-            <Skeleton className="h-[280px] w-full rounded-[28px]" />
-            <Skeleton className="h-[280px] w-full rounded-[28px]" />
+            <Skeleton className="h-72 w-full rounded-3xl" />
+            <Skeleton className="h-72 w-full rounded-3xl" />
+            <Skeleton className="h-72 w-full rounded-3xl" />
           </div>
-          <Skeleton className="h-[420px] w-full rounded-[28px]" />
+          <Skeleton className="h-96 w-full rounded-3xl" />
         </div>
       </div>
     </section>
@@ -89,7 +55,7 @@ const DepositScreen = () => {
   const loading = useScreenSkeleton();
 
   const isDisabled = ethAmt === "0.0" && bnbAmt === "0.0";
-  const currentStep = STEP_CONTENT[stepValue[0] - 1];
+  const currentStep = DEPOSIT_STEP_CONTENT[stepValue[0] - 1];
 
   const chartData = useMemo(() => {
     return BAR_RAW.map((item) => ({
@@ -128,9 +94,9 @@ const DepositScreen = () => {
         </div>
       </AnimatedFadeUp>
 
-      <div className="grid grid-cols-1 items-start gap-6 2xl:grid-cols-[22rem_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 items-start gap-6 2xl:grid-cols-5">
         {/* LEFT PANEL */}
-        <div className="space-y-6">
+        <div className="space-y-6 2xl:col-span-1">
           <AnimatedFadeUp delay={0.08}>
             <Card>
               <CardHeader>
@@ -210,7 +176,7 @@ const DepositScreen = () => {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="flex min-w-0 flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6 2xl:col-span-4">
           {/* TOP 3 CARDS */}
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
             <AnimatedFadeUp delay={0.1}>
@@ -370,7 +336,7 @@ const DepositScreen = () => {
                 <div className="space-y-5">
                   <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <Badge variant="secondary" className="w-fit">
-                      Step {currentStep.step} / {STEP_CONTENT.length}
+                      Step {currentStep.step} / {DEPOSIT_STEP_CONTENT.length}
                     </Badge>
 
                     <span className="text-xs text-muted-foreground">
@@ -392,18 +358,7 @@ const DepositScreen = () => {
                       max={4}
                       step={1}
                       onValueChange={setStepValue}
-                      className="
-                        w-full
-                        [&_[data-orientation=horizontal]]:h-2
-                        [&_[data-orientation=horizontal]]:bg-white/30
-                        [&_[data-orientation=horizontal]>span]:bg-primary
-                        [&_[role=slider]]:h-5
-                        [&_[role=slider]]:w-5
-                        [&_[role=slider]]:bg-primary
-                        [&_[role=slider]]:border-4
-                        [&_[role=slider]]:border-background
-                        [&_[role=slider]]:shadow-md
-                      "
+                      className="w-full"
                     />
 
                     <div className="grid grid-cols-4 text-xs text-muted-foreground">
@@ -466,6 +421,13 @@ const DepositScreen = () => {
                 </div>
 
                 <div className="rounded-2xl border border-border/60 p-4">
+                  <div className="mb-4 flex justify-end">
+                    <ExportCsvButton
+                      fileName={`quantro_deposit_step_${String(currentStep.step).toLowerCase().replace(/\s+/g, "_")}`}
+                      rows={chartData}
+                      className="rounded-xl"
+                    />
+                  </div>
                   <LiquidityBarChart
                     key={`step-${currentStep.step}`}
                     data={chartData}

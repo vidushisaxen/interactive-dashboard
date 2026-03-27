@@ -1,16 +1,38 @@
-"use client"
+"use client";
+
 import { useMemo, useState } from "react";
+import {
+  ArrowDownLeft,
+  ArrowUpRight,
+  BarChart3,
+  BellRing,
+  BriefcaseBusiness,
+  Landmark,
+  ShieldAlert,
+  SlidersHorizontal,
+  TrendingUp,
+  Wallet,
+} from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import ExportCsvButton from "./ExportCsvButton";
 import BalanceHero from "./BalanceHero";
-import CurrencyCard from "./CurrencyCard";
 import ActivityCard from "./ActivityCard";
-import SavingsCard from "./SavingsCard";
 import TransactionsCard from "./TransactionsCard";
-import PromoCard from "./PromoCard";
 import { AnimatedFadeUp, AnimatedTextReveal } from "@/lib/animations";
 import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
+import {
+  DASHBOARD_ACCOUNT_DATA,
+  DASHBOARD_ALERTS,
+  DASHBOARD_HOLDINGS,
+  DASHBOARD_METRIC_CARDS,
+  DASHBOARD_QUICK_ACCESS_CARDS,
+  DASHBOARD_STOCK_WATCHLIST,
+  DASHBOARD_TRANSACTIONS,
+} from "./dashboard-data";
 
 function DashboardSkeleton() {
   return (
@@ -23,87 +45,147 @@ function DashboardSkeleton() {
         </div>
       </header>
 
-      <Card className="border-border/60 shadow-sm">
-        <CardContent className="flex flex-col gap-6 p-6 lg:flex-row lg:justify-between lg:p-7">
-          <div className="space-y-4">
-            <Skeleton className="h-6 w-36 rounded-full" />
-            <Skeleton className="h-4 w-64 max-w-full" />
-            <Skeleton className="h-14 w-72 max-w-full" />
-            <Skeleton className="h-4 w-96 max-w-full" />
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Skeleton className="h-11 w-32 rounded-2xl" />
-            <Skeleton className="h-11 w-28 rounded-2xl" />
-            <Skeleton className="h-11 w-28 rounded-2xl" />
-            <Skeleton className="h-11 w-11 rounded-2xl" />
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 gap-6 2xl:grid-cols-[1.05fr_1.45fr_1fr]">
-        <div className="space-y-6">
-          <Skeleton className="h-[720px] w-full rounded-[28px]" />
-          <Skeleton className="h-[360px] w-full rounded-[28px]" />
-        </div>
-        <div className="space-y-6">
-          <Skeleton className="h-[430px] w-full rounded-[28px]" />
-          <Skeleton className="h-[430px] w-full rounded-[28px]" />
-        </div>
-        <div className="space-y-6">
-          <Skeleton className="h-[520px] w-full rounded-[28px]" />
-        </div>
+      <Skeleton className="h-56 w-full rounded-3xl" />
+      <Skeleton className="h-32 w-full rounded-3xl" />
+      <Skeleton className="h-32 w-full rounded-3xl" />
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <Skeleton className="h-96 w-full rounded-3xl" />
+        <Skeleton className="h-96 w-full rounded-3xl" />
+        <Skeleton className="h-96 w-full rounded-3xl" />
       </div>
     </section>
   );
 }
 
-const FinanceDashboardPage = ({ onNav }) => {
+function OverviewCard({ title, description, icon: Icon, onOpen }) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="group rounded-3xl border border-border/60 bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary-foreground/16 group-hover:text-primary-foreground">
+          <Icon className="h-5 w-5" />
+        </div>
+        <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary-foreground" />
+      </div>
+      <p className="mt-5 text-base font-semibold tracking-tight">{title}</p>
+      <p className="mt-1 text-sm leading-6 text-muted-foreground transition-colors group-hover:text-primary-foreground/88">
+        {description}
+      </p>
+    </button>
+  );
+}
+
+function SnapshotCard({ title, subtitle, badge, action, children }) {
+  return (
+    <Card className="border-border/60 bg-card shadow-sm">
+      <CardContent className="space-y-5 p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-3">
+            <Badge variant="secondary" className="w-fit rounded-full">
+              {badge}
+            </Badge>
+            <div>
+              <h3 className="text-base font-semibold tracking-tight">{title}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+            </div>
+          </div>
+          {action}
+        </div>
+        {children}
+      </CardContent>
+    </Card>
+  );
+}
+
+const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
   const [balanceHidden, setBalanceHidden] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState({
-    code: "JPY",
-    amount: "16,428.5",
-    flag: "🇯🇵",
-    change: "+2.14%",
-  });
-  const [currencies, setCurrencies] = useState([
-    { id: 1, code: "JPY", amount: "16,428.5", flag: "🇯🇵", change: "+2.14%" },
-    { id: 2, code: "EUR", amount: "0.92", flag: "🇪🇺", change: "+0.64%" },
-    { id: 3, code: "GBP", amount: "0.78", flag: "🇬🇧", change: "+0.42%" },
-    { id: 4, code: "AUD", amount: "1.51", flag: "🇦🇺", change: "+1.08%" },
-  ]);
   const loading = useScreenSkeleton();
+  const normalizedQuery = searchQuery.trim().toLowerCase();
 
-  const currencyTrendData = useMemo(
-    () => [
-      { label: "1", value: 15820 },
-      { label: "5", value: 16010 },
-      { label: "10", value: 15940 },
-      { label: "15", value: 16120 },
-      { label: "20", value: 16210 },
-      { label: "25", value: 16350 },
-      { label: "30", value: 16428.5 },
-      { label: "35", value: 16390 },
-      { label: "40", value: 16510 },
-      { label: "45", value: 16460 },
-      { label: "50", value: 16620 },
-      { label: "55", value: 16540 },
-      { label: "60", value: 16428.5 },
-    ],
-    []
-  );
+  const filteredAccounts = useMemo(() => {
+    if (!normalizedQuery) return DASHBOARD_ACCOUNT_DATA;
+    return DASHBOARD_ACCOUNT_DATA.filter((item) =>
+      [item.name, item.institution, item.balance, item.change]
+        .some((value) => value.toLowerCase().includes(normalizedQuery))
+    );
+  }, [normalizedQuery]);
 
-  const currencyLiquidityData = useMemo(
-    () => [
-      { label: "Mon", value: 12 },
-      { label: "Tue", value: 18 },
-      { label: "Wed", value: 14 },
-      { label: "Thu", value: 24 },
-      { label: "Fri", value: 20 },
-      { label: "Sat", value: 10 },
-      { label: "Sun", value: 16 },
-    ],
-    []
-  );
+  const filteredWatchlist = useMemo(() => {
+    if (!normalizedQuery) return DASHBOARD_STOCK_WATCHLIST;
+    return DASHBOARD_STOCK_WATCHLIST.filter((item) =>
+      [item.ticker, item.company, item.signal, item.move]
+        .some((value) => value.toLowerCase().includes(normalizedQuery))
+    );
+  }, [normalizedQuery]);
+
+  const filteredHoldings = useMemo(() => {
+    if (!normalizedQuery) return DASHBOARD_HOLDINGS;
+    return DASHBOARD_HOLDINGS.filter((item) =>
+      [item.name, item.allocation, item.value, item.detail]
+        .some((value) => value.toLowerCase().includes(normalizedQuery))
+    );
+  }, [normalizedQuery]);
+
+  const filteredAlerts = useMemo(() => {
+    if (!normalizedQuery) return DASHBOARD_ALERTS;
+    return DASHBOARD_ALERTS.filter((item) =>
+      [item.title, item.description, item.severity]
+        .some((value) => value.toLowerCase().includes(normalizedQuery))
+    );
+  }, [normalizedQuery]);
+
+  const filteredTransactions = useMemo(() => {
+    if (!normalizedQuery) return DASHBOARD_TRANSACTIONS;
+    return DASHBOARD_TRANSACTIONS.filter((item) =>
+      [item.title, item.subtitle, item.amount]
+        .some((value) => value.toLowerCase().includes(normalizedQuery))
+    );
+  }, [normalizedQuery]);
+
+  const sectionVisibility = useMemo(() => {
+    if (!normalizedQuery) {
+      return {
+        hero: true,
+        access: true,
+        metrics: true,
+        workflow: true,
+        accounts: true,
+        stocks: true,
+        activity: true,
+        transactions: true,
+        portfolio: true,
+        alerts: true,
+      };
+    }
+
+    const matches = (...values) =>
+      values.some((value) => value.toLowerCase().includes(normalizedQuery));
+
+    return {
+      hero: matches("overview", "net worth", "cash flow", "transfer", "request", "move money"),
+      access: matches("overview", "insights", "stocks", "accounts", "portfolio"),
+      metrics: matches("net worth", "cash flow", "budget", "invested assets"),
+      workflow: matches("data sources", "sync", "alerts engine", "filters", "kpi", "dashboard ui"),
+      accounts: filteredAccounts.length > 0 || matches("accounts", "balances", "activity"),
+      stocks: filteredWatchlist.length > 0 || matches("stocks", "watchlist", "signals", "performance"),
+      activity: matches("insights", "spending", "budget", "trends"),
+      transactions: filteredTransactions.length > 0 || matches("transactions", "recent activity", "cash flow"),
+      portfolio: filteredHoldings.length > 0 || matches("portfolio", "holdings", "allocation"),
+      alerts: filteredAlerts.length > 0 || matches("alerts", "notifications", "unusual activity"),
+    };
+  }, [
+    filteredAccounts.length,
+    filteredAlerts.length,
+    filteredHoldings.length,
+    filteredTransactions.length,
+    filteredWatchlist.length,
+    normalizedQuery,
+  ]);
+
+  const hasVisibleSections = Object.values(sectionVisibility).some(Boolean);
 
   if (loading) {
     return <DashboardSkeleton />;
@@ -114,87 +196,358 @@ const FinanceDashboardPage = ({ onNav }) => {
       <header className="space-y-2">
         <AnimatedFadeUp>
           <Badge variant="secondary" className="rounded-full">
-            Dashboard
+            Dashboard Home
           </Badge>
         </AnimatedFadeUp>
 
         <div>
           <AnimatedTextReveal>
             <h1 className="text-2xl font-semibold tracking-tight">
-              Finance Overview
+              Personal Finance Command Center
             </h1>
           </AnimatedTextReveal>
 
           <AnimatedTextReveal delay={0.08}>
             <p className="text-sm text-muted-foreground">
-              Monitor balance, currencies, activity, savings, and transactions.
+              Overview, insights, stocks, accounts, portfolio, alerts, and quick actions in one realistic finance workspace.
             </p>
           </AnimatedTextReveal>
         </div>
       </header>
-      <AnimatedFadeUp delay={0.1}>
-        <BalanceHero
-          hidden={balanceHidden}
-          onToggleHidden={() => setBalanceHidden((prev) => !prev)}
-          onMoveMoney={() => onNav?.("deposit")}
-          onRequest={() => onNav?.("overview")}
-          onTransfer={() => onNav?.("withdraw")}
-        />
-      </AnimatedFadeUp>
 
-      <div className="grid grid-cols-1 gap-6 2xl:grid-cols-[1.05fr_1.45fr_1fr]">
+      {sectionVisibility.hero ? (
+        <AnimatedFadeUp delay={0.08}>
+          <BalanceHero
+            balance="$84,560"
+            cents=".42"
+            lastTransaction="Payroll credited, portfolio up 1.9%, and dining budget is nearing its weekly limit."
+            hidden={balanceHidden}
+            onToggleHidden={() => setBalanceHidden((prev) => !prev)}
+            onMoveMoney={() => onNav?.("move-money")}
+            onRequest={() => onNav?.("request")}
+            onTransfer={() => onNav?.("transfer")}
+          />
+        </AnimatedFadeUp>
+      ) : null}
+
+      {sectionVisibility.access ? (
+        <AnimatedFadeUp delay={0.12}>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            {DASHBOARD_QUICK_ACCESS_CARDS.map((item) => (
+              <OverviewCard
+                key={item.id}
+                title={item.title}
+                description={item.subtitle}
+                icon={item.icon}
+                onOpen={() => item.nav && onNav?.(item.nav)}
+              />
+            ))}
+          </div>
+        </AnimatedFadeUp>
+      ) : null}
+
+      {sectionVisibility.metrics ? (
+        <AnimatedFadeUp delay={0.16}>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {DASHBOARD_METRIC_CARDS.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-3xl border border-border/60 bg-card/95 p-5 shadow-sm"
+              >
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                  {item.label}
+                </p>
+                <p className="mt-3 text-2xl font-semibold tracking-tight">{item.value}</p>
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
+                    {item.change}
+                  </span>
+                  <span className="text-xs text-muted-foreground">{item.note}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </AnimatedFadeUp>
+      ) : null}
+
+      {sectionVisibility.workflow ? (
+        <AnimatedFadeUp delay={0.2}>
+          <Card className="border-border/60 bg-card shadow-sm">
+            <CardContent className="grid gap-4 p-6 lg:grid-cols-2">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="rounded-full">
+                    Data Flow
+                  </Badge>
+                  <Badge className="rounded-full">
+                    Live sync
+                  </Badge>
+                </div>
+                <h3 className="mt-4 text-base font-semibold tracking-tight">
+                  From source ingestion to dashboard insights
+                </h3>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                  Bank APIs, card transactions, investment feeds, and manual entries flow through sync, processing, normalization, and calculation layers before updating balances, budgets, holdings, KPIs, alerts, and search filters.
+                </p>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  ["Source health", "11 sources connected"],
+                  ["Sync cadence", "Real-time + 15m refresh"],
+                  ["Alerts engine", "3 active triggers"],
+                  ["Search filters", searchQuery ? `Filtering: ${searchQuery}` : "Ready for drill-down"],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="rounded-2xl border border-border/60 bg-background/45 p-4"
+                  >
+                    <p className="text-xs text-muted-foreground">{label}</p>
+                    <p className="mt-1 text-sm font-medium">{value}</p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedFadeUp>
+      ) : null}
+
+      {!hasVisibleSections ? (
+        <AnimatedFadeUp delay={0.22}>
+          <div className="rounded-3xl border border-dashed border-border/70 bg-background/40 p-10 text-center">
+            <p className="text-base font-semibold tracking-tight">
+              No dashboard results for &quot;{searchQuery}&quot;
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Try searching for accounts, stocks, alerts, portfolio, spending, or transactions.
+            </p>
+          </div>
+        </AnimatedFadeUp>
+      ) : null}
+
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="flex min-w-0 flex-col gap-6">
-          <AnimatedFadeUp>
-            <CurrencyCard
-              title="Nuance currency"
-              subtitle="Last currency Today 1 USD = 16,428.5 JPY"
-              selectedCurrency={selectedCurrency}
-              trendData={currencyTrendData}
-              liquidityData={currencyLiquidityData}
-              items={currencies}
-              onAddNew={() =>
-                setCurrencies((prev) => {
-                  const next = {
-                    id: prev.length + 1,
-                    code: "CAD",
-                    amount: "1.36",
-                    flag: "🇨🇦",
-                    change: "+0.31%",
-                  };
-                  setSelectedCurrency(next);
-                  return [...prev, next];
-                })
-              }
-              onSelectCurrency={(item) => setSelectedCurrency(item)}
-            />
-          </AnimatedFadeUp>
+          {sectionVisibility.accounts ? (
+            <AnimatedFadeUp>
+              <SnapshotCard
+                title="Accounts Snapshot"
+                subtitle="Balances and activity across linked accounts"
+                badge="Accounts"
+                action={
+                  <ExportCsvButton
+                    fileName="quantro_accounts"
+                    rows={filteredAccounts.map((item) => ({
+                      account_name: item.name,
+                      institution: item.institution,
+                      balance: item.balance,
+                      change: item.change,
+                    }))}
+                    className="rounded-xl"
+                  />
+                }
+              >
+                <div className="space-y-3">
+                  {filteredAccounts.map((item) => (
+                    <div
+                      key={item.id}
+                      className="rounded-2xl border border-border/60 bg-background/50 p-4"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-medium">{item.name}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">{item.institution}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-semibold">{item.balance}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">{item.change}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SnapshotCard>
+            </AnimatedFadeUp>
+          ) : null}
 
-
-          <AnimatedFadeUp>
-            <SavingsCard onViewGoals={() => onNav?.("analytics")} />
-          </AnimatedFadeUp>
+          {sectionVisibility.stocks ? (
+            <AnimatedFadeUp>
+              <SnapshotCard
+                title="Stocks Watchlist"
+                subtitle="Signals and movement from your tracked positions"
+                badge="Stocks"
+                action={
+                  <ExportCsvButton
+                    fileName="quantro_watchlist"
+                    rows={filteredWatchlist.map((item) => ({
+                      ticker: item.ticker,
+                      company: item.company,
+                      price: item.price,
+                      move: item.move,
+                      signal: item.signal,
+                    }))}
+                    className="rounded-xl"
+                  />
+                }
+              >
+                <div className="space-y-3">
+                  {filteredWatchlist.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between gap-3 rounded-2xl border border-border/60 bg-background/50 p-4"
+                    >
+                      <div>
+                        <p className="text-sm font-medium">{item.ticker}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{item.company}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-semibold">{item.price}</p>
+                        <p className="mt-1 text-xs text-primary">{item.move} • {item.signal}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full rounded-2xl"
+                    onClick={() => onNav?.("stocks")}
+                  >
+                    Open Stocks
+                  </Button>
+                </div>
+              </SnapshotCard>
+            </AnimatedFadeUp>
+          ) : null}
         </div>
 
         <div className="flex min-w-0 flex-col gap-6">
-          <AnimatedFadeUp>
-          <ActivityCard />
-          </AnimatedFadeUp>
-          <AnimatedFadeUp>
-          <PromoCard
-            onExplore={() => onNav?.("analytics")}
-            onGenerate={() => onNav?.("overview")}
-          />
-          </AnimatedFadeUp>
+          {sectionVisibility.activity ? (
+            <AnimatedFadeUp>
+              <ActivityCard />
+            </AnimatedFadeUp>
+          ) : null}
+
+          {sectionVisibility.alerts ? (
+            <AnimatedFadeUp>
+              <SnapshotCard
+                title="Filters And Alerts"
+                subtitle="Search, filters, and alert engine output"
+                badge="Alerts"
+                action={
+                  <ExportCsvButton
+                    fileName="quantro_alerts"
+                    rows={filteredAlerts.map((item) => ({
+                      title: item.title,
+                      description: item.description,
+                      severity: item.severity,
+                    }))}
+                    className="rounded-xl"
+                  />
+                }
+              >
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-border/60 bg-background/50 p-4">
+                    <div className="flex items-center gap-2 text-sm font-medium">
+                      <SlidersHorizontal className="h-4 w-4 text-primary" />
+                      Active filters
+                    </div>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      {searchQuery ? `Search scoped to "${searchQuery}"` : "No manual filters applied. Search, route views, and alerts can refine the dashboard."}
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-border/60 bg-background/50 p-4">
+                    <div className="flex items-center gap-2 text-sm font-medium">
+                      <BellRing className="h-4 w-4 text-primary" />
+                      Alert details
+                    </div>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Review notifications, alert details, and recommended next actions before moving money.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  {filteredAlerts.map((item) => (
+                    <div
+                      key={item.id}
+                      className="rounded-2xl border border-border/60 bg-background/50 p-4"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="mt-0.5 rounded-2xl bg-primary/10 p-2 text-primary">
+                          {item.severity === "warning" ? (
+                            <ShieldAlert className="h-4 w-4" />
+                          ) : (
+                            <BellRing className="h-4 w-4" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{item.title}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">{item.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SnapshotCard>
+            </AnimatedFadeUp>
+          ) : null}
         </div>
 
         <div className="flex min-w-0 flex-col gap-6">
-          <AnimatedFadeUp>
-          <TransactionsCard
-            onFilter={() => onNav?.("analytics")}
-            onViewAll={() => onNav?.("pools")}
-            onSelectTransaction={() => onNav?.("overview")}
-          />
-          </AnimatedFadeUp>
+          {sectionVisibility.transactions ? (
+            <AnimatedFadeUp>
+              <TransactionsCard
+                title="Recent Activity"
+                subtitle="Transactions, transfers, and cash-flow confirmations"
+                transactions={filteredTransactions}
+                onFilter={() => onNav?.("analytics")}
+                onViewAll={() => onNav?.("pools")}
+                onSelectTransaction={() => onNav?.("overview")}
+              />
+            </AnimatedFadeUp>
+          ) : null}
+
+          {sectionVisibility.portfolio ? (
+            <AnimatedFadeUp>
+              <SnapshotCard
+                title="Portfolio Allocation"
+                subtitle="Holdings and allocation across your personal finance stack"
+                badge="Portfolio"
+                action={
+                  <ExportCsvButton
+                    fileName="quantro_portfolio"
+                    rows={filteredHoldings.map((item) => ({
+                      holding: item.name,
+                      allocation: item.allocation,
+                      value: item.value,
+                      detail: item.detail,
+                    }))}
+                    className="rounded-xl"
+                  />
+                }
+              >
+                <div className="space-y-3">
+                  {filteredHoldings.map((item) => (
+                    <div
+                      key={item.id}
+                      className="rounded-2xl border border-border/60 bg-background/50 p-4"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-medium">{item.name}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">{item.detail}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-semibold">{item.allocation}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">{item.value}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SnapshotCard>
+            </AnimatedFadeUp>
+          ) : null}
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@ const CTip = ({
   return (
     <div className="min-w-40 rounded-xl border border-border/60 bg-popover/95 px-3 py-2.5 text-popover-foreground shadow-md backdrop-blur">
       {displayLabel ? (
-        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        <div className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
           {displayLabel}
         </div>
       ) : null}
@@ -22,7 +22,7 @@ const CTip = ({
           <div key={index} className="flex items-center gap-2 text-xs">
             <span
               className="inline-block h-2.5 w-2.5 rounded-full"
-              style={{ backgroundColor: item.color || "var(--primary)" }}
+              style={{ backgroundColor: item.color || "var(--chart-1)" }}
             />
             <span className="text-muted-foreground">
               {item.name ?? "Value"}:

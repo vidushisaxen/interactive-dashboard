@@ -5,6 +5,7 @@ import { ArrowDownLeft, ArrowUpFromLine, Wallet, Droplets, Coins } from "lucide-
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import ExportCsvButton from "./ExportCsvButton";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,40 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import LiquidityBarChart from "./LiquidityBarChart";
-import { BAR_RAW } from "./data";
+import { BAR_RAW, WITHDRAW_STEP_CONTENT } from "./dashboard-data";
 import { AnimatedFadeUp } from "@/lib/animations";
 import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
-
-const STEP_CONTENT = [
-  {
-    step: 1,
-    title: "Preview withdrawal",
-    description:
-      "Start by selecting how much liquidity you want to remove from the pool and preview the expected token output.",
-    summary: "Low withdrawal impact. Most of your position remains active in the pool.",
-  },
-  {
-    step: 2,
-    title: "Review token output",
-    description:
-      "Your ETH and cBNB withdrawal amounts become more meaningful as the selected percentage increases.",
-    summary: "Balanced reduction. Your position starts decreasing at a moderate pace.",
-  },
-  {
-    step: 3,
-    title: "Confirm pool impact",
-    description:
-      "This withdrawal level noticeably reduces your liquidity position and future fee exposure.",
-    summary: "High withdrawal impact. Pool ownership and remaining balance reduce significantly.",
-  },
-  {
-    step: 4,
-    title: "Ready to withdraw",
-    description:
-      "You are removing most of the position. Review remaining pool share, rewards, and output before final confirmation.",
-    summary: "Maximum withdrawal range. Most of the liquidity position will be removed.",
-  },
-];
 
 const getStepFromPercent = (percent) => {
   if (percent <= 25) return 1;
@@ -69,12 +39,12 @@ function WithdrawSkeleton() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Skeleton className="h-[420px] w-full rounded-[28px]" />
-        <Skeleton className="h-[420px] w-full rounded-[28px]" />
-        <Skeleton className="h-[420px] w-full rounded-[28px]" />
+        <Skeleton className="h-96 w-full rounded-3xl" />
+        <Skeleton className="h-96 w-full rounded-3xl" />
+        <Skeleton className="h-96 w-full rounded-3xl" />
       </div>
 
-      <Skeleton className="h-[500px] w-full rounded-[28px]" />
+      <Skeleton className="h-96 w-full rounded-3xl" />
     </section>
   );
 }
@@ -88,7 +58,7 @@ const WithdrawScreen = () => {
 
   const percent = pct[0];
   const currentStepIndex = getStepFromPercent(percent) - 1;
-  const currentStep = STEP_CONTENT[currentStepIndex];
+  const currentStep = WITHDRAW_STEP_CONTENT[currentStepIndex];
 
   const totalEth = 38.789;
   const totalBnb = 226.269;
@@ -173,19 +143,7 @@ const WithdrawScreen = () => {
                 onValueChange={setPct}
                 max={100}
                 step={1}
-                className="
-                  w-full
-                  [&_[data-slot=slider-track]]:h-2
-                  [&_[data-slot=slider-track]]:rounded-full
-                  [&_[data-slot=slider-track]]:bg-white/30
-                  [&_[data-slot=slider-range]]:rounded-full
-                  [&_[data-slot=slider-range]]:bg-primary
-                  [&_[data-slot=slider-thumb]]:h-5
-                  [&_[data-slot=slider-thumb]]:w-5
-                  [&_[data-slot=slider-thumb]]:border-4
-                  [&_[data-slot=slider-thumb]]:border-background
-                  [&_[data-slot=slider-thumb]]:bg-primary
-                "
+                className="w-full"
               />
 
               <Tabs value={mode} onValueChange={setMode}>
@@ -392,7 +350,7 @@ const WithdrawScreen = () => {
       <div className="space-y-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <Badge variant="secondary" className="w-fit">
-            Step {currentStep.step} / {STEP_CONTENT.length}
+            Step {currentStep.step} / {WITHDRAW_STEP_CONTENT.length}
           </Badge>
 
           <span className="text-xs text-muted-foreground">
@@ -408,7 +366,7 @@ const WithdrawScreen = () => {
         </div>
 
        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-  {STEP_CONTENT.map((item) => {
+  {WITHDRAW_STEP_CONTENT.map((item) => {
     const isActive = item.step === currentStep.step;
     const isCompleted = item.step < currentStep.step;
 
@@ -419,10 +377,10 @@ const WithdrawScreen = () => {
         onClick={() => setPct([getPercentFromStep(item.step)])}
         className={`rounded-xl border p-4 text-left transition-all cursor-pointer ${
           isActive
-            ? "border-primary/40 bg-primary/15"
+            ? "border-[var(--border-stronger-primary)] bg-[var(--border-soft-primary)]"
             : isCompleted
-            ? "border-primary/30 bg-primary/10"
-            : "border-border/60 bg-background hover:border-primary/30 hover:bg-primary/5"
+            ? "border-[var(--border-strong-primary)] bg-primary/10"
+            : "border-border/60 bg-background hover:border-[var(--border-strong-primary)] hover:bg-primary/5"
         }`}
       >
         <div className="mb-2 flex items-center justify-between">
@@ -438,7 +396,7 @@ const WithdrawScreen = () => {
 
           <span
             className={`h-2.5 w-2.5 rounded-full ${
-              isActive || isCompleted ? "bg-primary" : "bg-white/30"
+              isActive || isCompleted ? "bg-primary" : "bg-[var(--control-track)]"
             }`}
           />
         </div>
@@ -478,6 +436,13 @@ const WithdrawScreen = () => {
       </div>
 
       <div className="rounded-2xl border border-border/60 p-4">
+        <div className="mb-4 flex justify-end">
+          <ExportCsvButton
+            fileName={`quantro_withdraw_${percent}pct`}
+            rows={chartData}
+            className="rounded-xl"
+          />
+        </div>
         <LiquidityBarChart data={chartData} height={240} />
       </div>
     </CardContent>

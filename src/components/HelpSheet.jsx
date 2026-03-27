@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 import {
-  BookOpen,
-  CircleHelp,
   ExternalLink,
-  FileText,
-  MessageSquareText,
-  PhoneCall,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,47 +15,10 @@ import {
   AnimatedTextReveal,
   AnimatedFadeUp,
 } from "@/lib/animations";
-
-const helpItems = [
-  {
-    icon: CircleHelp,
-    title: "Help Center",
-    text: "Browse common questions and answers",
-    action: "Open",
-    tone: "default",
-  },
-  {
-    icon: MessageSquareText,
-    title: "Live Chat",
-    text: "Chat with support in real time",
-    action: "Start",
-    tone: "primary",
-  },
-  {
-    icon: PhoneCall,
-    title: "Call Support",
-    text: "Talk to a specialist for urgent issues",
-    action: "Call",
-    tone: "default",
-  },
-  {
-    icon: FileText,
-    title: "Report an Issue",
-    text: "Share a bug or account problem",
-    action: "Report",
-    tone: "default",
-  },
-  {
-    icon: BookOpen,
-    title: "Documentation",
-    text: "Read product and feature guides",
-    action: "View",
-    tone: "default",
-  },
-];
+import { HELP_ITEMS } from "./dashboard-data";
 
 const HelpSheet = ({ open, onOpenChange }) => {
-  const [activeItem, setActiveItem] = useState(helpItems[1]);
+  const [activeItem, setActiveItem] = useState(HELP_ITEMS[1]);
 
   return (
     <SidePanel
@@ -112,7 +70,7 @@ const HelpSheet = ({ open, onOpenChange }) => {
         </AnimatedSlideIn>
 
         <div className="space-y-4">
-          {helpItems.map((item, index) => {
+          {HELP_ITEMS.map((item, index) => {
             const Icon = item.icon;
             const isPrimary = item.tone === "primary";
 

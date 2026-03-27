@@ -5,17 +5,20 @@ import { useRouter } from "next/navigation";
 
 const routeMap = {
   analytics: "/analytics",
-  deposit: "/deposit",
+  "move-money": "/move-money",
   overview: "/overview",
+  stocks: "/stocks",
+  request: "/request",
   pools: "/pools",
-  withdraw: "/withdraw",
+  transfer: "/transfer",
 };
 
-const Page = () => {
+const Page = ({ searchQuery }) => {
   const router = useRouter();
 
   return (
     <FinanceDashboardPage
+      searchQuery={searchQuery}
       onNav={(target) => {
         const nextRoute = routeMap[target];
         if (nextRoute) {

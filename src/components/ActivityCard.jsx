@@ -5,42 +5,23 @@ import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import ExportCsvButton from "./ExportCsvButton";
 
 import MiniLineChart from "./MiniLineChart";
-import { CHART_RAW } from "./data";
-
-const metrics = {
-  income: {
-    label: "Income",
-    value: "$4,826.20",
-    change: "+12.4%",
-    dataset: "Liquidity",
-  },
-  expenses: {
-    label: "Expenses",
-    value: "$2,194.80",
-    change: "+3.1%",
-    dataset: "Volume",
-  },
-  savings: {
-    label: "Savings",
-    value: "$1,205.44",
-    change: "+8.7%",
-    dataset: "ETH",
-  },
-};
-
-const ranges = ["7 Days", "30 Days", "90 Days"];
+import { ACTIVITY_METRICS, ACTIVITY_RANGES, CHART_RAW, sliceChartDataByRange } from "./dashboard-data";
 
 const ActivityCard = () => {
   const [activeMetric, setActiveMetric] = useState("income");
   const [activeRange, setActiveRange] = useState("30 Days");
 
-  const currentMetric = metrics[activeMetric];
+  const currentMetric = ACTIVITY_METRICS[activeMetric];
 
   const chartData = useMemo(() => {
-    return CHART_RAW[currentMetric.dataset] || [];
-  }, [currentMetric]);
+    return sliceChartDataByRange(
+      CHART_RAW[currentMetric.dataset] || [],
+      activeRange
+    );
+  }, [activeRange, currentMetric]);
 
   return (
     <Card className="border-border/60 bg-card shadow-sm">
@@ -54,7 +35,7 @@ const ActivityCard = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            {ranges.map((range) => {
+            {ACTIVITY_RANGES.map((range) => {
               const active = activeRange === range;
 
               return (
@@ -79,7 +60,7 @@ const ActivityCard = () => {
 
       <CardContent className="space-y-5">
         <div className="flex flex-wrap gap-3">
-          {Object.entries(metrics).map(([key, item]) => {
+          {Object.entries(ACTIVITY_METRICS).map(([key, item]) => {
             const active = activeMetric === key;
 
             return (
@@ -102,10 +83,10 @@ const ActivityCard = () => {
 
                   <span
                     className={cn(
-                      "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium",
+                      "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
                       active
                         ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-primary"
+                        : "bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground"
                     )}
                   >
                     {item.change}
@@ -124,9 +105,16 @@ const ActivityCard = () => {
               <h4 className="text-sm font-medium">{currentMetric.label}</h4>
             </div>
 
-            <div className="text-right">
-              <p className="text-xs text-muted-foreground">{activeRange}</p>
-              <p className="text-sm font-medium">{currentMetric.value}</p>
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground">{activeRange}</p>
+                <p className="text-sm font-medium">{currentMetric.value}</p>
+              </div>
+              <ExportCsvButton
+                fileName={`quantro_activity_${activeMetric}_${activeRange.toLowerCase().replace(/\s+/g, "_")}`}
+                rows={chartData}
+                className="rounded-xl"
+              />
             </div>
           </div>
 

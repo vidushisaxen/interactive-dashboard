@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 const LogoutDialog = ({ open, onClose, onConfirm }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-md rounded-2xl border-white/20 bg-background/95 p-0 overflow-hidden">
+      <DialogContent className="max-w-md overflow-hidden rounded-2xl border-(--overlay) bg-background/95 p-0">
         <AnimatePresence mode="wait">
           {open && (
             <motion.div

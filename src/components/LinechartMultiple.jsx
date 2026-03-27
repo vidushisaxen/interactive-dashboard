@@ -13,8 +13,9 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import ExportCsvButton from "./ExportCsvButton";
 import CTip from "./CTip";
-import { LINE_DATA } from "./data";
+import { LINE_DATA } from "./dashboard-data";
 import { ChartCard } from "./ChartCard";
 import { useChartEntrance } from "@/hooks/use-chart-entrance";
 
@@ -22,12 +23,12 @@ const seriesConfig = [
   {
     key: "desktop",
     label: "Desktop",
-    stroke: "var(--primary)",
+    stroke: "var(--chart-1)",
   },
   {
     key: "mobile",
     label: "Mobile",
-    stroke: "var(--chart-2, 24 95% 65%)",
+    stroke: "var(--chart-2)",
   },
 ];
 
@@ -36,7 +37,7 @@ const LineChartMultiple = () => {
     desktop: true,
     mobile: true,
   });
-  const { ref, shouldAnimate, animationKey } = useChartEntrance();
+  const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
 
   const toggleSeries = (key) => {
     setShow((prev) => ({
@@ -48,9 +49,14 @@ const LineChartMultiple = () => {
   return (
     <ChartCard
       title="Performance Overview"
-      subtitle="January – June 2024"
-      footer="Trending up by 5.2% this month"
-      footerSub="Showing total visitors for the last 6 months"
+      description="Showing total visitors for the last 6 months"
+      action={
+        <ExportCsvButton
+          fileName="quantro_line_chart_multiple"
+          rows={LINE_DATA}
+          className="rounded-xl"
+        />
+      }
     >
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-2">
@@ -72,7 +78,7 @@ const LineChartMultiple = () => {
                 <span
                   className="mr-2 inline-block h-1.5 w-4 rounded-full"
                   style={{
-                    backgroundColor: active ? series.stroke : "var(--muted-foreground) / 0.35",
+                    backgroundColor: active ? series.stroke : "var(--chart-series-muted)",
                   }}
                 />
                 {series.label}
@@ -100,7 +106,7 @@ const LineChartMultiple = () => {
           >
             <CartesianGrid
               vertical={false}
-              stroke="var(--border) / 0.7"
+              stroke="var(--chart-grid)"
               strokeDasharray="3 3"
             />
 
@@ -126,17 +132,17 @@ const LineChartMultiple = () => {
                 type="monotone"
                 dataKey="desktop"
                 name="Desktop"
-                stroke="var(--primary)"
+                stroke="var(--chart-1)"
                 strokeWidth={3}
                 dot={false}
                 activeDot={{
                   r: 5,
-                  fill: "var(--primary)",
+                  fill: "var(--chart-1)",
                   stroke: "var(--background)",
                   strokeWidth: 2,
                 }}
                 isAnimationActive={shouldAnimate}
-                animationBegin={0}
+                animationBegin={animationDelay}
                 animationDuration={750}
               />
             )}
@@ -146,17 +152,17 @@ const LineChartMultiple = () => {
                 type="monotone"
                 dataKey="mobile"
                 name="Mobile"
-                stroke="var(--chart-2, 24 95% 65%)"
+                stroke="var(--chart-2)"
                 strokeWidth={3}
                 dot={false}
                 activeDot={{
                   r: 5,
-                  fill: "var(--chart-2, 24 95% 65%)",
+                  fill: "var(--chart-2)",
                   stroke: "var(--background)",
                   strokeWidth: 2,
                 }}
                 isAnimationActive={shouldAnimate}
-                animationBegin={120}
+                animationBegin={animationDelay + 120}
                 animationDuration={750}
               />
             )}

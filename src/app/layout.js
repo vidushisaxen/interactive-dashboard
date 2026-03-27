@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Interactive Dashboard",
-  description: "Interactive Dashboard",
+  title: "Quantro",
+  description: "Quantro finance dashboard",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {
