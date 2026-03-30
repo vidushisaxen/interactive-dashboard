@@ -70,7 +70,7 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
 
         {activeNotification ? (
           <AnimatedSlideIn direction="right" duration={0.45} delay={0.08}>
-            <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+            <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
               <p className="text-sm font-medium">{activeNotification.title}</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {activeNotification.text}
@@ -102,11 +102,11 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
                         setActiveId(item.id);
                         markAsRead(item.id);
                       }}
-                      className="w-full rounded-xl cursor-pointer border border-border/60 bg-background/60 p-4 text-left transition-colors hover:bg-accent/40"
+                      className="w-full rounded-lg cursor-pointer border  border border-border bg-background/60 p-4 text-left transition-colors hover:bg-accent/40"
                     >
                       <div className="flex gap-3">
                         <AnimatedFadeUp delay={0.02} duration={0.35}>
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                             <Icon className="h-4.5 w-4.5" />
                           </div>
                         </AnimatedFadeUp>

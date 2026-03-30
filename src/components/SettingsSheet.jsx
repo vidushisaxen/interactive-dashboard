@@ -71,7 +71,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
     >
       <div className="space-y-6">
         <AnimatedSlideIn direction="right" duration={0.55}>
-          <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/30 p-4">
+          <div className="flex items-center justify-between rounded-lg border  border border-border bg-muted/30 p-4">
             <div className="space-y-1">
               <AnimatedTextReveal y={14} blur="6px" duration={0.45}>
                 <p className="text-sm font-medium">Workspace settings</p>
@@ -98,7 +98,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
         </AnimatedSlideIn>
 
         <AnimatedSlideIn direction="right" duration={0.48} delay={0.05}>
-          <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+          <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
             <p className="text-sm font-medium">Workspace status</p>
             <p className="mt-1 text-xs text-muted-foreground">
               {lastSaved}
@@ -142,13 +142,13 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                   const isToggle = item.kind === "toggle";
 
                   const rowClassName =
-                    "flex w-full items-center justify-between rounded-xl border border-border/60 bg-background/60 px-4 py-3 text-left transition-colors hover:bg-accent/40";
+                    "flex w-full items-center justify-between rounded-lg border  border border-border bg-background/60 px-4 py-3 text-left transition-colors hover:bg-accent/40";
 
                   const rowContent = (
                     <>
                       <div className="flex items-center gap-3">
                         <AnimatedFadeUp delay={0.02 * itemIndex} duration={0.4}>
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted text-muted-foreground">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                             <Icon className="h-4.5 w-4.5" />
                           </div>
                         </AnimatedFadeUp>
@@ -191,7 +191,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                             onClick={(event) => event.stopPropagation()}
                           />
                         ) : (
-                          <span className="inline-flex h-8 items-center rounded-lg border border-border/60 px-3 text-xs font-medium text-primary">
+                          <span className="inline-flex h-8 items-center rounded-lg border  border border-border px-3 text-xs font-medium text-primary">
                             Edit
                           </span>
                         )}
@@ -250,7 +250,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="rounded-xl cursor-pointer"
+              className="rounded-lg cursor-pointer"
             >
               <X className="mr-2 h-4 w-4" />
               Close
@@ -266,7 +266,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                 );
                 onOpenChange(false);
               }}
-              className="rounded-xl cursor-pointer"
+              className="rounded-lg cursor-pointer"
             >
               <Check className="mr-2 h-4 w-4" />
               Save changes

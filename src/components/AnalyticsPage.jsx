@@ -76,44 +76,54 @@ const AnalyticsPage = () => {
       </header>
 
       {/* ---------------- CHART GRID ---------------- */}
-      <section className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        
+      <section className="grid grid-cols-2 gap-6">
         <AnimatedFadeUp delay={0.1}>
-          <ChartCard
-            title="Performance Trends"
-            description="Multi-series comparison over time"
-          >
-            <LineChartMultiple />
-          </ChartCard>
+          <div className="h-full">
+            <ChartCard
+              className="h-full"
+              title="Performance Trends"
+              description="Multi-series comparison over time"
+            >
+              <LineChartMultiple isActive={true}/>
+            </ChartCard>
+          </div>
         </AnimatedFadeUp>
 
         <AnimatedFadeUp delay={0.15}>
-          <ChartCard
-            title="Distribution Breakdown"
-            description="Category share and proportional split"
-          >
-            <PieChartStacked />
-          </ChartCard>
+          <div className="h-full">
+            <ChartCard
+              className="h-full"
+              title="Distribution Breakdown"
+              description="Category share and proportional split"
+            >
+              <PieChartStacked />
+            </ChartCard>
+          </div>
         </AnimatedFadeUp>
 
         <AnimatedFadeUp delay={0.2}>
-          <ChartCard
-            title="Metric Coverage"
-            description="Comparative strength across dimensions"
-          >
-            <RadarChartGrid />
-          </ChartCard>
+          <div className="h-full">
+            <ChartCard
+              className="h-full"
+              title="Metric Coverage"
+              description="Comparative strength across dimensions"
+            >
+              <RadarChartGrid />
+            </ChartCard>
+          </div>
         </AnimatedFadeUp>
 
         <AnimatedFadeUp delay={0.25}>
-          <ChartCard
-            title="Completion Overview"
-            description="Focused radial performance summary"
-          >
-            <RadialChartLabel />
-          </ChartCard>
+          <div className="h-full">
+            <ChartCard
+              className="h-full"
+              title="Completion Overview"
+              description="Focused radial performance summary"
+            >
+              <RadialChartLabel />
+            </ChartCard>
+          </div>
         </AnimatedFadeUp>
-
       </section>
     </div>
   );

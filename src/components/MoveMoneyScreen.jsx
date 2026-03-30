@@ -35,13 +35,13 @@ function MoveMoneySkeleton() {
         <Skeleton className="h-4 w-96 max-w-full" />
       </div>
 
-      <Skeleton className="h-24 w-full rounded-2xl" />
+      <Skeleton className="h-24 w-full rounded-xl" />
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-2xl xl:col-span-3" />
+        <Skeleton className="h-96 w-full rounded-xl xl:col-span-3" />
         <div className="space-y-6 xl:col-span-2">
-          <Skeleton className="h-64 w-full rounded-2xl" />
-          <Skeleton className="h-72 w-full rounded-2xl" />
+          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-72 w-full rounded-xl" />
         </div>
       </div>
     </section>
@@ -98,7 +98,7 @@ const MoveMoneyScreen = () => {
       </header>
 
       <AnimatedFadeUp delay={0.08}>
-        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
           <p className="text-sm font-medium">Transfer status</p>
           <p className="mt-1 text-xs text-muted-foreground">{status}</p>
         </div>
@@ -107,7 +107,7 @@ const MoveMoneyScreen = () => {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
         <div className="space-y-6 xl:col-span-3">
           <AnimatedFadeUp delay={0.12}>
-            <Card className="border-border/60">
+            <Card className=" border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Account routing
@@ -147,9 +147,9 @@ const MoveMoneyScreen = () => {
                   />
                 </div>
 
-                <div className="rounded-xl border border-border/60 bg-muted/20 p-4">
+                <div className="rounded-lg border  border border-border bg-muted/20 p-4">
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5 rounded-xl bg-primary/10 p-2 text-primary">
+                    <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
                       <ArrowRightLeft className="h-4 w-4" />
                     </div>
                     <div className="space-y-1">
@@ -167,7 +167,7 @@ const MoveMoneyScreen = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    className="rounded-xl"
+                    className="rounded-lg"
                     onClick={() =>
                       setStatus(
                         "Draft saved. You can keep adjusting accounts before confirming the internal move."
@@ -180,7 +180,7 @@ const MoveMoneyScreen = () => {
                   <Button
                     type="button"
                     disabled={!canSubmit}
-                    className="rounded-xl"
+                    className="rounded-lg"
                     onClick={() =>
                       setStatus(
                         `Scheduled $${amountValue.toFixed(2)} from ${selectedFrom?.title} to ${selectedTo?.title} with reference "${reference || "General transfer"}".`
@@ -195,7 +195,7 @@ const MoveMoneyScreen = () => {
           </AnimatedFadeUp>
 
           <AnimatedFadeUp delay={0.16}>
-            <Card className="border-border/60">
+            <Card className=" border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Recent internal moves
@@ -210,7 +210,7 @@ const MoveMoneyScreen = () => {
                 {MOVE_MONEY_ACTIVITY_FEED.map((item) => (
                   <div
                     key={`${item.label}-${item.time}`}
-                    className="flex items-center justify-between gap-4 rounded-xl border border-border/60 p-4"
+                    className="flex items-center justify-between gap-4 rounded-lg border  border border-border p-4"
                   >
                     <div>
                       <p className="text-sm font-medium">{item.label}</p>
@@ -231,7 +231,7 @@ const MoveMoneyScreen = () => {
 
         <div className="space-y-6">
           <AnimatedFadeUp delay={0.14}>
-            <Card className="border-border/60">
+            <Card className=" border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Treasury snapshot
@@ -251,7 +251,7 @@ const MoveMoneyScreen = () => {
           </AnimatedFadeUp>
 
           <AnimatedFadeUp delay={0.18}>
-            <Card className="border-border/60">
+            <Card className=" border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Smart suggestions
@@ -295,16 +295,16 @@ const AccountSelector = ({ label, selectedId, onSelect }) => (
             type="button"
             onClick={() => onSelect(account.id)}
             className={cn(
-              "rounded-xl border p-4 text-left transition-colors",
+              "rounded-lg border p-4 text-left transition-colors",
               "hover:bg-accent/40",
               active
                 ? "border-primary/30 bg-primary/5"
-                : "border-border/60 bg-background/60"
+                : " border border-border bg-background/60"
             )}
           >
             <div
               className={cn(
-                "mb-3 flex h-10 w-10 items-center justify-center rounded-xl",
+                "mb-3 flex h-10 w-10 items-center justify-center rounded-lg",
                 active
                   ? "bg-primary/10 text-primary"
                   : "bg-muted text-muted-foreground"
@@ -331,21 +331,21 @@ const Field = ({ label, placeholder, value, onChange }) => (
       value={value}
       onChange={(event) => onChange(event.target.value)}
       placeholder={placeholder}
-      className="h-12 rounded-xl"
+      className="h-12 rounded-lg"
     />
   </div>
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-lg border  border border-border bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>
 );
 
 const SuggestionCard = ({ icon: Icon, title, description }) => (
-  <div className="rounded-xl border border-border/60 p-4">
-    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+  <div className="rounded-lg border  border border-border p-4">
+    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
       <Icon className="h-4 w-4" />
     </div>
     <p className="text-sm font-medium">{title}</p>

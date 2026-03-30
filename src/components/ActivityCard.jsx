@@ -24,7 +24,7 @@ const ActivityCard = () => {
   }, [activeRange, currentMetric]);
 
   return (
-    <Card className="border-border/60 bg-card shadow-sm">
+    <Card className=" border border-border bg-card shadow-sm">
       <CardHeader className="space-y-4 pb-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-1">
@@ -69,11 +69,11 @@ const ActivityCard = () => {
                 type="button"
                 onClick={() => setActiveMetric(key)}
                 className={cn(
-                  "min-w-40 rounded-xl cursor-pointer  border p-4 text-left transition-colors",
+                  "min-w-40 rounded-lg cursor-pointer  border p-4 text-left transition-colors",
                   "bg-background/40 hover:bg-accent/40",
                   active
                     ? "border-primary/40 bg-primary/5"
-                    : "border-border/60"
+                    : " border border-border"
                 )}
               >
                 <div className="text-xs text-muted-foreground">{item.label}</div>
@@ -98,7 +98,7 @@ const ActivityCard = () => {
           })}
         </div>
 
-        <div className="rounded-xl border border-border/60 bg-background/50 p-4">
+        <div className="rounded-lg border  border border-border bg-background/50 p-4">
           <div className="mb-3 flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground">Overview</p>

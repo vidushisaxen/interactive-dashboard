@@ -4,25 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
-import {
-  LayoutGrid,
-  BarChart3,
-  Landmark,
-  BriefcaseBusiness,
-  TrendingUp,
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  Settings,
-  CircleHelp,
-  LogOut,
-} from "lucide-react";
-
+import { Settings, CircleHelp, LogOut} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { smoothTween } from "@/lib/animations";
-
 import SettingsSheet from "./SettingsSheet";
 import HelpSheet from "./HelpSheet";
 import LogoutDialog from "./LogoutDialog";
@@ -50,14 +36,14 @@ function NavItem({ item, danger = false, active = false, expanded = false }) {
         type="button"
         variant="ghost"
         className={cn(
-          "my-2 h-11 w-full cursor-pointer rounded-lg text-sm font-medium transition-all duration-300 ease-out",
+          "my-2 h-11 w-full cursor-pointer rounded-lg text-sm font-medium transition-all duration-300 ease-out ",
           expanded ? "justify-start px-3" : "justify-center px-0",
           active &&
             "bg-primary text-primary-foreground ring-1 ring-(--sidebar-active-ring) shadow-sm hover:bg-primary/90 hover:text-primary-foreground",
           !active &&
             (danger
               ? "text-destructive hover:bg-destructive/10"
-              : "text-muted-foreground hover:bg-primary hover:text-primary-foreground")
+              : "text-muted-foreground hover:bg-[#2b1b17]! hover:text-primary-foreground")
         )}
       >
         <Icon className="h-4 w-4 shrink-0" />
@@ -96,7 +82,7 @@ function ActionItem({ icon: Icon, label, onClick, danger = false, expanded = fal
         expanded ? "justify-start px-3" : "justify-center px-0",
         danger
           ? "text-destructive hover:bg-destructive/10"
-          : "text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+          : "text-muted-foreground hover:bg-[#2b1b17]! hover:text-primary-foreground"
       )}
     >
       <Icon className="h-4 w-4 shrink-0" />
@@ -184,7 +170,7 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
   return (
     <>
       <motion.aside
-        className="fixed left-0 top-0 z-50 h-screen w-[88px] border-r border-border/60 bg-background/95 backdrop-blur-xl"
+        className="fixed left-0 top-0 z-50 h-screen w-[88px] border-r  border border-border bg-background/95 backdrop-blur-xl"
         onMouseEnter={handleExpand}
         onMouseLeave={handleCollapse}
         initial={false}
@@ -208,17 +194,17 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
               : sidebarTween
           }
         >
-          <div className="mb-4">
+          <div className="">
             <Link href="/">
               <Button
                 variant="ghost"
                 className={cn(
-                  "h-auto w-full cursor-pointer rounded-xl py-2 transition-all duration-300 ease-out hover:bg-transparent",
+                  "h-auto w-full cursor-pointer rounded-lg py-2 transition-all duration-300 ease-out",
                   expanded ? "justify-start px-2" : "justify-center px-2"
                 )}
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
                       <span className="text-base font-black">Q</span>
                     </div>
                     <motion.div
@@ -239,7 +225,7 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
                       <p className="text-sm font-semibold tracking-wide">
                         QUANTRO
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs ">
                         Finance hub
                       </p>
                     </div>
@@ -248,8 +234,6 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
               </Button>
             </Link>
           </div>
-
-          <Separator className="mb-4" />
 
           <ScrollArea className="flex-1">
             <div className={cn("space-y-2", expanded ? "pr-2" : "pr-1")}>
@@ -264,7 +248,6 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
             </div>
           </ScrollArea>
 
-          <Separator className="my-4" />
 
           <div className="space-y-2">
             <ActionItem

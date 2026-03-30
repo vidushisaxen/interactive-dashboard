@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
         outline:
-          "border-border/60 bg-background text-foreground hover:border-[var(--button-hover-border)] hover:bg-[var(--button-hover-bg)] hover:text-[var(--button-hover-fg)] aria-expanded:border-[var(--button-hover-border)] aria-expanded:bg-[var(--button-hover-bg)] aria-expanded:text-[var(--button-hover-fg)] dark:border-input dark:bg-input/30 dark:hover:bg-[var(--button-hover-bg)]",
+          " border border-border bg-background text-foreground hover:border-[var(--button-hover-border)] hover:bg-[var(--button-hover-bg)] hover:text-[var(--button-hover-fg)] aria-expanded:border-[var(--button-hover-border)] aria-expanded:bg-[var(--button-hover-bg)] aria-expanded:text-[var(--button-hover-fg)] dark:border-input dark:bg-input/30 dark:hover:bg-[var(--button-hover-bg)]",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-[var(--button-hover-bg)] hover:text-[var(--button-hover-fg)] aria-expanded:bg-[var(--button-hover-bg)] aria-expanded:text-[var(--button-hover-fg)]",
         ghost:

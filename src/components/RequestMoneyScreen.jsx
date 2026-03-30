@@ -36,13 +36,13 @@ function RequestMoneySkeleton() {
         <Skeleton className="h-4 w-96 max-w-full" />
       </div>
 
-      <Skeleton className="h-24 w-full rounded-2xl" />
+      <Skeleton className="h-24 w-full rounded-xl" />
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-2xl xl:col-span-3" />
+        <Skeleton className="h-96 w-full rounded-xl xl:col-span-3" />
         <div className="space-y-6 xl:col-span-2">
-          <Skeleton className="h-60 w-full rounded-2xl" />
-          <Skeleton className="h-80 w-full rounded-2xl" />
+          <Skeleton className="h-60 w-full rounded-xl" />
+          <Skeleton className="h-80 w-full rounded-xl" />
         </div>
       </div>
     </section>
@@ -92,7 +92,7 @@ const RequestMoneyScreen = () => {
       </header>
 
       <AnimatedFadeUp delay={0.08}>
-        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
           <p className="text-sm font-medium">Request status</p>
           <p className="mt-1 text-xs text-muted-foreground">{requestStatus}</p>
         </div>
@@ -101,7 +101,7 @@ const RequestMoneyScreen = () => {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
         <div className="space-y-6 xl:col-span-3">
           <AnimatedFadeUp delay={0.12}>
-            <Card className="border-border/60">
+            <Card className=" border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Payment request builder
@@ -114,7 +114,7 @@ const RequestMoneyScreen = () => {
 
               <CardContent className="space-y-6">
                 <Tabs value={tab} onValueChange={setTab}>
-                  <TabsList className="grid h-auto w-full grid-cols-3 rounded-xl p-1">
+                  <TabsList className="grid h-auto w-full grid-cols-3 rounded-lg p-1">
                     <TabsTrigger value="person" className="rounded-lg">
                       Person
                     </TabsTrigger>
@@ -198,8 +198,8 @@ const RequestMoneyScreen = () => {
                 )}
 
                 {tab === "qr" && (
-                  <div className="rounded-2xl border border-dashed border-border/60 bg-muted/20 p-8 text-center">
-                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <div className="rounded-xl border border-dashed  border border-border bg-muted/20 p-8 text-center">
+                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary">
                       <QrCode className="h-7 w-7" />
                     </div>
                     <h3 className="text-base font-semibold">
@@ -211,7 +211,7 @@ const RequestMoneyScreen = () => {
                     </p>
                     <Button
                       variant="outline"
-                      className="mt-5 rounded-xl"
+                      className="mt-5 rounded-lg"
                       onClick={() =>
                         setRequestStatus(
                           `QR request created for ${amountLabel} with note "${form.reason || form.message || "Payment request"}".`
@@ -228,7 +228,7 @@ const RequestMoneyScreen = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    className="rounded-xl"
+                    className="rounded-lg"
                     onClick={() =>
                       setRequestStatus(
                         "Draft saved. The request is ready to customize before sending."
@@ -240,7 +240,7 @@ const RequestMoneyScreen = () => {
 
                   <Button
                     type="button"
-                    className="rounded-xl"
+                    className="rounded-lg"
                     onClick={() =>
                       setRequestStatus(
                         tab === "person"
@@ -262,7 +262,7 @@ const RequestMoneyScreen = () => {
 
         <div className="space-y-6">
           <AnimatedFadeUp delay={0.14}>
-            <Card className="border-border/60">
+            <Card className=" border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Collection snapshot
@@ -282,7 +282,7 @@ const RequestMoneyScreen = () => {
           </AnimatedFadeUp>
 
           <AnimatedFadeUp delay={0.18}>
-            <Card className="border-border/60">
+            <Card className=" border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Recent requests
@@ -297,7 +297,7 @@ const RequestMoneyScreen = () => {
                 {REQUEST_RECENT_REQUESTS.map((item) => (
                   <div
                     key={`${item.name}-${item.method}`}
-                    className="rounded-xl border border-border/60 p-4"
+                    className="rounded-lg border  border border-border p-4"
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div>
@@ -332,14 +332,14 @@ const Field = ({ icon: Icon, label, placeholder, value, onChange }) => (
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="h-12 rounded-xl pl-11"
+        className="h-12 rounded-lg pl-11"
       />
     </div>
   </div>
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-lg border  border border-border bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>

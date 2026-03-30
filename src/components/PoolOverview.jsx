@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import ExportCsvButton from "./ExportCsvButton";
 import {
   Card,
@@ -26,11 +27,11 @@ function PoolOverviewSkeleton() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <Skeleton className="h-72 w-full rounded-2xl" />
-        <Skeleton className="h-72 w-full rounded-2xl" />
+        <Skeleton className="h-72 w-full rounded-xl" />
+        <Skeleton className="h-72 w-full rounded-xl" />
       </div>
 
-      <Skeleton className="h-96 w-full rounded-2xl" />
+      <Skeleton className="h-96 w-full rounded-xl" />
     </section>
   );
 }
@@ -45,7 +46,80 @@ const PoolOverview = () => {
     [activeChart, activeTime]
   );
 
-  const currentStat = POOL_STAT_META[activeChart];
+  const currentStat = useMemo(() => {
+    if (!chartData || !chartData.length) {
+      return { value: "--", sub: activeChart, change: "" };
+    }
+
+    const first = Number(chartData[0]?.value || 0);
+    const last = Number(chartData.at(-1)?.value || 0);
+    const changePercent = first === 0 ? 0 : ((last - first) / first) * 100;
+
+    return {
+      value:
+        activeChart === "ETH" || activeChart === "GEH"
+          ? last.toFixed(2)
+          : last.toLocaleString(),
+      sub: activeChart,
+      change: first === 0
+        ? ""
+        : `${last >= first ? "▲" : "▼"} ${Math.abs(changePercent).toFixed(2)}%`,
+    };
+  }, [activeChart, chartData]);
+
+  // Dynamic stats based on activeTime
+  const statsData = {
+    "1H": {
+      tvl: "$145,466.27",
+      volume: "$0",
+      apr: "33.8%",
+      swapFeeEth: "0.20%",
+      swapFeeCbnb: "0.20%",
+      lpDividends: "50.00%",
+    },
+    "4H": {
+      tvl: "$145,500.00",
+      volume: "$1,200",
+      apr: "34.2%",
+      swapFeeEth: "0.21%",
+      swapFeeCbnb: "0.21%",
+      lpDividends: "50.10%",
+    },
+    "1D": {
+      tvl: "$145,466.27",
+      volume: "$0",
+      apr: "33.8%",
+      swapFeeEth: "0.20%",
+      swapFeeCbnb: "0.20%",
+      lpDividends: "50.00%",
+    },
+    "1W": {
+      tvl: "$146,000.00",
+      volume: "$15,000",
+      apr: "35.5%",
+      swapFeeEth: "0.22%",
+      swapFeeCbnb: "0.22%",
+      lpDividends: "50.50%",
+    },
+    "1M": {
+      tvl: "$150,000.00",
+      volume: "$50,000",
+      apr: "38.0%",
+      swapFeeEth: "0.25%",
+      swapFeeCbnb: "0.25%",
+      lpDividends: "51.00%",
+    },
+    "6M": {
+      tvl: "$160,000.00",
+      volume: "$200,000",
+      apr: "42.0%",
+      swapFeeEth: "0.30%",
+      swapFeeCbnb: "0.30%",
+      lpDividends: "52.00%",
+    },
+  };
+
+  const currentStats = statsData[activeTime] || statsData["1D"];
 
   if (loading) {
     return <PoolOverviewSkeleton />;
@@ -54,24 +128,31 @@ const PoolOverview = () => {
   return (
     <section className="space-y-7">
       {/* Header */}
-      <div className="space-y-1">
-  <AnimatedFadeUp>
-    <h2 className="text-lg font-semibold tracking-tight">
-      Classic Pool
-    </h2>
-  </AnimatedFadeUp>
+      <div className="space-y-3">
+        <AnimatedFadeUp>
+          <Badge variant="secondary" className="rounded-full">
+            Classic Pool
+          </Badge>
+        </AnimatedFadeUp>
+        <div className="space-y-1">
+          <AnimatedTextReveal>
+            <h1 className="text-2xl font-semibold tracking-tight">
+              Classic Pool
+            </h1>
+          </AnimatedTextReveal>
 
-  <AnimatedFadeUp delay={0.08}>
-    <p className="font-mono text-xs text-muted-foreground">
-      Contract: 0x40e182...D7851d
-    </p>
-  </AnimatedFadeUp>
-</div>
+          <AnimatedTextReveal delay={0.08}>
+            <p className="text-sm text-muted-foreground">
+              Contract: 0x40e182...D7851d
+            </p>
+          </AnimatedTextReveal>
+        </div>
+      </div>
 
       {/* Top cards side by side */}
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
         <AnimatedFadeUp delay={0.1}>
-          <Card className="h-full">
+          <Card className="h-full border border-border shadow-sm  ">
             <CardHeader>
               <CardTitle className="text-base font-semibold tracking-tight">Pool Info</CardTitle>
             </CardHeader>
@@ -108,19 +189,19 @@ const PoolOverview = () => {
         </AnimatedFadeUp>
 
         <AnimatedFadeUp delay={0.16}>
-          <Card className="h-full">
+          <Card className="h-full border border-border shadow-sm ">
             <CardHeader>
               <CardTitle className="text-base font-semibold tracking-tight">Stats</CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-3">
               {[
-                ["TVL", "$145,466.27", false],
-                ["Volume (24h)", "$0", false],
-                ["APR (24h)", "33.8%", true],
-                ["Swap Fee (ETH → cBNB)", "0.20%", false],
-                ["Swap Fee (cBNB → ETH)", "0.20%", false],
-                ["LP Dividends", "50.00%", true],
+                ["TVL", currentStats.tvl, false],
+                ["Volume (24h)", currentStats.volume, false],
+                ["APR (24h)", currentStats.apr, true],
+                ["Swap Fee (ETH → cBNB)", currentStats.swapFeeEth, false],
+                ["Swap Fee (cBNB → ETH)", currentStats.swapFeeCbnb, false],
+                ["LP Dividends", currentStats.lpDividends, true],
               ].map(([label, value, highlight], index) => (
                 <AnimatedFadeUp key={label} delay={0.18 + index * 0.05}>
                   <div className="flex items-center justify-between text-sm">
@@ -142,7 +223,7 @@ const PoolOverview = () => {
 
       {/* Chart below */}
       <AnimatedFadeUp delay={0.22}>
-        <Card>
+        <Card className="border border-border shadow-sm">
           <CardContent className="space-y-6 pt-5">
             {/* Tabs + Filters */}
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -156,7 +237,7 @@ const PoolOverview = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => setActiveChart(t)}
-                        className={`rounded-lg border-border/60 cursor-pointer transition-all duration-300 ease-in ${
+                        className={`rounded-lg  border border-border cursor-pointer transition-all duration-300 ease-in ${
                           isActive
                             ? "border-primary/40 bg-primary text-primary-foreground "
                             : "hover:bg-primary hover:text-primary-foreground"
@@ -169,7 +250,7 @@ const PoolOverview = () => {
                 })}
               </div>
 
-              <div className="flex flex-wrap gap-1 rounded-lg border border-border/60 p-1">
+              <div className="flex flex-wrap gap-1 rounded-lg border  border border-border p-1">
                 {["1H", "4H", "1D", "1W", "1M", "6M"].map((t, index) => {
                   const isActive = activeTime === t;
 

@@ -34,7 +34,7 @@ function Slider({
       {...props}>
       <SliderPrimitive.Track
         data-slot="slider-track"
-        className="relative grow overflow-hidden rounded-full bg-[var(--control-track)] data-horizontal:h-2 data-horizontal:w-full data-vertical:h-full data-vertical:w-2">
+        className="relative grow overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700 data-horizontal:h-2 data-horizontal:w-full data-vertical:h-full data-vertical:w-2">
         <SliderPrimitive.Range
           data-slot="slider-range"
           className="absolute rounded-full bg-primary select-none data-horizontal:h-full data-vertical:w-full" />

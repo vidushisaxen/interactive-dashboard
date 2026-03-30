@@ -30,9 +30,9 @@ const SidePanel = ({
     <Sheet open={open} onOpenChange={(next) => !next && onClose?.()}>
       <SheetContent
         side="right"
-        className={`flex h-screen w-full flex-col border-l border-border/60 bg-background p-0 shadow-2xl [&>button]:hidden ${panelWidth}`}
+        className={`flex h-screen w-full flex-col border-l  border border-border bg-background p-0 shadow-2xl [&>button]:hidden ${panelWidth}`}
       >
-        <div className="flex items-start justify-between border-b border-border/60 px-6 py-6">
+        <div className="flex items-start justify-between border-b  border border-border px-6 py-6">
           <SheetHeader className="space-y-1 text-left">
             <SheetTitle className="text-lg font-semibold tracking-tight">
               {title}
@@ -50,7 +50,7 @@ const SidePanel = ({
             variant="outline"
             size="icon"
             onClick={onClose}
-            className="h-10 w-10 rounded-xl cursor-pointer"
+            className="h-10 w-10 rounded-lg cursor-pointer"
           >
             <X className="h-4 w-4" />
           </Button>

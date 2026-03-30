@@ -52,10 +52,10 @@ const ProfileSheet = ({
               className="space-y-6"
             >
               <AnimatedSlideIn direction="right" duration={0.55}>
-                <div className="rounded-2xl border border-border/60 bg-background/60 p-6">
+                <div className="rounded-xl border  border border-border bg-background/60 p-6">
                   <div className="flex items-start gap-4">
                     <AnimatedFadeUp delay={0.04} duration={0.4}>
-                      <Avatar className="h-16 w-16 border border-border/60">
+                      <Avatar className="h-16 w-16 border  border border-border">
                         <AvatarFallback className="bg-primary text-lg font-bold text-primary-foreground">
                           JK
                         </AvatarFallback>
@@ -108,7 +108,7 @@ const ProfileSheet = ({
               </AnimatedSlideIn>
 
               <AnimatedSlideIn direction="right" duration={0.5} delay={0.08}>
-                <div className="rounded-xl border border-border/60 bg-muted/30 p-4">
+                <div className="rounded-lg border  border border-border bg-muted/30 p-4">
                   <AnimatedTextReveal y={10} blur="4px" duration={0.35}>
                     <p className="text-sm font-medium">Account overview</p>
                   </AnimatedTextReveal>
@@ -128,7 +128,7 @@ const ProfileSheet = ({
               </AnimatedSlideIn>
 
               <AnimatedSlideIn direction="right" duration={0.45} delay={0.12}>
-                <div className="flex items-start gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4">
+                <div className="flex items-start gap-3 rounded-lg border border-primary/15 bg-primary/5 p-4">
                   <div className="mt-0.5 rounded-full bg-primary/10 p-2 text-primary">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
@@ -162,7 +162,7 @@ const ProfileSheet = ({
                           setSelectedAction(item.id);
                           onNav?.(item.id);
                         }}
-                        className="h-12 w-full justify-start cursor-pointer rounded-xl"
+                        className="h-12 w-full justify-start cursor-pointer rounded-lg"
                       >
                         <AnimatedFadeUp delay={0.02} duration={0.3}>
                           <Icon className="mr-3 h-4 w-4" />
@@ -181,7 +181,7 @@ const ProfileSheet = ({
                     type="button"
                     variant="outline"
                     onClick={() => setOpenHelp(true)}
-                    className="h-12 w-full justify-start cursor-pointer rounded-xl"
+                    className="h-12 w-full justify-start cursor-pointer rounded-lg"
                   >
                     <AnimatedFadeUp delay={0.02} duration={0.3}>
                       <CircleHelp className="mr-3 h-4 w-4" />

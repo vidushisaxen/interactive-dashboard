@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -36,7 +37,7 @@ function PoolsListSkeleton() {
         {Array.from({ length: 6 }).map((_, index) => (
           <div
             key={index}
-            className="grid grid-cols-1 gap-4 rounded-2xl px-5 py-5 lg:grid-cols-5"
+            className="grid grid-cols-1 gap-4 rounded-xl px-5 py-5 lg:grid-cols-5"
           >
             <div className="flex items-center gap-3">
               <Skeleton className="h-10 w-10 rounded-full" />
@@ -87,8 +88,9 @@ const PoolsList = ({ onSelectPool }) => {
   }
 
   return (
-    <section className="space-y-7">
-      <header className="space-y-3">
+    <section className="">
+      <header className="flex justify-between">
+        <div className="space-y-3">
         <AnimatedFadeUp>
           <Badge
             variant="secondary"
@@ -108,13 +110,9 @@ const PoolsList = ({ onSelectPool }) => {
               Browse active liquidity pools with more realistic market size, volume, and APR.
             </p>
           </AnimatedTextReveal>
+          </div>
         </div>
-      </header>
-
-      <AnimatedFadeUp delay={0.08}>
-        <Card className="border-transparent! bg-transparent shadow-none">
-          <CardContent className="px-0 py-0 border-transparent">
-            <div className="mb-3 flex justify-end">
+         <div className="mb-3 ">
               <ExportCsvButton
                 fileName="quantro_pools"
                 rows={POOLS.map((pool) => ({
@@ -128,8 +126,13 @@ const PoolsList = ({ onSelectPool }) => {
                 className="rounded-lg"
               />
             </div>
+      </header>
+     
 
-            <div className="mb-3 hidden rounded-2xl bg-background/35 px-5 py-4 text-xs uppercase tracking-widest text-muted-foreground lg:grid lg:grid-cols-5">
+      <AnimatedFadeUp delay={0.08} className="pt-3">
+        <Card className=" bg-transparent shadow-none border border-border px-3">
+          <CardContent className="px-0 py-0 ">
+            <div className="mb-3 hidden rounded-xl bg-background/35 px-5 py-4 text-xs uppercase tracking-widest text-muted-foreground lg:grid lg:grid-cols-5">
               <span>Pool</span>
               <span>Type</span>
               <span className="text-right">Liquidity</span>
@@ -137,17 +140,18 @@ const PoolsList = ({ onSelectPool }) => {
               <span className="text-right">APR</span>
             </div>
 
-            <div className="space-y-4">
+            <div className="flex flex-col">
               {POOLS.map((pool, index) => (
+                
+                <React.Fragment key={pool.id}>
                 <motion.button
-                  key={pool.id}
                   type="button"
                   variants={fadeUp(20, 0.46, 0.06 + index * 0.04)}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.15 }}
                   onClick={() => onSelectPool?.(pool)}
-                  className="grid w-full grid-cols-1 gap-4 rounded-2xl bg-card/92 px-5 py-5 text-left transition-colors hover:bg-accent/30 lg:grid-cols-5 lg:items-center"
+                  className="grid w-full relative grid-cols-1 gap-4 rounded-xl bg-card/92 px-5 py-5 text-left transition-colors hover:bg-accent/30 lg:grid-cols-5 lg:items-center"
                 >
                   <PoolPair pool={pool} />
 
@@ -189,6 +193,8 @@ const PoolsList = ({ onSelectPool }) => {
                     </span>
                   </div>
                 </motion.button>
+                {index < POOLS.length - 1 && <span className="w-full h-px bg-border" />}
+                </React.Fragment>
               ))}
             </div>
           </CardContent>

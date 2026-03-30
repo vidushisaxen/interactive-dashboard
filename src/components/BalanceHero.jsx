@@ -22,7 +22,7 @@ const BalanceHero = ({
   onTransfer,
 }) => {
   return (
-    <Card className="border-border/60 shadow-sm">
+    <Card className="border border border-border shadow-sm">
       <CardContent className="flex flex-col gap-8 p-6 lg:p-7">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0 flex-1">
@@ -49,7 +49,7 @@ const BalanceHero = ({
               variant="outline"
               size="icon"
               onClick={onToggleHidden}
-              className="h-10 w-10 rounded-xl cursor-pointer"
+              className="h-10 w-10 rounded-lg cursor-pointer"
             >
               {hidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
             </Button>
@@ -64,17 +64,17 @@ const BalanceHero = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 xl:max-w-[34rem] xl:justify-end">
-            <Button type="button" variant="outline" onClick={onMoveMoney} className="h-11 cursor-pointer rounded-xl">
+            <Button type="button" variant="outline" onClick={onMoveMoney} className="h-11 cursor-pointer rounded-lg">
               <MoveRight className="mr-2 h-4 w-4" />
               Move Money
             </Button>
 
-            <Button type="button" variant="outline" onClick={onRequest} className="h-11 cursor-pointer rounded-xl">
+            <Button type="button" variant="outline" onClick={onRequest} className="h-11 cursor-pointer rounded-lg">
               <ReceiptText className="mr-2 h-4 w-4" />
               Request
             </Button>
 
-            <Button type="button" onClick={onTransfer} className="h-11 cursor-pointer rounded-xl">
+            <Button type="button" onClick={onTransfer} className="h-11 cursor-pointer rounded-lg">
               Transfer
               <SendHorizontal className="ml-2 h-4 w-4" />
             </Button>

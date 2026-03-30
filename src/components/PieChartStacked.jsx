@@ -82,7 +82,7 @@ const PieChartStacked = () => {
       </div>
 
       <div ref={ref} className="flex justify-center">
-        <div className="rounded-xl border border-border/60 bg-background/40 p-4">
+        <div className="rounded-lg border  border border-border bg-background/40 p-4">
           <PieChart key={`pie-stacked-${animationKey}`} width={280} height={250}>
             <Pie
               data={outer}
@@ -144,11 +144,11 @@ const PieChartStacked = () => {
               className={cn(
                 "h-8 cursor-pointer rounded-full px-3 text-[11px]",
                 isActive &&
-                  "border border-primary/20 bg-primary text-primary-foreground hover:bg-primary/90"
+                  "bg-primary text-primary-foreground hover:bg-primary/90"
               )}
             >
               <span
-                className="mr-2 inline-block h-2.5 w-2.5 rounded-full"
+                className="mr-2 inline-block h-2.5 w-2.5 rounded-full border border-white"
                 style={{ backgroundColor: item.fill }}
               />
               {item.name}

@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 const LogoutDialog = ({ open, onClose, onConfirm }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-md overflow-hidden rounded-xl border-(--overlay) bg-background/95 p-0">
+      <DialogContent className="max-w-md overflow-hidden rounded-lg border-(--overlay) bg-background/95 p-0">
         <AnimatePresence mode="wait">
           {open && (
             <motion.div
@@ -36,7 +36,7 @@ const LogoutDialog = ({ open, onClose, onConfirm }) => {
                   initial={{ opacity: 0, scale: 0.82, y: 8 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ delay: 0.08, duration: 0.25 }}
-                  className="flex h-14 w-14 items-center justify-center rounded-xl bg-destructive/10 text-destructive"
+                  className="flex h-14 w-14 items-center justify-center rounded-lg bg-destructive/10 text-destructive"
                 >
                   <LogOut className="h-6 w-6" />
                 </motion.div>

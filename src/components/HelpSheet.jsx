@@ -30,7 +30,7 @@ const HelpSheet = ({ open, onOpenChange }) => {
     >
       <div className="space-y-6">
         <AnimatedSlideIn direction="right" duration={0.55}>
-          <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/30 p-4">
+          <div className="flex items-center justify-between rounded-lg border  border border-border bg-muted/30 p-4">
             <div className="space-y-1">
               <AnimatedTextReveal y={14} blur="6px" duration={0.45}>
                 <p className="text-sm font-medium">Support Hub</p>
@@ -61,7 +61,7 @@ const HelpSheet = ({ open, onOpenChange }) => {
         </AnimatedSlideIn>
 
         <AnimatedSlideIn direction="right" duration={0.45} delay={0.1}>
-          <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+          <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
             <p className="text-sm font-medium">{activeItem.title}</p>
             <p className="mt-1 text-xs text-muted-foreground">
               {activeItem.text}
@@ -81,10 +81,10 @@ const HelpSheet = ({ open, onOpenChange }) => {
                 duration={0.45}
                 delay={0.1 + index * 0.05}
               >
-                <div className="flex items-center justify-between rounded-xl border border-border/60 bg-background/60 p-4 transition-colors hover:bg-accent/40">
+                <div className="flex items-center justify-between rounded-lg border  border border-border bg-background/60 p-4 transition-colors hover:bg-accent/40">
                   <div className="flex min-w-0 items-center gap-3">
                     <AnimatedFadeUp delay={0.02} duration={0.35}>
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                         <Icon className="h-4.5 w-4.5" />
                       </div>
                     </AnimatedFadeUp>

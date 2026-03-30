@@ -286,6 +286,9 @@ export const SIDEBAR_PRIMARY_ITEMS = [
   { label: "Portfolio", icon: BriefcaseBusiness, href: "/overview" },
   { label: "Add Funds", icon: ArrowDownToLine, href: "/deposit" },
   { label: "Cash Out", icon: ArrowUpFromLine, href: "/withdraw" },
+   { label: "Move Money", icon: ArrowUpFromLine, href: "/move-money" },
+    { label: "Request", icon: ArrowUpFromLine, href: "/request" },
+     { label: "Transfer", icon: ArrowUpFromLine, href: "/transfer" },
 ];
 
 export const SEARCH_TERMS = [

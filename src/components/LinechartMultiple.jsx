@@ -32,18 +32,31 @@ const seriesConfig = [
   },
 ];
 
-const LineChartMultiple = () => {
+const LineChartMultiple = ({ isActive = false }) => {
   const [show, setShow] = useState({
     desktop: true,
-    mobile: true,
+    mobile: isActive ? false : true,
   });
   const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
 
+  const activeSeriesCount = Object.values(show).filter(Boolean).length;
+
   const toggleSeries = (key) => {
-    setShow((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+    setShow((prev) => {
+      const newShow = {
+        ...prev,
+        [key]: !prev[key],
+      };
+
+      // Ensure at least one series remains active
+      const activeCount = Object.values(newShow).filter(Boolean).length;
+      if (activeCount === 0) {
+        // If trying to turn off the last active series, keep it active
+        return prev;
+      }
+
+      return newShow;
+    });
   };
 
   return (
@@ -72,13 +85,14 @@ const LineChartMultiple = () => {
                 onClick={() => toggleSeries(series.key)}
                 className={cn(
                   "h-9 rounded-lg px-3 cursor-pointer",
-                  active && "border-primary/20 bg-primary text-primary-foreground hover:bg-primary/90"
+                  active && "bg-primary text-primary-foreground hover:bg-primary/90"
                 )}
               >
                 <span
-                  className="mr-2 inline-block h-1.5 w-4 rounded-full"
+                  className="mr-2 inline-block h-3 w-3 rounded-full bg-white border border-gray-300"
                   style={{
-                    backgroundColor: active ? series.stroke : "var(--chart-series-muted)",
+                    backgroundColor: active ? "white" : "var(--chart-series-muted)",
+                    borderColor: active ? "var(--border)" : "transparent",
                   }}
                 />
                 {series.label}
@@ -88,16 +102,16 @@ const LineChartMultiple = () => {
         </div>
 
         <Badge variant="outline" className="w-fit rounded-full">
-          2 Active series
+          {activeSeriesCount} Active series
         </Badge>
       </div>
 
-      <div ref={ref} className="h-60 min-w-0 w-full">
+      <div ref={ref} className="h-80 min-w-0 w-full">
         <ResponsiveContainer
           width="100%"
           height="100%"
           minWidth={0}
-          minHeight={240}
+          minHeight={320}
         >
           <LineChart
             key={`line-multiple-${animationKey}`}
@@ -136,7 +150,7 @@ const LineChartMultiple = () => {
                 strokeWidth={3}
                 dot={false}
                 activeDot={{
-                  r: 5,
+                  r: 3,
                   fill: "var(--chart-1)",
                   stroke: "var(--background)",
                   strokeWidth: 2,
@@ -156,7 +170,7 @@ const LineChartMultiple = () => {
                 strokeWidth={3}
                 dot={false}
                 activeDot={{
-                  r: 5,
+                  r: 3,
                   fill: "var(--chart-2)",
                   stroke: "var(--background)",
                   strokeWidth: 2,

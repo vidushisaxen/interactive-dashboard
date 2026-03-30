@@ -83,7 +83,7 @@ const FinanceDashboardShell = ({ children }) => {
           />
 
           <main className="px-5 pb-5 pt-4 lg:px-6 lg:pb-6 lg:pt-5">
-            <Card className="min-h-[calc(100vh-110px)] rounded-[28px] border-border/60 bg-card/95 shadow-sm backdrop-blur">
+            <Card className="min-h-[calc(100vh-110px)] rounded-[28px]  border border-border bg-card/95 shadow-sm backdrop-blur">
               <CardContent className="p-6 lg:p-7">{content}</CardContent>
             </Card>
           </main>

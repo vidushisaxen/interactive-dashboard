@@ -39,12 +39,12 @@ function WithdrawSkeleton() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Skeleton className="h-96 w-full rounded-2xl" />
-        <Skeleton className="h-96 w-full rounded-2xl" />
-        <Skeleton className="h-96 w-full rounded-2xl" />
+        <Skeleton className="h-96 w-full rounded-xl" />
+        <Skeleton className="h-96 w-full rounded-xl" />
+        <Skeleton className="h-96 w-full rounded-xl" />
       </div>
 
-      <Skeleton className="h-96 w-full rounded-2xl" />
+      <Skeleton className="h-96 w-full rounded-xl" />
     </section>
   );
 }
@@ -109,7 +109,7 @@ const WithdrawScreen = () => {
       </AnimatedFadeUp>
 
       <AnimatedFadeUp delay={0.04}>
-        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
           <p className="text-sm font-medium">Withdrawal status</p>
           <p className="mt-1 text-xs text-muted-foreground">
             {withdrawStatus}
@@ -121,7 +121,7 @@ const WithdrawScreen = () => {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         {/* WITHDRAW */}
         <AnimatedFadeUp delay={0.06}>
-          <Card className="h-full border-border/60">
+          <Card className="h-full  border border-border">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-semibold tracking-tight">Withdraw</CardTitle>
               <CardDescription>
@@ -159,7 +159,7 @@ const WithdrawScreen = () => {
                 </p>
               )}
 
-              <div className="space-y-3 rounded-lg border border-border/60 p-4">
+              <div className="space-y-3 rounded-lg border  border border-border p-4">
                 <p className="text-xs text-muted-foreground">Expected to receive</p>
 
                 <div className="flex items-center justify-between text-sm">
@@ -206,7 +206,7 @@ const WithdrawScreen = () => {
 
         {/* PRICE */}
         <AnimatedFadeUp delay={0.1}>
-          <Card className="h-full border-border/60">
+          <Card className="h-full  border border-border">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-semibold tracking-tight">Price</CardTitle>
               <CardDescription>
@@ -215,14 +215,14 @@ const WithdrawScreen = () => {
             </CardHeader>
 
             <CardContent className="space-y-5 text-sm">
-              <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
+              <div className="rounded-lg border  border border-border bg-muted/30 p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">ETH → cBNB</span>
                   <span className="font-semibold">1 ETH = 5.845 cBNB</span>
                 </div>
               </div>
 
-              <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
+              <div className="rounded-lg border  border border-border bg-muted/30 p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">cBNB → ETH</span>
                   <span className="font-semibold">1 cBNB = 0.171 ETH</span>
@@ -230,12 +230,12 @@ const WithdrawScreen = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg border border-border/60 p-4">
+                <div className="rounded-lg border  border border-border p-4">
                   <p className="text-xs text-muted-foreground">Swap Fee</p>
                   <p className="mt-1 text-base font-semibold">0.20%</p>
                 </div>
 
-                <div className="rounded-lg border border-border/60 p-4">
+                <div className="rounded-lg border  border border-border p-4">
                   <p className="text-xs text-muted-foreground">Price Impact</p>
                   <p className="mt-1 text-base font-semibold text-primary">
                     {(percent * 0.006).toFixed(2)}%
@@ -243,7 +243,7 @@ const WithdrawScreen = () => {
                 </div>
               </div>
 
-              <div className="rounded-lg border border-border/60 p-4">
+              <div className="rounded-lg border  border border-border p-4">
                 <p className="text-xs text-muted-foreground">Estimated USD Value</p>
                 <p className="mt-1 text-xl font-semibold">${estimatedUsd}</p>
               </div>
@@ -253,7 +253,7 @@ const WithdrawScreen = () => {
 
         {/* POOL SHARE + DEPOSITED MERGED */}
         <AnimatedFadeUp delay={0.14}>
-          <Card className="h-full border-border/60">
+          <Card className="h-full  border border-border">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-semibold tracking-tight">Pool Share & Deposited</CardTitle>
               <CardDescription>
@@ -263,7 +263,7 @@ const WithdrawScreen = () => {
 
             <CardContent className="space-y-5">
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg border border-border/60 p-4">
+                <div className="rounded-lg border  border border-border p-4">
                   <div className="flex items-center gap-2">
                     <Droplets className="h-4 w-4 text-primary" />
                     <p className="text-xs text-muted-foreground">Pool Share</p>
@@ -276,7 +276,7 @@ const WithdrawScreen = () => {
                   </p>
                 </div>
 
-                <div className="rounded-lg border border-border/60 p-4">
+                <div className="rounded-lg border  border border-border p-4">
                   <div className="flex items-center gap-2">
                     <Wallet className="h-4 w-4 text-primary" />
                     <p className="text-xs text-muted-foreground">Remaining Value</p>
@@ -288,7 +288,7 @@ const WithdrawScreen = () => {
                 </div>
               </div>
 
-              <div className="rounded-lg border border-border/60 p-4">
+              <div className="rounded-lg border  border border-border p-4">
                 <p className="text-xs text-muted-foreground">Deposited Assets</p>
 
                 <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
@@ -304,7 +304,7 @@ const WithdrawScreen = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between rounded-lg border border-border/60 p-4">
+              <div className="flex items-center justify-between rounded-lg border  border border-border p-4">
                 <div>
                   <p className="text-xs text-muted-foreground">Claimable Fees</p>
                   <p className="mt-1 text-sm font-semibold">
@@ -317,7 +317,7 @@ const WithdrawScreen = () => {
                 </Button>
               </div>
 
-              <div className="rounded-lg border border-border/60 p-4">
+              <div className="rounded-lg border  border border-border p-4">
                 <div className="flex items-center gap-2">
                   <Coins className="h-4 w-4 text-primary" />
                   <p className="text-xs text-muted-foreground">LP Position Health</p>
@@ -338,7 +338,7 @@ const WithdrawScreen = () => {
       </div>
 
       <AnimatedFadeUp delay={0.18}>
-  <Card className="w-full border-border/60">
+  <Card className="w-full  border border-border">
     <CardHeader>
       <CardTitle className="text-base font-semibold tracking-tight">Withdrawal Progress & Liquidity</CardTitle>
       <CardDescription>
@@ -380,7 +380,7 @@ const WithdrawScreen = () => {
             ? "border-[var(--border-stronger-primary)] bg-[var(--border-soft-primary)]"
             : isCompleted
             ? "border-[var(--border-strong-primary)] bg-primary/10"
-            : "border-border/60 bg-background hover:border-[var(--border-strong-primary)] hover:bg-primary/5"
+            : " border border-border bg-background hover:border-[var(--border-strong-primary)] hover:bg-primary/5"
         }`}
       >
         <div className="mb-2 flex items-center justify-between">
@@ -407,35 +407,35 @@ const WithdrawScreen = () => {
   })}
 </div>
 
-        <div className="rounded-lg border border-border/60 bg-muted/20 p-4">
+        <div className="rounded-lg border  border border-border bg-muted/20 p-4">
           <p className="text-xs text-muted-foreground">Current Step Summary</p>
           <p className="mt-2 text-sm font-medium">{currentStep.summary}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <div className="rounded-lg border border-border/60 p-4">
+        <div className="rounded-lg border  border border-border p-4">
           <p className="text-xs text-muted-foreground">Withdraw %</p>
           <p className="mt-1 text-base font-semibold">{percent}%</p>
         </div>
 
-        <div className="rounded-lg border border-border/60 p-4">
+        <div className="rounded-lg border  border border-border p-4">
           <p className="text-xs text-muted-foreground">Current Step</p>
           <p className="mt-1 text-base font-semibold">{currentStep.step}</p>
         </div>
 
-        <div className="rounded-lg border border-border/60 p-4">
+        <div className="rounded-lg border  border border-border p-4">
           <p className="text-xs text-muted-foreground">ETH Output</p>
           <p className="mt-1 text-base font-semibold">{eth}</p>
         </div>
 
-        <div className="rounded-lg border border-border/60 p-4">
+        <div className="rounded-lg border  border border-border p-4">
           <p className="text-xs text-muted-foreground">cBNB Output</p>
           <p className="mt-1 text-base font-semibold">{bnb}</p>
         </div>
       </div>
 
-      <div className="rounded-xl border border-border/60 p-4">
+      <div className="rounded-lg border  border border-border p-4">
         <div className="mb-4 flex justify-end">
           <ExportCsvButton
             fileName={`quantro_withdraw_${percent}pct`}

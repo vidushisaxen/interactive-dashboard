@@ -128,8 +128,9 @@ const FinanceTopbar = ({
   return (
     <>
       <TooltipProvider delayDuration={120}>
-        <header className="sticky top-0 z-40 flex h-21 items-center justify-between border-b border-border/60 bg-background/80 px-6 backdrop-blur supports-backdrop-filter:bg-background/70 lg:px-8">
-          <div className="flex items-center gap-3">
+        <header className="sticky top-0 z-40 flex h-21 items-center justify-end border-b  border border-border bg-background/80 px-6 backdrop-blur supports-backdrop-filter:bg-background/70 lg:px-8">
+
+          <div className="flex items-center gap-2">
             <div className="relative hidden sm:block">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -141,7 +142,7 @@ const FinanceTopbar = ({
                 onBlur={() => {
                   window.setTimeout(() => setSearchFocused(false), 120);
                 }}
-                className="h-11 w-[320px] rounded-xl pl-10"
+                className="h-11 w-[320px] rounded-lg pl-10"
               />
 
               <AnimatePresence>
@@ -151,7 +152,7 @@ const FinanceTopbar = ({
                     animate="visible"
                     exit="exit"
                     variants={searchDropdownVariants}
-                    className="absolute left-0 top-[calc(100%+10px)] z-50 w-full rounded-xl border border-border/60 bg-popover/96 p-2 shadow-lg backdrop-blur"
+                    className="absolute left-0 top-[calc(100%+10px)] z-50 w-full rounded-lg border  border border-border bg-popover/96 p-2 shadow-lg backdrop-blur"
                   >
                     <motion.p
                       variants={searchItemVariants}
@@ -181,25 +182,21 @@ const FinanceTopbar = ({
                 ) : null}
               </AnimatePresence>
             </div>
-
-            <Tooltip>
+             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   type="button"
                   variant="outline"
                   size="icon"
                   onClick={() => setOpenNotifications(true)}
-                  className="relative h-11 w-11 rounded-full cursor-pointer"
+                  className="relative h-11 w-11 rounded-full cursor-pointer border-border border"
                 >
                   <Bell className="h-4.5 w-4.5" />
-                  <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary" />
+                  <span className="absolute right-1 -top-0.5 h-2.5 w-2.5 rounded-full bg-primary animate-pulse ring-2 ring-background" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Notifications</TooltipContent>
             </Tooltip>
-          </div>
-
-          <div className="flex items-center gap-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -232,36 +229,15 @@ const FinanceTopbar = ({
               </TooltipContent>
             </Tooltip>
 
-            <Button asChild variant="outline" className="h-11 rounded-xl">
-              <Link href="/move-money">
-                <MoveRight className="mr-2 h-4 w-4" />
-                Move Money
-              </Link>
-            </Button>
-
-            <Button asChild variant="outline" className="h-11 rounded-xl">
-              <Link href="/request">
-                <ReceiptText className="mr-2 h-4 w-4" />
-                Request
-              </Link>
-            </Button>
-
-            <Button asChild className="h-11 rounded-xl">
-              <Link href="/transfer">
-                Transfer
-                <SendHorizontal className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-
             <DropdownMenu open={profileMenuOpen} onOpenChange={setProfileMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <Button
                   type="button"
                   variant="outline"
-                  className="ml-2 h-11 rounded-xl px-3 cursor-pointer"
+                  className="ml-2 h-11 rounded-lg px-3 cursor-pointer border border-border bg-background/80 text-foreground hover:bg-white/10 hover:text-orange-400 transition-colors"
                 >
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="text-xs font-bold">
+                  <Avatar className="h-8 w-8 border border-border bg-background">
+                    <AvatarFallback className="text-xs font-bold text-orange-400">
                       JK
                     </AvatarFallback>
                   </Avatar>
@@ -275,7 +251,7 @@ const FinanceTopbar = ({
               <DropdownMenuContent
                 align="end"
                 sideOffset={10}
-                className="w-56 rounded-xl border border-border/60 bg-popover/95 p-2 shadow-lg backdrop-blur"
+                className="w-56 rounded-lg border border-border bg-popover/95 p-2 shadow-lg backdrop-blur"
               >
                 <motion.div
                   initial={{ opacity: 0, y: -8, scale: 0.96 }}
@@ -283,7 +259,7 @@ const FinanceTopbar = ({
                   transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                   className="space-y-2"
                 >
-                  <div className="rounded-xl border border-border/60 bg-background/70 p-3">
+                  <div className="rounded-lg border  border-border bg-background/70 p-3">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
                         <AvatarFallback className="text-sm font-bold">

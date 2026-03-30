@@ -98,7 +98,7 @@ function buildChartData(rangeKey, priceMap, liveTick) {
 
 const StocksRealtimeChart = ({ activeRange, onRangeChange }) => {
   const [visibleSeries, setVisibleSeries] = useState(() =>
-    STOCK_SERIES.reduce((acc, item) => ({ ...acc, [item.key]: true }), {})
+    STOCK_SERIES.reduce((acc, item) => ({ ...acc, [item.key]: item.key === 'nvda' }), {})
   );
   const [liveTick, setLiveTick] = useState(0);
   const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
@@ -151,93 +151,105 @@ const StocksRealtimeChart = ({ activeRange, onRangeChange }) => {
   );
 
   const toggleSeries = (key) => {
-    setVisibleSeries((prev) => ({ ...prev, [key]: !prev[key] }));
+    setVisibleSeries((prev) => {
+      const newVisible = {
+        ...prev,
+        [key]: !prev[key],
+      };
+
+      // Ensure at least one series remains active
+      const activeCount = Object.values(newVisible).filter(Boolean).length;
+      if (activeCount === 0) {
+        // If trying to turn off the last active series, keep it active
+        return prev;
+      }
+
+      return newVisible;
+    });
   };
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-        <div className="flex flex-wrap gap-2">
-          {Object.keys(STOCK_RANGE_CONFIG).map((rangeKey) => {
-            const active = activeRange === rangeKey;
-
-            return (
-              <Button
-                key={rangeKey}
-                type="button"
-                size="sm"
-                variant={active ? "default" : "outline"}
-                onClick={() => onRangeChange(rangeKey)}
-                className={cn("rounded-full px-3 cursor-pointer", !active && "text-muted-foreground")}
-              >
-                {rangeKey}
-              </Button>
-            );
-          })}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <ExportCsvButton
-            fileName={`quantro_stocks_${activeRange.toLowerCase()}`}
-            rows={exportRows}
-            className="rounded-full"
-          />
-          <Badge variant="outline" className="w-fit rounded-full">
-            Real-time market simulation
-          </Badge>
-        </div>
-      </div>
-
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {stockSummary.map((stock) => {
-          const active = visibleSeries[stock.key];
+      <div className="flex flex-wrap gap-2">
+        {Object.keys(STOCK_RANGE_CONFIG).map((rangeKey) => {
+          const active = activeRange === rangeKey;
 
           return (
-            <button
-              key={stock.key}
+            <Button
+              key={rangeKey}
               type="button"
-              onClick={() => toggleSeries(stock.key)}
-              className={cn(
-                "rounded-xl border p-4 text-left transition-colors cursor-pointer",
-                active
-                  ? "border-primary/30 bg-primary/5"
-                  : "border-border/60 bg-background/40 hover:bg-primary hover:text-primary-foreground"
-              )}
+              size="sm"
+              variant={active ? "default" : "outline"}
+              onClick={() => onRangeChange(rangeKey)}
+              className={cn("rounded-full px-3 cursor-pointer", !active && "text-muted-foreground")}
             >
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                    {stock.label}
-                  </p>
-                  <p className="mt-1 text-sm font-medium">{stock.name}</p>
-                </div>
-                <span
-                  className="h-2.5 w-2.5 rounded-full"
-                  style={{ backgroundColor: stock.stroke }}
-                />
-              </div>
-              <p className="mt-4 text-2xl font-semibold tracking-tight">
-                ${stock.current}
-              </p>
-              <p
-                className={cn(
-                  "mt-1 text-xs font-medium",
-                  stock.change >= 0
-                    ? "text-[var(--status-success)]"
-                    : "text-destructive"
-                )}
-              >
-                {stock.change >= 0 ? "+" : ""}
-                {stock.change}%
-              </p>
-            </button>
+              {rangeKey}
+            </Button>
           );
         })}
       </div>
 
+      <div className="flex flex-wrap gap-1">
+        {stockSummary.map((stock, index) => {
+          const active = visibleSeries[stock.key];
+
+          return (
+            <div key={index}>
+              <button
+                key={stock.key}
+                type="button"
+                onClick={() => toggleSeries(stock.key)}
+                className={cn(
+                  "rounded-lg border p-4 text-left transition-colors cursor-pointer flex-1 min-w-0",
+                  active
+                    ? "bg-primary border-primary"
+                    : "border-border bg-background/40 hover:bg-primary/20 hover:text-primary"
+                )}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className={cn("text-xs uppercase tracking-widest", active ? "text-primary-foreground" : "text-muted-foreground")}>
+                      {stock.label}
+                    </p>
+                    <p className={cn("mt-1 text-sm font-medium", active ? "text-primary-foreground" : "")}>{stock.name}</p>
+                  </div>
+                  <span
+                    className="h-2.5 w-2.5 rounded-full"
+                    style={{ backgroundColor: stock.stroke }}
+                  />
+                </div>
+                <p className={cn("mt-4 text-2xl font-semibold tracking-tight", active ? "text-primary-foreground" : "")}>
+                  ${stock.current}
+                </p>
+                <p
+                  className={cn(
+                    "mt-1 text-xs font-medium",
+                    stock.change >= 0
+                      ? "text-[var(--status-success)]"
+                      : "text-destructive"
+                  )}
+                >
+                  {stock.change >= 0 ? "+" : ""}
+                  {stock.change}%
+                </p>
+              </button>
+              {index < stockSummary.length - 1 && <span className="w-1" />}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="flex items-center gap-2">
+        <ExportCsvButton
+          fileName={`quantro_stocks_${activeRange.toLowerCase()}`}
+          rows={exportRows}
+          className="rounded-full"
+        />
+      </div>
+
       <div
         ref={ref}
-        className="h-[380px] min-w-0 rounded-[28px] border border-border/60 bg-background/40 p-4"
+        className="h-[380px] min-w-0 rounded-[28px] border border-border bg-background/40 p-4"
       >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart

@@ -32,14 +32,14 @@ function DepositSkeleton() {
       </div>
 
       <div className="grid grid-cols-1 items-start gap-6 2xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-2xl" />
+        <Skeleton className="h-96 w-full rounded-xl" />
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-            <Skeleton className="h-72 w-full rounded-2xl" />
-            <Skeleton className="h-72 w-full rounded-2xl" />
-            <Skeleton className="h-72 w-full rounded-2xl" />
+            <Skeleton className="h-72 w-full rounded-xl" />
+            <Skeleton className="h-72 w-full rounded-xl" />
+            <Skeleton className="h-72 w-full rounded-xl" />
           </div>
-          <Skeleton className="h-96 w-full rounded-2xl" />
+          <Skeleton className="h-96 w-full rounded-xl" />
         </div>
       </div>
     </section>
@@ -86,7 +86,7 @@ const DepositScreen = () => {
       </AnimatedFadeUp>
 
       <AnimatedFadeUp delay={0.04}>
-        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
           <p className="text-sm font-medium">Deposit status</p>
           <p className="mt-1 text-xs text-muted-foreground">
             {depositStatus}
@@ -98,7 +98,7 @@ const DepositScreen = () => {
         {/* LEFT PANEL */}
         <div className="space-y-6 2xl:col-span-1">
           <AnimatedFadeUp delay={0.08}>
-            <Card>
+            <Card className="border border-border shadow-sm ">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">Tokens</CardTitle>
                 <CardDescription>Select amounts to deposit</CardDescription>
@@ -132,8 +132,19 @@ const DepositScreen = () => {
                       </p>
 
                       <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
                         value={val}
-                        onChange={(e) => setVal(e.target.value)}
+                        onChange={(e) => {
+                          const raw = e.target.value;
+                          const sanitized = raw.replace(/[^0-9.]/g, "");
+                          const dotCount = (sanitized.match(/\./g) || []).length;
+                          if (dotCount > 1) {
+                            return;
+                          }
+                          setVal(sanitized);
+                        }}
                         placeholder={`Enter ${token} amount`}
                       />
                     </div>
@@ -180,7 +191,7 @@ const DepositScreen = () => {
           {/* TOP 3 CARDS */}
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
             <AnimatedFadeUp delay={0.1}>
-              <Card className="h-full">
+              <Card className="h-full border border-border shadow-sm ">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base font-semibold tracking-tight">Token Price</CardTitle>
                   <CardDescription>
@@ -189,14 +200,14 @@ const DepositScreen = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-4 text-sm">
-                  <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
+                  <div className="rounded-lg border  border border-border bg-muted/30 p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">ETH → cBNB</span>
                       <span className="font-semibold">1 ETH = 5.845 cBNB</span>
                     </div>
                   </div>
 
-                  <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
+                  <div className="rounded-lg border  border border-border bg-muted/30 p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">cBNB → ETH</span>
                       <span className="font-semibold">1 cBNB = 0.171 ETH</span>
@@ -204,7 +215,7 @@ const DepositScreen = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-lg border border-border/60 p-4">
+                    <div className="rounded-lg border  border border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         Estimated Price Impact
                       </p>
@@ -213,7 +224,7 @@ const DepositScreen = () => {
                       </p>
                     </div>
 
-                    <div className="rounded-lg border border-border/60 p-4">
+                    <div className="rounded-lg border  border border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         Swap Fee Tier
                       </p>
@@ -225,7 +236,7 @@ const DepositScreen = () => {
             </AnimatedFadeUp>
 
             <AnimatedFadeUp delay={0.14}>
-              <Card className="h-full">
+              <Card className="h-full border border-border shadow-sm ">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base font-semibold tracking-tight">Pool Share</CardTitle>
                   <CardDescription>
@@ -234,7 +245,7 @@ const DepositScreen = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
+                  <div className="rounded-lg border  border border-border bg-muted/30 p-4">
                     <p className="text-xs text-muted-foreground">
                       Your projected share
                     </p>
@@ -244,14 +255,14 @@ const DepositScreen = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="rounded-lg border border-border/60 p-4">
+                    <div className="rounded-lg border  border border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         LP Tokens Minted
                       </p>
                       <p className="mt-1 font-semibold">124.82 LP</p>
                     </div>
 
-                    <div className="rounded-lg border border-border/60 p-4">
+                    <div className="rounded-lg border  border border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         Position Rank
                       </p>
@@ -259,7 +270,7 @@ const DepositScreen = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-lg border border-border/60 p-4 text-sm">
+                  <div className="rounded-lg border  border border-border p-4 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">
                         Share growth at this step
@@ -274,7 +285,7 @@ const DepositScreen = () => {
             </AnimatedFadeUp>
 
             <AnimatedFadeUp delay={0.18}>
-              <Card className="h-full">
+              <Card className="h-full border border-border shadow-sm ">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base font-semibold tracking-tight">Deposited Balance</CardTitle>
                   <CardDescription>
@@ -284,12 +295,12 @@ const DepositScreen = () => {
 
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-lg border border-border/60 p-4">
+                    <div className="rounded-lg border  border border-border p-4">
                       <p className="text-xs text-muted-foreground">ETH Locked</p>
                       <p className="mt-1 text-base font-semibold">2.08685 ETH</p>
                     </div>
 
-                    <div className="rounded-lg border border-border/60 p-4">
+                    <div className="rounded-lg border  border border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         cBNB Locked
                       </p>
@@ -297,14 +308,14 @@ const DepositScreen = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
+                  <div className="rounded-lg border  border border-border bg-muted/30 p-4">
                     <p className="text-xs text-muted-foreground">
                       Estimated deposit value
                     </p>
                     <p className="mt-1 text-xl font-semibold">$8,426.40</p>
                   </div>
 
-                  <div className="flex items-center justify-between rounded-lg border border-border/60 p-4 text-sm">
+                  <div className="flex items-center justify-between rounded-lg border  border border-border p-4 text-sm">
                     <div>
                       <p className="text-xs text-muted-foreground">
                         Claimable Fees
@@ -322,7 +333,7 @@ const DepositScreen = () => {
           </div>
 
           <AnimatedFadeUp delay={0.22}>
-            <Card className="w-full">
+            <Card className="w-full border border-border shadow-sm ">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Deposit Progress & Liquidity
@@ -352,67 +363,56 @@ const DepositScreen = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <Slider
-                      value={stepValue}
-                      min={1}
-                      max={4}
-                      step={1}
-                      onValueChange={setStepValue}
-                      className="w-full"
-                    />
-
-                    <div className="grid grid-cols-4 text-xs text-muted-foreground">
-                      <span className={stepValue[0] >= 1 ? "font-medium text-foreground" : ""}>
-                        Step 1
-                      </span>
-                      <span
-                        className={`text-center ${
-                          stepValue[0] >= 2 ? "font-medium text-foreground" : ""
-                        }`}
-                      >
-                        Step 2
-                      </span>
-                      <span
-                        className={`text-center ${
-                          stepValue[0] >= 3 ? "font-medium text-foreground" : ""
-                        }`}
-                      >
-                        Step 3
-                      </span>
-                      <span
-                        className={`text-right ${
-                          stepValue[0] >= 4 ? "font-medium text-foreground" : ""
-                        }`}
-                      >
-                        Step 4
-                      </span>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+                      {DEPOSIT_STEP_CONTENT.map((step) => {
+                        const isActive = stepValue[0] === step.step;
+                        return (
+                          <button
+                            key={step.step}
+                            type="button"
+                            onClick={() => setStepValue([step.step])}
+                            className={`rounded-lg border p-3 text-left transition-colors hover:border-primary hover:bg-primary/10 ${
+                              isActive
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-card"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-bold">Step {step.step}</span>
+                              {isActive && <span className="text-[10px] font-medium uppercase">Active</span>}
+                            </div>
+                            <p className="mt-2 text-sm font-semibold">{step.title}</p>
+                            <p className="mt-1 text-xs text-muted-foreground">{step.description}</p>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                  <div className="rounded-lg border border-border/60 p-4">
+                  <div className="rounded-lg border  border-border p-4">
                     <p className="text-xs text-muted-foreground">Current Step</p>
                     <p className="mt-1 text-base font-semibold">
                       {currentStep.step}
                     </p>
                   </div>
 
-                  <div className="rounded-lg border border-border/60 p-4">
+                  <div className="rounded-lg border  border-border p-4">
                     <p className="text-xs text-muted-foreground">Progress Rate</p>
                     <p className="mt-1 text-base font-semibold">
                       {currentStep.progress}%
                     </p>
                   </div>
 
-                  <div className="rounded-lg border border-border/60 p-4">
+                  <div className="rounded-lg border border-border p-4">
                     <p className="text-xs text-muted-foreground">Liquidity Factor</p>
                     <p className="mt-1 text-base font-semibold">
                       {currentStep.multiplier}x
                     </p>
                   </div>
 
-                  <div className="rounded-lg border border-border/60 p-4">
+                  <div className="rounded-lg border border-border p-4">
                     <p className="text-xs text-muted-foreground">Estimated Growth</p>
                     <p className="mt-1 text-base font-semibold text-primary">
                       +{Math.round(currentStep.multiplier * 100)}%
@@ -420,7 +420,7 @@ const DepositScreen = () => {
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-border/60 p-4">
+                <div className="rounded-lg border  border-border p-4">
                   <div className="mb-4 flex justify-end">
                     <ExportCsvButton
                       fileName={`quantro_deposit_step_${String(currentStep.step).toLowerCase().replace(/\s+/g, "_")}`}

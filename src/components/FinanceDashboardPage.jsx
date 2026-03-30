@@ -33,6 +33,7 @@ import {
   DASHBOARD_STOCK_WATCHLIST,
   DASHBOARD_TRANSACTIONS,
 } from "./dashboard-data";
+import { cn } from "@/lib/utils";
 
 function DashboardSkeleton() {
   return (
@@ -45,13 +46,13 @@ function DashboardSkeleton() {
         </div>
       </header>
 
-      <Skeleton className="h-56 w-full rounded-2xl" />
-      <Skeleton className="h-32 w-full rounded-2xl" />
-      <Skeleton className="h-32 w-full rounded-2xl" />
+      <Skeleton className="h-56 w-full rounded-xl" />
+      <Skeleton className="h-32 w-full rounded-xl" />
+      <Skeleton className="h-32 w-full rounded-xl" />
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Skeleton className="h-96 w-full rounded-2xl" />
-        <Skeleton className="h-96 w-full rounded-2xl" />
-        <Skeleton className="h-96 w-full rounded-2xl" />
+        <Skeleton className="h-96 w-full rounded-xl" />
+        <Skeleton className="h-96 w-full rounded-xl" />
+        <Skeleton className="h-96 w-full rounded-xl" />
       </div>
     </section>
   );
@@ -62,10 +63,10 @@ function OverviewCard({ title, description, icon: Icon, onOpen }) {
     <button
       type="button"
       onClick={onOpen}
-      className="group rounded-2xl border border-border/60 bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+      className="group rounded-xl border  border border-border bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
     >
       <div className="flex items-center justify-between gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary-foreground/16 group-hover:text-primary-foreground">
+        <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary-foreground/16 group-hover:text-primary-foreground">
           <Icon className="h-5 w-5" />
         </div>
         <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary-foreground" />
@@ -78,9 +79,9 @@ function OverviewCard({ title, description, icon: Icon, onOpen }) {
   );
 }
 
-function SnapshotCard({ title, subtitle, badge, action, children }) {
+function SnapshotCard({ title, subtitle, badge, action, children, className = "" }) {
   return (
-    <Card className="border-border/60 bg-card shadow-sm">
+    <Card className={cn("border border-border bg-card shadow-sm", className)}>
       <CardContent className="space-y-5 p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-3">
@@ -252,7 +253,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
             {DASHBOARD_METRIC_CARDS.map((item) => (
               <div
                 key={item.label}
-                className="rounded-2xl border border-border/60 bg-card/95 p-5 shadow-sm"
+                className="rounded-xl border  border border-border bg-card/95 p-5 shadow-sm"
               >
                 <p className="text-xs uppercase tracking-widest text-muted-foreground">
                   {item.label}
@@ -270,51 +271,9 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
         </AnimatedFadeUp>
       ) : null}
 
-      {sectionVisibility.workflow ? (
-        <AnimatedFadeUp delay={0.2}>
-          <Card className="border-border/60 bg-card shadow-sm">
-            <CardContent className="grid gap-4 p-6 lg:grid-cols-2">
-              <div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="rounded-full">
-                    Data Flow
-                  </Badge>
-                  <Badge className="rounded-full">
-                    Live sync
-                  </Badge>
-                </div>
-                <h3 className="mt-4 text-base font-semibold tracking-tight">
-                  From source ingestion to dashboard insights
-                </h3>
-                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-                  Bank APIs, card transactions, investment feeds, and manual entries flow through sync, processing, normalization, and calculation layers before updating balances, budgets, holdings, KPIs, alerts, and search filters.
-                </p>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                {[
-                  ["Source health", "11 sources connected"],
-                  ["Sync cadence", "Real-time + 15m refresh"],
-                  ["Alerts engine", "3 active triggers"],
-                  ["Search filters", searchQuery ? `Filtering: ${searchQuery}` : "Ready for drill-down"],
-                ].map(([label, value]) => (
-                  <div
-                    key={label}
-                    className="rounded-xl border border-border/60 bg-background/45 p-4"
-                  >
-                    <p className="text-xs text-muted-foreground">{label}</p>
-                    <p className="mt-1 text-sm font-medium">{value}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </AnimatedFadeUp>
-      ) : null}
-
       {!hasVisibleSections ? (
         <AnimatedFadeUp delay={0.22}>
-          <div className="rounded-2xl border border-dashed border-border/70 bg-background/40 p-10 text-center">
+          <div className="rounded-xl border border-dashed border border-border/70 bg-background/40 p-10 text-center">
             <p className="text-base font-semibold tracking-tight">
               No dashboard results for &quot;{searchQuery}&quot;
             </p>
@@ -326,176 +285,119 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
       ) : null}
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <div className="flex min-w-0 flex-col gap-6">
-          {sectionVisibility.accounts ? (
-            <AnimatedFadeUp>
-              <SnapshotCard
-                title="Accounts Snapshot"
-                subtitle="Balances and activity across linked accounts"
-                badge="Accounts"
-                action={
-                  <ExportCsvButton
-                    fileName="quantro_accounts"
-                    rows={filteredAccounts.map((item) => ({
-                      account_name: item.name,
-                      institution: item.institution,
-                      balance: item.balance,
-                      change: item.change,
-                    }))}
-                    className="rounded-lg"
-                  />
-                }
-              >
-                <div className="space-y-3">
-                  {filteredAccounts.map((item) => (
-                    <div
-                      key={item.id}
-                      className="rounded-xl border border-border/60 bg-background/50 p-4"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-sm font-medium">{item.name}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">{item.institution}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm font-semibold">{item.balance}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">{item.change}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </SnapshotCard>
-            </AnimatedFadeUp>
-          ) : null}
-
-          {sectionVisibility.stocks ? (
-            <AnimatedFadeUp>
-              <SnapshotCard
-                title="Stocks Watchlist"
-                subtitle="Signals and movement from your tracked positions"
-                badge="Stocks"
-                action={
-                  <ExportCsvButton
-                    fileName="quantro_watchlist"
-                    rows={filteredWatchlist.map((item) => ({
-                      ticker: item.ticker,
-                      company: item.company,
-                      price: item.price,
-                      move: item.move,
-                      signal: item.signal,
-                    }))}
-                    className="rounded-lg"
-                  />
-                }
-              >
-                <div className="space-y-3">
-                  {filteredWatchlist.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/50 p-4"
-                    >
+        {sectionVisibility.accounts ? (
+          <AnimatedFadeUp>
+            <SnapshotCard
+              className="h-full"
+              title="Accounts Snapshot"
+              subtitle="Balances and activity across linked accounts"
+              badge="Accounts"
+              action={
+                <ExportCsvButton
+                  fileName="quantro_accounts"
+                  rows={filteredAccounts.map((item) => ({
+                    account_name: item.name,
+                    institution: item.institution,
+                    balance: item.balance,
+                    change: item.change,
+                  }))}
+                  className="rounded-lg"
+                />
+              }
+            >
+              <div className="space-y-3">
+                {filteredAccounts.map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-lg border border-border bg-background/50 p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-sm font-medium">{item.ticker}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{item.company}</p>
+                        <p className="text-sm font-medium">{item.name}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{item.institution}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-semibold">{item.price}</p>
-                        <p className="mt-1 text-xs text-primary">{item.move} • {item.signal}</p>
+                        <p className="text-sm font-semibold">{item.balance}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{item.change}</p>
                       </div>
                     </div>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full rounded-xl"
-                    onClick={() => onNav?.("stocks")}
+                  </div>
+                ))}
+              </div>
+            </SnapshotCard>
+          </AnimatedFadeUp>
+        ) : null}
+
+        {sectionVisibility.alerts ? (
+          <AnimatedFadeUp>
+            <SnapshotCard
+              className="h-full"
+              title="Filters And Alerts"
+              subtitle="Search, filters, and alert engine output"
+              badge="Alerts"
+              action={
+                <ExportCsvButton
+                  fileName="quantro_alerts"
+                  rows={filteredAlerts.map((item) => ({
+                    title: item.title,
+                    description: item.description,
+                    severity: item.severity,
+                  }))}
+                  className="rounded-lg"
+                />
+              }
+            >
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-lg border border-border bg-background/50 p-4">
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    <SlidersHorizontal className="h-4 w-4 text-primary" />
+                    Active filters
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    {searchQuery ? `Search scoped to "${searchQuery}"` : "No manual filters applied. Search, route views, and alerts can refine the dashboard."}
+                  </p>
+                </div>
+
+                <div className="rounded-lg border border-border bg-background/50 p-4">
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    <BellRing className="h-4 w-4 text-primary" />
+                    Alert details
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Review notifications, alert details, and recommended next actions before moving money.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {filteredAlerts.map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-lg border border-border bg-background/50 p-4"
                   >
-                    Open Stocks
-                  </Button>
-                </div>
-              </SnapshotCard>
-            </AnimatedFadeUp>
-          ) : null}
-        </div>
-
-        <div className="flex min-w-0 flex-col gap-6">
-          {sectionVisibility.activity ? (
-            <AnimatedFadeUp>
-              <ActivityCard />
-            </AnimatedFadeUp>
-          ) : null}
-
-          {sectionVisibility.alerts ? (
-            <AnimatedFadeUp>
-              <SnapshotCard
-                title="Filters And Alerts"
-                subtitle="Search, filters, and alert engine output"
-                badge="Alerts"
-                action={
-                  <ExportCsvButton
-                    fileName="quantro_alerts"
-                    rows={filteredAlerts.map((item) => ({
-                      title: item.title,
-                      description: item.description,
-                      severity: item.severity,
-                    }))}
-                    className="rounded-lg"
-                  />
-                }
-              >
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl border border-border/60 bg-background/50 p-4">
-                    <div className="flex items-center gap-2 text-sm font-medium">
-                      <SlidersHorizontal className="h-4 w-4 text-primary" />
-                      Active filters
-                    </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      {searchQuery ? `Search scoped to "${searchQuery}"` : "No manual filters applied. Search, route views, and alerts can refine the dashboard."}
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-border/60 bg-background/50 p-4">
-                    <div className="flex items-center gap-2 text-sm font-medium">
-                      <BellRing className="h-4 w-4 text-primary" />
-                      Alert details
-                    </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      Review notifications, alert details, and recommended next actions before moving money.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  {filteredAlerts.map((item) => (
-                    <div
-                      key={item.id}
-                      className="rounded-xl border border-border/60 bg-background/50 p-4"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="mt-0.5 rounded-xl bg-primary/10 p-2 text-primary">
-                          {item.severity === "warning" ? (
-                            <ShieldAlert className="h-4 w-4" />
-                          ) : (
-                            <BellRing className="h-4 w-4" />
-                          )}
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">{item.title}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">{item.description}</p>
-                        </div>
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
+                        {item.severity === "warning" ? (
+                          <ShieldAlert className="h-4 w-4" />
+                        ) : (
+                          <BellRing className="h-4 w-4" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">{item.title}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{item.description}</p>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </SnapshotCard>
-            </AnimatedFadeUp>
-          ) : null}
-        </div>
+                  </div>
+                ))}
+              </div>
+            </SnapshotCard>
+          </AnimatedFadeUp>
+        ) : null}
 
-        <div className="flex min-w-0 flex-col gap-6">
-          {sectionVisibility.transactions ? (
-            <AnimatedFadeUp>
+        {sectionVisibility.transactions ? (
+          <AnimatedFadeUp>
+            <div className="h-full">
               <TransactionsCard
                 title="Recent Activity"
                 subtitle="Transactions, transfers, and cash-flow confirmations"
@@ -504,52 +406,154 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                 onViewAll={() => onNav?.("pools")}
                 onSelectTransaction={() => onNav?.("overview")}
               />
-            </AnimatedFadeUp>
-          ) : null}
+            </div>
+          </AnimatedFadeUp>
+        ) : null}
+      </div>
 
-          {sectionVisibility.portfolio ? (
-            <AnimatedFadeUp>
-              <SnapshotCard
-                title="Portfolio Allocation"
-                subtitle="Holdings and allocation across your personal finance stack"
-                badge="Portfolio"
-                action={
-                  <ExportCsvButton
-                    fileName="quantro_portfolio"
-                    rows={filteredHoldings.map((item) => ({
-                      holding: item.name,
-                      allocation: item.allocation,
-                      value: item.value,
-                      detail: item.detail,
-                    }))}
-                    className="rounded-lg"
-                  />
-                }
-              >
-                <div className="space-y-3">
-                  {filteredHoldings.map((item) => (
-                    <div
-                      key={item.id}
-                      className="rounded-xl border border-border/60 bg-background/50 p-4"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <p className="text-sm font-medium">{item.name}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">{item.detail}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm font-semibold">{item.allocation}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">{item.value}</p>
-                        </div>
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3 mt-6">
+        {sectionVisibility.stocks ? (
+          <AnimatedFadeUp>
+            <SnapshotCard
+              className="h-full"
+              title="Stocks Watchlist"
+              subtitle="Signals and movement from your tracked positions"
+              badge="Stocks"
+              action={
+                <ExportCsvButton
+                  fileName="quantro_watchlist"
+                  rows={filteredWatchlist.map((item) => ({
+                    ticker: item.ticker,
+                    company: item.company,
+                    price: item.price,
+                    move: item.move,
+                    signal: item.signal,
+                  }))}
+                  className="rounded-lg"
+                />
+              }
+            >
+              <div className="space-y-3">
+                {filteredWatchlist.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background/50 p-4"
+                  >
+                    <div>
+                      <p className="text-sm font-medium">{item.ticker}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{item.company}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold">{item.price}</p>
+                      <p className="mt-1 text-xs text-primary">{item.move} • {item.signal}</p>
+                    </div>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full rounded-lg"
+                  onClick={() => onNav?.("stocks")}
+                >
+                  Open Stocks
+                </Button>
+              </div>
+            </SnapshotCard>
+          </AnimatedFadeUp>
+        ) : null}
+
+        {sectionVisibility.workflow ? (
+          <AnimatedFadeUp>
+            <SnapshotCard
+              className="h-full"
+              title="Data Flow"
+              subtitle="Ingestion → normalization → enrichment → notifications"
+              badge="Pipeline"
+              action={
+                <Badge variant="outline" className="rounded-full text-xs">
+                  Live sync
+                </Badge>
+              }
+            >
+              <p className="mb-2 text-xs text-muted-foreground">
+                Pipeline status: ingest → normalize → enrich → notify
+              </p>
+
+              <div className="grid gap-2 sm:grid-cols-2">
+                {[
+                  ["Sources", "11 connected"],
+                  ["Sync", "Real-time"],
+                  ["Alerts", "3 active"],
+                  ["Filters", searchQuery ? searchQuery : "Ready"],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="rounded-lg border border-border bg-background/45 p-3"
+                  >
+                    <p className="text-xs text-muted-foreground">{label}</p>
+                    <p className="text-sm font-medium">{value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-3 space-y-1 text-xs text-muted-foreground">
+                <p>Ingested 28,452 records in the last cycle.</p>
+                <p>Processed 98% with no errors.</p>
+                <p>Next refresh in 15 seconds.</p>
+              </div>
+            </SnapshotCard>
+          </AnimatedFadeUp>
+        ) : null}
+
+        {sectionVisibility.portfolio ? (
+          <AnimatedFadeUp>
+            <SnapshotCard
+              className="h-full"
+              title="Portfolio Allocation"
+              subtitle="Holdings and allocation across your personal finance stack"
+              badge="Portfolio"
+              action={
+                <ExportCsvButton
+                  fileName="quantro_portfolio"
+                  rows={filteredHoldings.map((item) => ({
+                    holding: item.name,
+                    allocation: item.allocation,
+                    value: item.value,
+                    detail: item.detail,
+                  }))}
+                  className="rounded-lg"
+                />
+              }
+            >
+              <div className="space-y-3">
+                {filteredHoldings.map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-lg border border-border bg-background/50 p-4"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-medium">{item.name}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{item.detail}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-semibold">{item.allocation}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{item.value}</p>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </SnapshotCard>
-            </AnimatedFadeUp>
-          ) : null}
-        </div>
+                  </div>
+                ))}
+              </div>
+            </SnapshotCard>
+          </AnimatedFadeUp>
+        ) : null}
       </div>
+
+      {sectionVisibility.activity ? (
+        <AnimatedFadeUp>
+          <ActivityCard />
+        </AnimatedFadeUp>
+      ) : null}
     </section>
   );
 };

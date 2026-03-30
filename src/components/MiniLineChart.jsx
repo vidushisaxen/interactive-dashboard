@@ -22,7 +22,7 @@ const MiniLineChart = ({
 
   if (!data?.length) {
     return (
-      <div className="flex h-full min-h-45 items-center justify-center rounded-xl border border-border/60 bg-background/40 text-sm text-muted-foreground">
+      <div className="flex h-full min-h-45 items-center justify-center rounded-lg border  border border-border bg-background/40 text-sm text-muted-foreground">
         No chart data available
       </div>
     );

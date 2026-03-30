@@ -16,7 +16,7 @@ const TransactionsCard = ({
   onViewAll,
 }) => {
   return (
-    <Card className="border-border/60 shadow-sm">
+    <Card className=" border border-border shadow-sm">
       <CardContent className="space-y-5 p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-3">
@@ -77,11 +77,11 @@ const TransactionsCard = ({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectTransaction?.(item)}
-                className="flex w-full items-center gap-3 cursor-pointer rounded-xl border border-border/60 bg-background/50 px-4 py-3 text-left transition-colors hover:bg-accent/40"
+                className="flex w-full items-center gap-3 cursor-pointer rounded-lg border  border border-border bg-background/50 px-4 py-3 text-left transition-colors hover:bg-accent/40"
               >
                 <div
                   className={cn(
-                    "flex h-11 w-11 items-center justify-center rounded-xl",
+                    "flex h-11 w-11 items-center justify-center rounded-lg",
                     positive
                       ? "bg-[var(--status-success-soft)] text-[var(--status-success)]"
                       : "bg-primary/10 text-primary"
@@ -90,7 +90,7 @@ const TransactionsCard = ({
                   <Icon className="h-4.5 w-4.5" />
                 </div>
 
-                <div className="min-w-0 flex-1">
+                <div className=" flex-1">
                   <div className="truncate text-sm font-medium">{item.title}</div>
                   <div className="mt-0.5 truncate text-xs text-muted-foreground">
                     {item.subtitle}

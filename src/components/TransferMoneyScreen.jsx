@@ -36,13 +36,13 @@ function TransferMoneySkeleton() {
         <Skeleton className="h-4 w-96 max-w-full" />
       </div>
 
-      <Skeleton className="h-24 w-full rounded-2xl" />
+      <Skeleton className="h-24 w-full rounded-xl" />
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-2xl xl:col-span-3" />
+        <Skeleton className="h-96 w-full rounded-xl xl:col-span-3" />
         <div className="space-y-6 xl:col-span-2">
-          <Skeleton className="h-56 w-full rounded-2xl" />
-          <Skeleton className="h-96 w-full rounded-2xl" />
+          <Skeleton className="h-56 w-full rounded-xl" />
+          <Skeleton className="h-96 w-full rounded-xl" />
         </div>
       </div>
     </section>
@@ -92,7 +92,7 @@ const TransferMoneyScreen = () => {
       </header>
 
       <AnimatedFadeUp delay={0.08}>
-        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
           <p className="text-sm font-medium">Transfer status</p>
           <p className="mt-1 text-xs text-muted-foreground">
             {transferStatus}
@@ -100,10 +100,10 @@ const TransferMoneyScreen = () => {
         </div>
       </AnimatedFadeUp>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <div className="space-y-6 xl:col-span-3">
+      <div className="grid min-h-[calc(100vh-220px)] grid-cols-1 gap-6 items-start xl:grid-cols-5 xl:items-stretch">
+        <div className="space-y-6 xl:col-span-3 xl:h-full">
           <AnimatedFadeUp delay={0.12}>
-            <Card className="border-border/60">
+            <Card className="h-full border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Outgoing transfer builder
@@ -127,16 +127,16 @@ const TransferMoneyScreen = () => {
                           type="button"
                           onClick={() => setTransferType(item.id)}
                           className={cn(
-                            "rounded-xl border p-4 text-left transition-colors",
+                            "rounded-lg border p-4 text-left transition-colors",
                             "hover:bg-accent/40",
                             active
                               ? "border-primary/30 bg-primary/5"
-                              : "border-border/60 bg-background/60"
+                              : " border border-border bg-background/60"
                           )}
                         >
                           <div
                             className={cn(
-                              "mb-3 flex h-10 w-10 items-center justify-center rounded-xl",
+                              "mb-3 flex h-10 w-10 items-center justify-center rounded-lg",
                               active
                                 ? "bg-primary/10 text-primary"
                                 : "bg-muted text-muted-foreground"
@@ -194,9 +194,9 @@ const TransferMoneyScreen = () => {
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-border/60 bg-muted/20 p-4">
+                <div className="rounded-lg border  border border-border bg-muted/20 p-4">
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5 rounded-xl bg-primary/10 p-2 text-primary">
+                    <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
                       <ShieldCheck className="h-4 w-4" />
                     </div>
                     <div className="space-y-1">
@@ -212,11 +212,30 @@ const TransferMoneyScreen = () => {
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                  <div className="rounded-lg border border-border bg-background/50 p-3 text-sm">
+                    <p className="text-xs text-muted-foreground">Suggested memo</p>
+                    <p className="mt-1 font-medium">"Vendor invoice #4511 then reconcile"</p>
+                  </div>
+                  <div className="rounded-lg border border-border bg-background/50 p-3 text-sm">
+                    <p className="text-xs text-muted-foreground">Recommended risk level</p>
+                    <p className="mt-1 font-medium">Medium</p>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
+                  <p className="text-xs text-muted-foreground">Transfer capacity</p>
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="text-sm font-medium">Used: $2,450 / $50,000</span>
+                    <span className="text-xs text-primary">4.9% available</span>
+                  </div>
+                </div>
+
                 <div className="flex flex-wrap justify-end gap-3">
                   <Button
                     type="button"
                     variant="outline"
-                    className="rounded-xl"
+                    className="rounded-lg"
                     onClick={() =>
                       setTransferStatus(
                         "Draft saved. Beneficiary and amount details are ready for final review."
@@ -228,7 +247,7 @@ const TransferMoneyScreen = () => {
                   <Button
                     type="button"
                     disabled={!canSubmit}
-                    className="rounded-xl"
+                    className="rounded-lg"
                     onClick={() =>
                       setTransferStatus(
                         `${transferType === "bank" ? "Bank transfer" : "Personal transfer"} ready for $${amountValue.toFixed(2)} to ${form.recipient}.`
@@ -244,9 +263,9 @@ const TransferMoneyScreen = () => {
           </AnimatedFadeUp>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-7 xl:col-span-2 flex h-full flex-col">
           <AnimatedFadeUp delay={0.14}>
-            <Card className="border-border/60">
+            <Card className="h-full border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Transfer details
@@ -255,7 +274,7 @@ const TransferMoneyScreen = () => {
                   Dummy summary values for the outgoing payment rail.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-5">
                 <MetricRow label="Available to send" value="$10,254.00" />
                 <MetricRow label="Transfer fee" value="$0.00" />
                 <MetricRow
@@ -268,7 +287,7 @@ const TransferMoneyScreen = () => {
           </AnimatedFadeUp>
 
           <AnimatedFadeUp delay={0.18}>
-            <Card className="border-border/60">
+            <Card className="h-full border border-border">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Recent beneficiaries
@@ -277,11 +296,11 @@ const TransferMoneyScreen = () => {
                   Sample transfer destinations to make the screen feel complete.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-5">
                 {TRANSFER_BENEFICIARIES.map((item) => (
                   <div
                     key={`${item.name}-${item.amount}`}
-                    className="flex items-center justify-between gap-4 rounded-xl border border-border/60 p-4"
+                    className="flex items-center justify-between gap-4 rounded-lg border  border border-border p-4"
                   >
                     <div>
                       <p className="text-sm font-medium">{item.name}</p>
@@ -327,14 +346,14 @@ const Field = ({ icon: Icon, label, placeholder, value, onChange }) => (
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="h-12 rounded-xl pl-11"
+        className="h-12 rounded-lg pl-11"
       />
     </div>
   </div>
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-lg border  border border-border bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>
