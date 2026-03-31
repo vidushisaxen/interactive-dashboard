@@ -12,26 +12,94 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import MiniLineChart from "./MiniLineChart";
-import { CHART_RAW, POOL_STAT_META, sliceChartDataByRange } from "./dashboard-data";
+import { CHART_RAW, sliceChartDataByRange } from "./dashboard-data";
 import { AnimatedFadeUp, AnimatedTextReveal } from "@/lib/animations";
 import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
 
 function PoolOverviewSkeleton() {
   return (
     <section className="space-y-7">
-      <div className="space-y-2">
-        <Skeleton className="h-7 w-40" />
-        <Skeleton className="h-4 w-56" />
+      {/* HEADER */}
+      <div className="space-y-3">
+        <Skeleton className="h-6 w-28 rounded-full" />
+
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-64 max-w-full" />
+        </div>
       </div>
 
+      {/* TOP CARDS */}
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <Skeleton className="h-72 w-full rounded-xl" />
-        <Skeleton className="h-72 w-full rounded-xl" />
+        
+        {/* Pool Info */}
+        <div className="rounded-xl border border-border bg-card p-6 space-y-4">
+          <Skeleton className="h-5 w-28" />
+
+          <Skeleton className="h-4 w-40" />
+
+          <div className="space-y-3">
+            {[1, 2].map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <Skeleton className="h-3 w-8" />
+                <Skeleton className="h-4 w-4 rounded-full" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="rounded-xl border border-border bg-card p-6 space-y-3">
+          <Skeleton className="h-5 w-20 mb-2" />
+
+          {[1, 2, 3, 4, 5, 6].map((_, i) => (
+            <div key={i} className="flex items-center justify-between">
+              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+          ))}
+        </div>
       </div>
 
-      <Skeleton className="h-96 w-full rounded-xl" />
+      {/* CHART CARD */}
+      <div className="rounded-xl border border-border bg-card p-6 space-y-6">
+        
+        {/* Tabs + filters */}
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          
+          <div className="flex flex-wrap gap-2">
+            {[1, 2, 3, 4].map((_, i) => (
+              <Skeleton key={i} className="h-8 w-24 rounded-lg" />
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-1 border border-border p-1 rounded-lg">
+            {[1, 2, 3, 4, 5, 6].map((_, i) => (
+              <Skeleton key={i} className="h-8 w-10 rounded-md" />
+            ))}
+          </div>
+        </div>
+
+        {/* Stat */}
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+
+        {/* Export button */}
+        <div className="flex justify-end">
+          <Skeleton className="h-9 w-32 rounded-lg" />
+        </div>
+
+        {/* Divider */}
+        <div className="h-px w-full bg-border" />
+
+        {/* Chart */}
+        <Skeleton className="h-56 w-full rounded-lg" />
+      </div>
     </section>
   );
 }
@@ -250,7 +318,7 @@ const PoolOverview = () => {
                 })}
               </div>
 
-              <div className="flex flex-wrap gap-1 rounded-lg border  border border-border p-1">
+              <div className="flex flex-wrap gap-1 rounded-lg border  border-border p-1">
                 {["1H", "4H", "1D", "1W", "1M", "6M"].map((t, index) => {
                   const isActive = activeTime === t;
 

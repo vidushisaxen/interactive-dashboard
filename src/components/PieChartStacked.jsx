@@ -82,7 +82,7 @@ const PieChartStacked = () => {
       </div>
 
       <div ref={ref} className="flex justify-center">
-        <div className="rounded-lg border  border border-border bg-background/40 p-4">
+        <div className="rounded-lg border  border-border bg-background/40 p-4">
           <PieChart key={`pie-stacked-${animationKey}`} width={280} height={250}>
             <Pie
               data={outer}

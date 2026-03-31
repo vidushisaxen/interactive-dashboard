@@ -22,27 +22,129 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
 import { REQUEST_RECENT_REQUESTS } from "./dashboard-data";
 
 function RequestMoneySkeleton() {
   return (
     <section className="space-y-7">
-      <div className="space-y-2">
+      {/* HEADER */}
+      <header className="space-y-2">
         <Skeleton className="h-6 w-24 rounded-full" />
-        <Skeleton className="h-9 w-52" />
-        <Skeleton className="h-4 w-96 max-w-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-64 max-w-full" />
+          <Skeleton className="h-4 w-96 max-w-full" />
+        </div>
+      </header>
+
+      {/* STATUS */}
+      <div className="rounded-lg border border-border p-4 space-y-2">
+        <Skeleton className="h-4 w-36" />
+        <Skeleton className="h-3 w-full max-w-2xl" />
       </div>
 
-      <Skeleton className="h-24 w-full rounded-xl" />
+      {/* MAIN GRID */}
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-6">
+        
+        {/* LEFT: FORM BUILDER */}
+        <div className="space-y-6 xl:col-span-3">
+          <div className="rounded-xl border border-border bg-card shadow-sm p-6 space-y-6">
+            
+            {/* Title */}
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-56" />
+              <Skeleton className="h-4 w-80 max-w-full" />
+            </div>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-xl xl:col-span-3" />
-        <div className="space-y-6 xl:col-span-2">
-          <Skeleton className="h-60 w-full rounded-xl" />
-          <Skeleton className="h-80 w-full rounded-xl" />
+            {/* Tabs */}
+            <div className="grid grid-cols-3 gap-2">
+              {[1, 2, 3].map((_, i) => (
+                <Skeleton key={i} className="h-10 w-full rounded-lg" />
+              ))}
+            </div>
+
+            {/* Form fields */}
+            <div className="space-y-4">
+              {[1, 2, 3, 4].map((_, i) => (
+                <div key={i} className="space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-12 w-full rounded-lg" />
+                </div>
+              ))}
+
+              {/* textarea */}
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-20 w-full rounded-lg" />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end gap-3">
+              <Skeleton className="h-10 w-28 rounded-lg" />
+              <Skeleton className="h-10 w-36 rounded-lg" />
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div className="space-y-6 xl:col-span-3">
+          
+          {/* METRICS */}
+          <div className="rounded-xl border border-border bg-card shadow-sm p-6 space-y-4">
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-44" />
+              <Skeleton className="h-4 w-80 max-w-full" />
+            </div>
+
+            {[1, 2, 3, 4].map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4"
+              >
+                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-4 w-20" />
+              </div>
+            ))}
+          </div>
+
+          {/* RECENT REQUESTS */}
+          <div className="rounded-xl border border-border bg-card shadow-sm p-6 space-y-4">
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="h-4 w-72 max-w-full" />
+            </div>
+
+            {[1, 2, 3].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-lg border border-border p-4 space-y-3"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-36" />
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                  <Skeleton className="h-4 w-16" />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-3 w-3 rounded-full" />
+                  <Skeleton className="h-3 w-28" />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -57,6 +159,15 @@ const RequestMoneyScreen = () => {
     reason: "March expense split",
     email: "billing@atlasretail.co",
     message: "Invoice #2041",
+    currency: "USD",
+    dueDate: "",
+    notes: "",
+    cc: "",
+    subject: "",
+    attachment: "",
+    expiration: "",
+    location: "",
+    customMessage: "",
   });
   const [requestStatus, setRequestStatus] = useState(
     "Create a request by username, email, or QR and track how quickly people respond."
@@ -98,8 +209,8 @@ const RequestMoneyScreen = () => {
         </div>
       </AnimatedFadeUp>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <div className="space-y-6 xl:col-span-3">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-6">
+          <div className="space-y-6 xl:col-span-3">
           <AnimatedFadeUp delay={0.12}>
             <Card className=" border border-border">
               <CardHeader>
@@ -114,21 +225,21 @@ const RequestMoneyScreen = () => {
 
               <CardContent className="space-y-6">
                 <Tabs value={tab} onValueChange={setTab}>
-                  <TabsList className="grid h-auto w-full grid-cols-3 rounded-lg p-1">
-                    <TabsTrigger value="person" className="rounded-lg">
+                  <TabsList className="grid h-auto w-full grid-cols-3 rounded-lg p-1 gap-2">
+                    <TabsTrigger value="person" className="rounded-lg h-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                       Person
                     </TabsTrigger>
-                    <TabsTrigger value="email" className="rounded-lg">
+                    <TabsTrigger value="email" className="rounded-lg h-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                       Email
                     </TabsTrigger>
-                    <TabsTrigger value="qr" className="rounded-lg">
+                    <TabsTrigger value="qr" className="rounded-lg h-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                       QR
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>
 
                 {tab === "person" && (
-                  <div className="space-y-4">
+                  <div className="space-y-4 min-h-100">
                     <Field
                       icon={UserRound}
                       label="Recipient"
@@ -159,11 +270,52 @@ const RequestMoneyScreen = () => {
                         setForm((prev) => ({ ...prev, reason: value }))
                       }
                     />
+                    <div className="space-y-2">
+                      <Label>Currency</Label>
+                      <Select
+                        value={form.currency}
+                        onValueChange={(value) =>
+                          setForm((prev) => ({ ...prev, currency: value }))
+                        }
+                      >
+                        <SelectTrigger className="h-12 rounded-lg">
+                          <SelectValue placeholder="Select currency" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="USD">USD - US Dollar</SelectItem>
+                          <SelectItem value="EUR">EUR - Euro</SelectItem>
+                          <SelectItem value="GBP">GBP - British Pound</SelectItem>
+                          <SelectItem value="JPY">JPY - Japanese Yen</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Due Date</Label>
+                      <Input
+                        type="date"
+                        value={form.dueDate}
+                        onChange={(event) =>
+                          setForm((prev) => ({ ...prev, dueDate: event.target.value }))
+                        }
+                        className="h-12 rounded-lg"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Notes</Label>
+                      <Textarea
+                        placeholder="Additional notes..."
+                        value={form.notes}
+                        onChange={(event) =>
+                          setForm((prev) => ({ ...prev, notes: event.target.value }))
+                        }
+                        className="min-h-20 rounded-lg"
+                      />
+                    </div>
                   </div>
                 )}
 
                 {tab === "email" && (
-                  <div className="space-y-4">
+                  <div className="space-y-4 min-h-100">
                     <Field
                       icon={Mail}
                       label="Email address"
@@ -194,33 +346,78 @@ const RequestMoneyScreen = () => {
                         setForm((prev) => ({ ...prev, message: value }))
                       }
                     />
+                    <Field
+                      label="Subject"
+                      placeholder="Payment Request"
+                      value={form.subject}
+                      onChange={(value) =>
+                        setForm((prev) => ({ ...prev, subject: value }))
+                      }
+                    />
+                    <Field
+                      label="CC"
+                      placeholder="cc@example.com"
+                      value={form.cc}
+                      onChange={(value) =>
+                        setForm((prev) => ({ ...prev, cc: value }))
+                      }
+                    />
                   </div>
                 )}
 
                 {tab === "qr" && (
-                  <div className="rounded-xl border border-dashed  border border-border bg-muted/20 p-8 text-center">
-                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <QrCode className="h-7 w-7" />
+                  <div className="space-y-4 min-h-100">
+                    <div className="rounded-xl border border-dashed border-border bg-muted/20 p-8 text-center">
+                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <QrCode className="h-7 w-7" />
+                      </div>
+                      <h3 className="text-base font-semibold">
+                        Ready-to-share QR request
+                      </h3>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Generate a scannable request for {amountLabel} with a note
+                        attached for point-of-sale or in-person collection.
+                      </p>
+                      <Button
+                        variant="outline"
+                        className="mt-5 rounded-lg"
+                        onClick={() =>
+                          setRequestStatus(
+                            `QR request created for ${amountLabel} with note "${form.reason || form.message || "Payment request"}".`
+                          )
+                        }
+                      >
+                        <QrCode className="mr-2 h-4 w-4" />
+                        Generate QR request
+                      </Button>
                     </div>
-                    <h3 className="text-base font-semibold">
-                      Ready-to-share QR request
-                    </h3>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Generate a scannable request for {amountLabel} with a note
-                      attached for point-of-sale or in-person collection.
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="mt-5 rounded-lg"
-                      onClick={() =>
-                        setRequestStatus(
-                          `QR request created for ${amountLabel} with note "${form.reason || form.message || "Payment request"}".`
-                        )
+                    <Field
+                      label="Expiration"
+                      placeholder="e.g., 24 hours"
+                      value={form.expiration}
+                      onChange={(value) =>
+                        setForm((prev) => ({ ...prev, expiration: value }))
                       }
-                    >
-                      <QrCode className="mr-2 h-4 w-4" />
-                      Generate QR request
-                    </Button>
+                    />
+                    <Field
+                      label="Location"
+                      placeholder="Store location or online"
+                      value={form.location}
+                      onChange={(value) =>
+                        setForm((prev) => ({ ...prev, location: value }))
+                      }
+                    />
+                    <div className="space-y-2">
+                      <Label>Custom Message</Label>
+                      <Textarea
+                        placeholder="Additional message for QR..."
+                        value={form.customMessage}
+                        onChange={(event) =>
+                          setForm((prev) => ({ ...prev, customMessage: event.target.value }))
+                        }
+                        className="min-h-20 rounded-lg"
+                      />
+                    </div>
                   </div>
                 )}
 
@@ -260,7 +457,7 @@ const RequestMoneyScreen = () => {
           </AnimatedFadeUp>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 xl:col-span-3">
           <AnimatedFadeUp delay={0.14}>
             <Card className=" border border-border">
               <CardHeader>
@@ -297,7 +494,7 @@ const RequestMoneyScreen = () => {
                 {REQUEST_RECENT_REQUESTS.map((item) => (
                   <div
                     key={`${item.name}-${item.method}`}
-                    className="rounded-lg border  border border-border p-4"
+                    className="rounded-lg border border-border p-4"
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div>
@@ -327,19 +524,21 @@ const Field = ({ icon: Icon, label, placeholder, value, onChange }) => (
   <div className="space-y-2">
     <Label>{label}</Label>
     <div className="relative">
-      <Icon className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      {Icon && (
+        <Icon className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      )}
       <Input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="h-12 rounded-lg pl-11"
+        className={`h-12 rounded-lg ${Icon ? 'pl-11' : ''}`}
       />
     </div>
   </div>
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-lg border  border border-border bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>

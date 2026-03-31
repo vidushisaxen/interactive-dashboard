@@ -14,10 +14,7 @@ import ExportCsvButton from "./ExportCsvButton";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Slider } from "@/components/ui/slider";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import LiquidityBarChart from "./LiquidityBarChart";
 import { BAR_RAW, DEPOSIT_STEP_CONTENT } from "./dashboard-data";
 import { AnimatedFadeUp } from "@/lib/animations";
@@ -26,20 +23,124 @@ import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
 function DepositSkeleton() {
   return (
     <section className="space-y-7">
+      {/* HEADER */}
       <div className="space-y-2">
-        <Skeleton className="h-7 w-28" />
-        <Skeleton className="h-4 w-96 max-w-full" />
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-4 w-80 max-w-full" />
       </div>
 
-      <div className="grid grid-cols-1 items-start gap-6 2xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-xl" />
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-            <Skeleton className="h-72 w-full rounded-xl" />
-            <Skeleton className="h-72 w-full rounded-xl" />
-            <Skeleton className="h-72 w-full rounded-xl" />
+      {/* STATUS BOX */}
+      <div className="rounded-lg border border-border p-4 space-y-2">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-3 w-72 max-w-full" />
+      </div>
+
+      {/* MAIN GRID */}
+      <div className="grid grid-cols-1 gap-6 2xl:grid-cols-5">
+        
+        {/* LEFT PANEL */}
+        <div className="space-y-6 2xl:col-span-1">
+          <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+            
+            {/* title */}
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-4 w-40" />
+            </div>
+
+            {/* token inputs */}
+            {[1, 2].map((_, i) => (
+              <div key={i} className="space-y-2">
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-6 w-12 rounded-md" />
+                </div>
+                <Skeleton className="h-3 w-24" />
+                <Skeleton className="h-10 w-full rounded-md" />
+              </div>
+            ))}
+
+            {/* checkbox */}
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4 rounded-sm" />
+              <Skeleton className="h-3 w-48" />
+            </div>
+
+            {/* button */}
+            <Skeleton className="h-10 w-full rounded-md" />
           </div>
-          <Skeleton className="h-96 w-full rounded-xl" />
+        </div>
+
+        {/* RIGHT PANEL */}
+        <div className="flex flex-col gap-6 2xl:col-span-4">
+          
+          {/* TOP 3 CARDS */}
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+            
+            {[1, 2, 3].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-xl border border-border bg-card p-5 space-y-4"
+              >
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-36" />
+                  <Skeleton className="h-4 w-48" />
+                </div>
+
+                <Skeleton className="h-16 w-full rounded-lg" />
+                <Skeleton className="h-16 w-full rounded-lg" />
+
+                <div className="grid grid-cols-2 gap-3">
+                  <Skeleton className="h-16 w-full rounded-lg" />
+                  <Skeleton className="h-16 w-full rounded-lg" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* BOTTOM BIG CARD */}
+          <div className="rounded-xl border border-border bg-card p-5 space-y-6">
+            
+            {/* header */}
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-52" />
+              <Skeleton className="h-4 w-72 max-w-full" />
+            </div>
+
+            {/* step controls */}
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <Skeleton className="h-5 w-24 rounded-full" />
+                <Skeleton className="h-4 w-48" />
+              </div>
+
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-40" />
+                <Skeleton className="h-4 w-72 max-w-full" />
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+                {[1, 2, 3, 4].map((_, i) => (
+                  <Skeleton key={i} className="h-20 w-full rounded-lg" />
+                ))}
+              </div>
+            </div>
+
+            {/* stats */}
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              {[1, 2, 3, 4].map((_, i) => (
+                <Skeleton key={i} className="h-20 w-full rounded-lg" />
+              ))}
+            </div>
+
+            {/* chart */}
+            <div className="space-y-4">
+              <div className="flex justify-end">
+                <Skeleton className="h-9 w-32 rounded-md" />
+              </div>
+              <Skeleton className="h-64 w-full rounded-lg" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -200,14 +301,14 @@ const DepositScreen = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-4 text-sm">
-                  <div className="rounded-lg border  border border-border bg-muted/30 p-4">
+                  <div className="rounded-lg border border-border bg-muted/30 p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">ETH → cBNB</span>
                       <span className="font-semibold">1 ETH = 5.845 cBNB</span>
                     </div>
                   </div>
 
-                  <div className="rounded-lg border  border border-border bg-muted/30 p-4">
+                  <div className="rounded-lg border border-border bg-muted/30 p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">cBNB → ETH</span>
                       <span className="font-semibold">1 cBNB = 0.171 ETH</span>
@@ -215,7 +316,7 @@ const DepositScreen = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-lg border  border border-border p-4">
+                    <div className="rounded-lg border  border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         Estimated Price Impact
                       </p>
@@ -224,7 +325,7 @@ const DepositScreen = () => {
                       </p>
                     </div>
 
-                    <div className="rounded-lg border  border border-border p-4">
+                    <div className="rounded-lg border border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         Swap Fee Tier
                       </p>
@@ -245,7 +346,7 @@ const DepositScreen = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  <div className="rounded-lg border  border border-border bg-muted/30 p-4">
+                  <div className="rounded-lg border  border-border bg-muted/30 p-4">
                     <p className="text-xs text-muted-foreground">
                       Your projected share
                     </p>
@@ -255,14 +356,14 @@ const DepositScreen = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="rounded-lg border  border border-border p-4">
+                    <div className="rounded-lg border border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         LP Tokens Minted
                       </p>
                       <p className="mt-1 font-semibold">124.82 LP</p>
                     </div>
 
-                    <div className="rounded-lg border  border border-border p-4">
+                    <div className="rounded-lg border  border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         Position Rank
                       </p>
@@ -270,7 +371,7 @@ const DepositScreen = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-lg border  border border-border p-4 text-sm">
+                  <div className="rounded-lg border  border-border p-4 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">
                         Share growth at this step
@@ -295,12 +396,12 @@ const DepositScreen = () => {
 
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-lg border  border border-border p-4">
+                    <div className="rounded-lg border  border-border p-4">
                       <p className="text-xs text-muted-foreground">ETH Locked</p>
                       <p className="mt-1 text-base font-semibold">2.08685 ETH</p>
                     </div>
 
-                    <div className="rounded-lg border  border border-border p-4">
+                    <div className="rounded-lg border  border-border p-4">
                       <p className="text-xs text-muted-foreground">
                         cBNB Locked
                       </p>
@@ -308,14 +409,14 @@ const DepositScreen = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-lg border  border border-border bg-muted/30 p-4">
+                  <div className="rounded-lg border border-border bg-muted/30 p-4">
                     <p className="text-xs text-muted-foreground">
                       Estimated deposit value
                     </p>
                     <p className="mt-1 text-xl font-semibold">$8,426.40</p>
                   </div>
 
-                  <div className="flex items-center justify-between rounded-lg border  border border-border p-4 text-sm">
+                  <div className="flex items-center justify-between rounded-lg border border-border p-4 text-sm">
                     <div>
                       <p className="text-xs text-muted-foreground">
                         Claimable Fees

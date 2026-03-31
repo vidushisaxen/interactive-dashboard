@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ArrowUpRight, CandlestickChart, Sparkles, TimerReset } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,18 +13,23 @@ import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
 function StocksSkeleton() {
   return (
     <section className="space-y-7">
+      {/* HEADER */}
       <header className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div className="space-y-3">
           <Skeleton className="h-6 w-16 rounded-full" />
           <div className="space-y-2">
-            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-8 w-40" />
             <Skeleton className="h-4 w-80 max-w-full" />
           </div>
         </div>
 
+        {/* market highlights */}
         <div className="grid gap-3 sm:grid-cols-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="rounded-lg border border-border bg-background/50 px-4 py-3">
+          {[1, 2, 3].map((_, i) => (
+            <div
+              key={i}
+              className="rounded-lg border border-border bg-background/50 px-4 py-3"
+            >
               <Skeleton className="h-3 w-20" />
               <Skeleton className="mt-1 h-4 w-16" />
             </div>
@@ -33,40 +37,79 @@ function StocksSkeleton() {
         </div>
       </header>
 
-      <Card className="border border-border bg-card shadow-sm">
-        <CardHeader className="gap-3">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+      {/* CHART CARD */}
+      <div className="rounded-xl border border-border bg-card shadow-sm">
+        <div className="p-6 space-y-6">
+          
+          {/* header */}
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            
             <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-5 w-24 rounded-full" />
-                <Skeleton className="h-5 w-20 rounded-full" />
+              <div className="flex gap-2">
+                <Skeleton className="h-6 w-28 rounded-full" />
+                <Skeleton className="h-6 w-24 rounded-full" />
               </div>
-              <Skeleton className="h-6 w-40" />
-              <Skeleton className="h-4 w-64" />
+
+              <Skeleton className="h-6 w-52" />
+              <Skeleton className="h-4 w-72 max-w-full" />
             </div>
 
-            <div className="rounded-lg border border-border bg-background/45 px-4 py-3">
-              <Skeleton className="h-4 w-28" />
-              <Skeleton className="mt-1 h-3 w-48" />
+            <div className="rounded-lg border border-border bg-background/40 p-4 space-y-2">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-3 w-40" />
             </div>
           </div>
-        </CardHeader>
 
-        <CardContent>
-          <Skeleton className="h-[400px] w-full rounded-lg" />
-        </CardContent>
-      </Card>
+          {/* range buttons */}
+          <div className="flex flex-wrap gap-2">
+            {[1, 2, 3, 4, 5].map((_, i) => (
+              <Skeleton key={i} className="h-8 w-14 rounded-full" />
+            ))}
+          </div>
 
+          {/* stock cards row */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {[1, 2, 3, 4].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-lg border border-border p-4 space-y-3"
+              >
+                <div className="flex justify-between">
+                  <div className="space-y-1">
+                    <Skeleton className="h-3 w-16" />
+                    <Skeleton className="h-4 w-20" />
+                  </div>
+                  <Skeleton className="h-3 w-3 rounded-full" />
+                </div>
+
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+            ))}
+          </div>
+
+          {/* export button */}
+          <div className="flex justify-end">
+            <Skeleton className="h-9 w-36 rounded-lg" />
+          </div>
+
+          {/* chart */}
+          <Skeleton className="h-64 w-full rounded-xl" />
+        </div>
+      </div>
+
+      {/* INSIGHT CARDS */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <Card key={i} className="border border-border bg-card shadow-sm">
-            <CardContent className="p-6">
-              <Skeleton className="h-5 w-32" />
-              <Skeleton className="mt-2 h-4 w-full" />
-              <Skeleton className="mt-1 h-4 w-3/4" />
-              <Skeleton className="mt-4 h-4 w-20" />
-            </CardContent>
-          </Card>
+        {[1, 2, 3].map((_, i) => (
+          <div
+            key={i}
+            className="rounded-xl border border-border bg-card shadow-sm p-6 space-y-3"
+          >
+            <Skeleton className="h-5 w-36" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-4/5" />
+            <Skeleton className="h-4 w-24 mt-2" />
+          </div>
         ))}
       </div>
     </section>
@@ -109,7 +152,7 @@ const StocksScreen = () => {
             {STOCK_MARKET_HIGHLIGHTS.map((item) => (
               <div
                 key={item.label}
-                className="rounded-lg border  border border-border bg-background/50 px-4 py-3"
+                className="rounded-lg border  border-border bg-background/50 px-4 py-3"
               >
                 <p className="text-xs uppercase tracking-widest text-muted-foreground">
                   {item.label}
@@ -144,7 +187,7 @@ const StocksScreen = () => {
                 </CardDescription>
               </div>
 
-              <div className="rounded-lg border  border border-border bg-background/45 px-4 py-3">
+              <div className="rounded-lg border border-border bg-background/45 px-4 py-3">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <TimerReset className="h-4 w-4 text-primary" />
                   Refreshing live

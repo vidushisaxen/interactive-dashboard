@@ -24,7 +24,7 @@ const RadialTooltip = ({ active, payload }) => {
   if (!item) return null;
 
   return (
-    <div className="rounded-lg border  border border-border bg-popover/95 px-3 py-2 text-popover-foreground shadow-md backdrop-blur">
+    <div className="rounded-lg border  border-border bg-popover/95 px-3 py-2 text-popover-foreground shadow-md backdrop-blur">
       <div
         className="text-xs font-semibold"
         style={{ color: item.fill }}
@@ -91,7 +91,7 @@ const RadialChartLabel = () => {
         </div>
       </div>
 
-      <div ref={ref} className="rounded-lg border  border border-border bg-background/40 p-4">
+      <div ref={ref} className="rounded-lg border border-border bg-background/40 p-4">
         <div className="relative flex justify-center">
           <RadialBarChart
             key={`radial-chart-${animationKey}`}

@@ -9,7 +9,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { useReducedMotion } from "motion/react";
+import { flushSync } from "react-dom";
+import { motion, useReducedMotion } from "motion/react";
 import AppLoader from "./AppLoader";
 
 const ThemeContext = createContext(null);
@@ -17,39 +18,54 @@ const STORAGE_KEY = "interactive-dashboard-theme";
 const LOADER_STORAGE_KEY = "quantro-loader-seen";
 const LOADER_MS = 1500;
 
-function applyDirectionalTheme(nextTheme, direction = "ltr") {
-  const root = document.documentElement;
-  const elements = Array.from(document.querySelectorAll(".themed"));
+// easeOutQuart — quick pop, smooth tail
+const RIPPLE_EASE = [0.5, 1, 0.8, 1];
+const RIPPLE_DURATION = 0.5;
 
-  const maxX = window.innerWidth || 1;
-
-  elements.forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    const x = direction === "ltr" ? rect.left : maxX - rect.right;
-    const normalized = Math.max(0, Math.min(1, x / maxX));
-    const delay = Math.round(normalized * 280);
-
-    el.style.transitionDelay = `${delay}ms`;
-  });
-
-  requestAnimationFrame(() => {
-    root.dataset.theme = nextTheme;
-  });
-
-  window.setTimeout(() => {
-    elements.forEach((el) => {
-      el.style.transitionDelay = "";
-    });
-  }, 800);
+function getMaskRadius(x, y) {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  return Math.ceil(
+    Math.max(
+      Math.hypot(x, y),
+      Math.hypot(w - x, y),
+      Math.hypot(x, h - y),
+      Math.hypot(w - x, h - y)
+    )
+  );
 }
 
+// ─── Motion ripple overlay ────────────────────────────────────────────────────
+function RippleOverlay({ origin, color, onComplete }) {
+  const x = origin?.x ?? window.innerWidth / 2;
+  const y = origin?.y ?? window.innerHeight / 2;
+  const r = getMaskRadius(x, y);
+  return (
+    <motion.div
+      aria-hidden="true"
+      initial={{ clipPath: `circle(0px at ${x}px ${y}px)` }}
+      animate={{ clipPath: `circle(${r}px at ${x}px ${y}px)` }}
+      transition={{ duration: RIPPLE_DURATION, ease: RIPPLE_EASE }}
+      onAnimationComplete={onComplete}
+      style={{ position: "fixed", inset: 0, zIndex: 100, pointerEvents: "none", backgroundColor: color }}
+    />
+  );
+}
+
+// ─── Provider ────────────────────────────────────────────────────────────────
 export function ThemeProvider({ children }) {
   const prefersReducedMotion = useReducedMotion();
-  const [theme, setTheme] = useState("dark");
+
+  const [theme, setThemeState] = useState("dark");
   const [showLoader, setShowLoader] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const nextDirectionRef = useRef("ltr");
 
+  // Ripple state: null = idle, object = animating
+  const [ripple, setRipple] = useState(null);
+  const animatingRef = useRef(false);
+  const isFirstRender = useRef(true);
+
+  // ── Hydrate from storage ───────────────────────────────────────────────────
   useEffect(() => {
     const frameId = window.requestAnimationFrame(() => {
       setIsMounted(true);
@@ -60,11 +76,10 @@ export function ThemeProvider({ children }) {
         : "light";
       const nextTheme = savedTheme || systemTheme;
 
-      setTheme(nextTheme);
+      setThemeState(nextTheme);
       document.documentElement.dataset.theme = nextTheme;
 
       const hasSeenLoader = window.sessionStorage.getItem(LOADER_STORAGE_KEY);
-
       if (!hasSeenLoader) {
         window.sessionStorage.setItem(LOADER_STORAGE_KEY, "true");
         setShowLoader(true);
@@ -74,47 +89,124 @@ export function ThemeProvider({ children }) {
     return () => window.cancelAnimationFrame(frameId);
   }, []);
 
+  // ── Persist theme (skip on first hydration render) ────────────────────────
   useEffect(() => {
-    if (isMounted) {
-      document.documentElement.dataset.theme = theme;
-      window.localStorage.setItem(STORAGE_KEY, theme);
+    if (!isMounted) return;
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
     }
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem(STORAGE_KEY, theme);
   }, [isMounted, theme]);
 
+  // ── Loader auto-dismiss ───────────────────────────────────────────────────
   useEffect(() => {
     if (!showLoader) return;
-
-    const timeoutId = window.setTimeout(
+    const id = window.setTimeout(
       () => setShowLoader(false),
       prefersReducedMotion ? 400 : LOADER_MS
     );
-
-    return () => window.clearTimeout(timeoutId);
+    return () => window.clearTimeout(id);
   }, [prefersReducedMotion, showLoader]);
 
+  // ── Ripple complete: hide overlay, unlock ─────────────────────────────────
+  const handleRippleComplete = useCallback(() => {
+    setRipple(null);
+    animatingRef.current = false;
+  }, []);
+
+  // ── View Transition path ──────────────────────────────────────────────────
+  const runViewTransitionAnimation = useCallback(
+    (nextTheme, origin) => {
+      const x = origin?.x ?? window.innerWidth / 2;
+      const y = origin?.y ?? window.innerHeight / 2;
+      const radius = getMaskRadius(x, y);
+
+      animatingRef.current = true;
+
+      const transition = document.startViewTransition(() => {
+        flushSync(() => {
+          setThemeState(nextTheme);
+          document.documentElement.dataset.theme = nextTheme;
+        });
+      });
+
+      transition.ready
+        .then(() => {
+          document.documentElement
+            .animate(
+              {
+                clipPath: [
+                  `circle(0px at ${x}px ${y}px)`,
+                  `circle(${radius}px at ${x}px ${y}px)`,
+                ],
+              },
+              {
+                duration: RIPPLE_DURATION * 1000,
+                easing: `cubic-bezier(${RIPPLE_EASE.join(",")})`,
+                pseudoElement: "::view-transition-new(root)",
+              }
+            )
+            .finished.finally(() => {
+              window.localStorage.setItem(STORAGE_KEY, nextTheme);
+              animatingRef.current = false;
+            });
+        })
+        .catch(() => {
+          // Fall through to Motion ripple
+          animatingRef.current = false;
+          runMotionRipple(nextTheme, origin);
+        });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  // ── Motion ripple path (fallback / explicit) ──────────────────────────────
+  const runMotionRipple = useCallback((nextTheme, origin) => {
+    const overlayColor = nextTheme === "dark" ? "#09090b" : "#f8fafc";
+
+    animatingRef.current = true;
+
+    // Mount the ripple overlay first, swap theme at ~35% of the animation
+    setRipple({ origin, color: overlayColor, nextTheme });
+
+    window.setTimeout(() => {
+      setThemeState(nextTheme);
+      document.documentElement.dataset.theme = nextTheme;
+      window.localStorage.setItem(STORAGE_KEY, nextTheme);
+    }, RIPPLE_DURATION * 1000 * 0.3);
+  }, []);
+
+  // ── Main applyTheme ───────────────────────────────────────────────────────
   const applyTheme = useCallback(
-    (nextTheme) => {
-      if (!nextTheme || nextTheme === theme) return;
+    (nextTheme, origin) => {
+      if (!nextTheme || nextTheme === theme || animatingRef.current) return;
 
       if (prefersReducedMotion) {
-        setTheme(nextTheme);
+        setThemeState(nextTheme);
+        document.documentElement.dataset.theme = nextTheme;
+        window.localStorage.setItem(STORAGE_KEY, nextTheme);
         return;
       }
 
-      const direction = nextDirectionRef.current;
-      nextDirectionRef.current = direction === "ltr" ? "rtl" : "ltr";
+      if (typeof document !== "undefined" && document.startViewTransition) {
+        runViewTransitionAnimation(nextTheme, origin);
+        return;
+      }
 
-      setTheme(nextTheme);
-      applyDirectionalTheme(nextTheme, direction);
+      runMotionRipple(nextTheme, origin);
     },
-    [prefersReducedMotion, theme]
+    [prefersReducedMotion, runMotionRipple, runViewTransitionAnimation, theme]
   );
 
   const value = useMemo(
     () => ({
       theme,
       setTheme: applyTheme,
-      toggleTheme: () => applyTheme(theme === "dark" ? "light" : "dark"),
+      toggleTheme: (origin) =>
+        applyTheme(theme === "dark" ? "light" : "dark", origin),
     }),
     [applyTheme, theme]
   );
@@ -122,17 +214,32 @@ export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={value}>
       {children}
+
+      {ripple && (
+        <RippleOverlay
+          key={ripple.nextTheme}
+          origin={ripple.origin}
+          color={ripple.color}
+          onComplete={handleRippleComplete}
+        />
+      )}
+
+      <style>{`
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation: none;
+          mix-blend-mode: normal;
+        }
+      `}</style>
+
       {showLoader ? <AppLoader reducedMotion={prefersReducedMotion} /> : null}
     </ThemeContext.Provider>
   );
 }
 
+// ─── Hook ────────────────────────────────────────────────────────────────────
 export function useTheme() {
   const context = useContext(ThemeContext);
-
-  if (!context) {
-    throw new Error("useTheme must be used within ThemeProvider.");
-  }
-
+  if (!context) throw new Error("useTheme must be used within ThemeProvider.");
   return context;
 }

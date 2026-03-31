@@ -77,13 +77,13 @@ const TransactionsCard = ({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectTransaction?.(item)}
-                className="flex w-full items-center gap-3 cursor-pointer rounded-lg border  border border-border bg-background/50 px-4 py-3 text-left transition-colors hover:bg-accent/40"
+                className="flex w-full items-center gap-3 cursor-pointer rounded-lg border  border-border bg-background/50 px-4 py-3 text-left transition-colors hover:bg-accent/40"
               >
                 <div
                   className={cn(
                     "flex h-11 w-11 items-center justify-center rounded-lg",
                     positive
-                      ? "bg-[var(--status-success-soft)] text-[var(--status-success)]"
+                      ? "bg-(--status-success-soft) text-(--status-success)"
                       : "bg-primary/10 text-primary"
                   )}
                 >
@@ -101,7 +101,7 @@ const TransactionsCard = ({
                   <div
                     className={cn(
                       "text-base font-semibold",
-                      positive ? "text-[var(--status-success)]" : "text-foreground"
+                      positive ? "text-(--status-success)" : "text-foreground"
                     )}
                   >
                     {item.amount}

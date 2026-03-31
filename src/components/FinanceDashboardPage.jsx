@@ -2,18 +2,11 @@
 
 import { useMemo, useState } from "react";
 import {
-  ArrowDownLeft,
   ArrowUpRight,
-  BarChart3,
   BellRing,
-  BriefcaseBusiness,
-  Landmark,
   ShieldAlert,
   SlidersHorizontal,
-  TrendingUp,
-  Wallet,
 } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -38,21 +31,131 @@ import { cn } from "@/lib/utils";
 function DashboardSkeleton() {
   return (
     <section className="space-y-7">
+      {/* HEADER */}
       <header className="space-y-2">
-        <Skeleton className="h-6 w-24 rounded-full" />
+        <Skeleton className="h-6 w-28 rounded-full" />
         <div className="space-y-2">
-          <Skeleton className="h-8 w-56" />
-          <Skeleton className="h-4 w-88 max-w-full" />
+          <Skeleton className="h-8 w-64 max-w-full" />
+          <Skeleton className="h-4 w-96 max-w-full" />
         </div>
       </header>
 
-      <Skeleton className="h-56 w-full rounded-xl" />
-      <Skeleton className="h-32 w-full rounded-xl" />
-      <Skeleton className="h-32 w-full rounded-xl" />
+      {/* HERO (Balance card) */}
+      <div className="rounded-xl border border-border bg-card p-6 space-y-4">
+        <Skeleton className="h-4 w-40" />
+        <Skeleton className="h-10 w-56" />
+        <Skeleton className="h-4 w-full max-w-xl" />
+
+        <div className="flex gap-3 pt-2">
+          <Skeleton className="h-10 w-32 rounded-lg" />
+          <Skeleton className="h-10 w-32 rounded-lg" />
+          <Skeleton className="h-10 w-32 rounded-lg" />
+        </div>
+      </div>
+
+      {/* QUICK ACCESS */}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+        {[1, 2, 3, 4, 5].map((_, i) => (
+          <div
+            key={i}
+            className="rounded-xl border border-border bg-card p-5 space-y-4"
+          >
+            <div className="flex justify-between">
+              <Skeleton className="h-10 w-10 rounded-lg" />
+              <Skeleton className="h-4 w-4" />
+            </div>
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="h-4 w-full" />
+          </div>
+        ))}
+      </div>
+
+      {/* METRICS */}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {[1, 2, 3, 4].map((_, i) => (
+          <div
+            key={i}
+            className="rounded-xl border border-border bg-card p-5 space-y-3"
+          >
+            <Skeleton className="h-3 w-24" />
+            <Skeleton className="h-8 w-28" />
+            <div className="flex gap-2">
+              <Skeleton className="h-4 w-12 rounded-full" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* FIRST GRID (Accounts / Alerts / Transactions) */}
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Skeleton className="h-96 w-full rounded-xl" />
-        <Skeleton className="h-96 w-full rounded-xl" />
-        <Skeleton className="h-96 w-full rounded-xl" />
+        {[1, 2, 3].map((_, i) => (
+          <div
+            key={i}
+            className="rounded-xl border border-border bg-card p-6 space-y-4"
+          >
+            {/* header */}
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="h-4 w-64 max-w-full" />
+            </div>
+
+            {/* list */}
+            {[1, 2, 3].map((_, j) => (
+              <div
+                key={j}
+                className="rounded-lg border border-border p-4 flex justify-between"
+              >
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+                <div className="space-y-2 text-right">
+                  <Skeleton className="h-4 w-20 ml-auto" />
+                  <Skeleton className="h-3 w-16 ml-auto" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* SECOND GRID (Stocks / Workflow / Portfolio) */}
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        {[1, 2, 3].map((_, i) => (
+          <div
+            key={i}
+            className="rounded-xl border border-border bg-card p-6 space-y-4"
+          >
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="h-4 w-64 max-w-full" />
+            </div>
+
+            {[1, 2, 3].map((_, j) => (
+              <div
+                key={j}
+                className="rounded-lg border border-border p-4 flex justify-between"
+              >
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+                <Skeleton className="h-4 w-20" />
+              </div>
+            ))}
+
+            <Skeleton className="h-10 w-full rounded-lg" />
+          </div>
+        ))}
+      </div>
+
+      {/* ACTIVITY */}
+      <div className="rounded-xl border border-border bg-card p-6 space-y-4">
+        <Skeleton className="h-5 w-40" />
+        <Skeleton className="h-4 w-72 max-w-full" />
+
+        <Skeleton className="h-40 w-full rounded-lg" />
       </div>
     </section>
   );
@@ -63,7 +166,7 @@ function OverviewCard({ title, description, icon: Icon, onOpen }) {
     <button
       type="button"
       onClick={onOpen}
-      className="group rounded-xl border  border border-border bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+      className="group rounded-xl border  border-border bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary-foreground/16 group-hover:text-primary-foreground">
@@ -253,7 +356,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
             {DASHBOARD_METRIC_CARDS.map((item) => (
               <div
                 key={item.label}
-                className="rounded-xl border  border border-border bg-card/95 p-5 shadow-sm"
+                className="rounded-xl border border-border bg-card/95 p-5 shadow-sm"
               >
                 <p className="text-xs uppercase tracking-widest text-muted-foreground">
                   {item.label}
@@ -273,7 +376,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
 
       {!hasVisibleSections ? (
         <AnimatedFadeUp delay={0.22}>
-          <div className="rounded-xl border border-dashed border border-border/70 bg-background/40 p-10 text-center">
+          <div className="rounded-xl  border-dashed border border-border/70 bg-background/40 p-10 text-center">
             <p className="text-base font-semibold tracking-tight">
               No dashboard results for &quot;{searchQuery}&quot;
             </p>

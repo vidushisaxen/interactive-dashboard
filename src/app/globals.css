@@ -1,42 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --background: hsl(240 10% 6%);
-  --foreground: hsl(0 0% 96%);
+  --background: rgb(15, 15, 19);
+  --foreground: rgb(245, 245, 245);
 
-  --card: hsl(240 8% 8%);
-  --card-foreground: hsl(0 0% 96%);
+  --card: rgb(20, 20, 24);
+  --card-foreground: rgb(245, 245, 245);
 
-  --popover: hsl(240 8% 8%);
-  --popover-foreground: hsl(0 0% 96%);
+  --popover: rgb(20, 20, 24);
+  --popover-foreground: rgb(245, 245, 245);
 
-  --primary: hsl(24 100% 50%);
-  --primary-foreground: hsl(0 0% 100%);
+  --primary: rgb(255, 102, 0);
+  --primary-foreground: rgb(255, 255, 255);
 
-  --secondary: hsl(240 6% 12%);
-  --secondary-foreground: hsl(0 0% 96%);
+  --secondary: rgb(30, 30, 35);
+  --secondary-foreground: rgb(245, 245, 245);
 
-  --muted: hsl(240 6% 14%);
-  --muted-foreground: hsl(240 5% 60%);
+  --muted: rgb(35, 35, 41);
+  --muted-foreground: rgb(148, 148, 158);
 
-  --accent: hsl(240 6% 16%);
-  --accent-foreground: hsl(0 0% 96%);
+  --accent: rgb(39, 39, 46);
+  --accent-foreground: rgb(245, 245, 245);
 
-  --destructive: hsl(0 70% 55%);
-  --destructive-foreground: hsl(0 0% 96%);
+  --destructive: rgb(221, 60, 60);
+  --destructive-foreground: rgb(245, 245, 245);
 
-  --border: #ffffff2a;
-  --input: hsl(240 6% 18%);
-  --ring: hsl(24 100% 50%);
+  --border: rgba(255, 255, 255, 0.16);
+  --input: rgb(43, 43, 49);
+  --ring: rgb(255, 102, 0);
 
   --radius: 1rem;
 
-  --chart-1: hsl(24 100% 50%);
-  --chart-2: hsl(24 95% 65%);
-  --chart-3: hsl(28 100% 62%);
-  --chart-4: hsl(32 100% 68%);
-  --chart-5: hsl(36 100% 74%);
-  --chart-6: hsl(40 100% 80%);
+  --chart-1: rgb(255, 102, 0);
+  --chart-2: rgb(251, 139, 60);
+  --chart-3: rgb(255, 156, 61);
+  --chart-4: rgb(255, 177, 92);
+  --chart-5: rgb(255, 197, 125);
+  --chart-6: rgb(255, 217, 163);
   --chart-grid: color-mix(in srgb, var(--border) 70%, transparent);
   --chart-grid-strong: color-mix(in srgb, var(--border) 65%, transparent);
   --chart-cursor: color-mix(in srgb, var(--muted) 70%, transparent);
@@ -44,71 +44,55 @@
   --chart-area-end: color-mix(in srgb, var(--primary) 2%, transparent);
   --chart-ring-bg: color-mix(in srgb, var(--muted) 45%, transparent);
   --chart-series-muted: color-mix(in srgb, var(--muted-foreground) 35%, transparent);
-  --status-success: hsl(150 69% 52%);
+  --status-success: rgb(50, 217, 134);
   --status-success-soft: color-mix(in srgb, var(--status-success) 12%, transparent);
-  --sidebar-active-bg: color-mix(in srgb, var(--primary) 20%, transparent);
-  --sidebar-active-hover-bg: color-mix(in srgb, var(--primary) 25%, transparent);
-  --sidebar-active-fg: var(--primary-foreground);
   --sidebar-active-ring: color-mix(in srgb, var(--primary) 30%, transparent);
   --overlay: color-mix(in srgb, var(--foreground) 10%, transparent);
-  --card-elevated-shadow: 0 0 0 1px color-mix(in srgb, var(--foreground) 2%, transparent), 0 24px 64px color-mix(in srgb, var(--background) 36%, transparent);
-  --surface-veil: color-mix(in srgb, var(--muted) 50%, transparent);
-  --surface-soft: color-mix(in srgb, var(--muted) 30%, transparent);
-  --surface-softer: color-mix(in srgb, var(--muted) 20%, transparent);
-  --surface-strong: color-mix(in srgb, var(--background) 50%, transparent);
   --border-soft-primary: color-mix(in srgb, var(--primary) 15%, transparent);
-  --border-strong-primary: color-mix(in srgb, var(--primary) 30%, transparent);
-  --border-stronger-primary: color-mix(in srgb, var(--primary) 40%, transparent);
   --control-track: color-mix(in srgb, var(--foreground) 30%, transparent);
   --button-height: 2.75rem;
   --button-padding-x: 1rem;
   --button-hover-bg: var(--primary);
   --button-hover-fg: var(--primary-foreground);
   --button-hover-border: color-mix(in srgb, var(--primary) 88%, black 12%);
-  --theme-wipe-dark-start: hsl(240 10% 10%);
-  --theme-wipe-dark-end: hsl(24 100% 38%);
-  --theme-wipe-light-start: hsl(37 44% 94%);
-  --theme-wipe-light-end: hsl(30 100% 62%);
-  --shell-glow-a: color-mix(in srgb, hsl(24 100% 50%) 14%, transparent);
-  --shell-glow-b: color-mix(in srgb, hsl(262 83% 58%) 10%, transparent);
   color-scheme: dark;
 }
 
 :root[data-theme="light"] {
-  --background: hsl(36 33% 97%);
-  --foreground: hsl(220 18% 16%);
+  --background: rgb(248, 244, 238);
+  --foreground: rgb(30, 27, 24);
 
-  --card: hsl(0 0% 100%);
-  --card-foreground: hsl(220 18% 16%);
+  --card: rgb(255, 251, 246);
+  --card-foreground: rgb(30, 27, 24);
 
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(220 18% 16%);
+  --popover: rgb(255, 251, 246);
+  --popover-foreground: rgb(30, 27, 24);
 
-  --primary: hsl(24 100% 50%);
-  --primary-foreground: hsl(0 0% 100%);
+  --primary: rgb(255, 102, 0);
+  --primary-foreground: rgb(255, 255, 255);
 
-  --secondary: hsl(34 38% 92%);
-  --secondary-foreground: hsl(220 18% 20%);
+  --secondary: rgb(238, 228, 217);
+  --secondary-foreground: rgb(49, 42, 36);
 
-  --muted: hsl(35 32% 93%);
-  --muted-foreground: hsl(220 10% 42%);
+  --muted: rgb(242, 235, 227);
+  --muted-foreground: rgb(113, 101, 92);
 
-  --accent: hsl(34 44% 90%);
-  --accent-foreground: hsl(220 18% 16%);
+  --accent: rgb(245, 234, 220);
+  --accent-foreground: rgb(30, 27, 24);
 
-  --destructive: hsl(0 71% 54%);
-  --destructive-foreground: hsl(0 0% 100%);
+  --destructive: rgb(217, 69, 69);
+  --destructive-foreground: rgb(255, 255, 255);
 
-  --border: #1111111a;
-  --input: hsl(32 24% 84%);
-  --ring: hsl(24 100% 50%);
+  --border: rgba(46, 33, 22, 0.12);
+  --input: rgb(226, 214, 202);
+  --ring: rgb(255, 102, 0);
 
-  --chart-1: hsl(24 100% 50%);
-  --chart-2: hsl(24 95% 65%);
-  --chart-3: hsl(28 100% 62%);
-  --chart-4: hsl(32 100% 68%);
-  --chart-5: hsl(36 100% 74%);
-  --chart-6: hsl(40 100% 80%);
+  --chart-1: rgb(255, 102, 0);
+  --chart-2: rgb(246, 129, 48);
+  --chart-3: rgb(235, 146, 66);
+  --chart-4: rgb(224, 165, 93);
+  --chart-5: rgb(212, 185, 126);
+  --chart-6: rgb(201, 205, 160);
   --chart-grid: color-mix(in srgb, var(--border) 70%, transparent);
   --chart-grid-strong: color-mix(in srgb, var(--border) 65%, transparent);
   --chart-cursor: color-mix(in srgb, var(--muted) 70%, transparent);
@@ -116,33 +100,17 @@
   --chart-area-end: color-mix(in srgb, var(--primary) 2%, transparent);
   --chart-ring-bg: color-mix(in srgb, var(--muted) 45%, transparent);
   --chart-series-muted: color-mix(in srgb, var(--muted-foreground) 35%, transparent);
-  --status-success: hsl(150 59% 42%);
+  --status-success: rgb(38, 166, 105);
   --status-success-soft: color-mix(in srgb, var(--status-success) 12%, transparent);
-  --sidebar-active-bg: color-mix(in srgb, var(--primary) 16%, transparent);
-  --sidebar-active-hover-bg: color-mix(in srgb, var(--primary) 22%, transparent);
-  --sidebar-active-fg: var(--primary-foreground);
   --sidebar-active-ring: color-mix(in srgb, var(--primary) 26%, transparent);
   --overlay: color-mix(in srgb, var(--foreground) 10%, transparent);
-  --card-elevated-shadow: 0 0 0 1px color-mix(in srgb, var(--foreground) 4%, transparent), 0 24px 64px color-mix(in srgb, var(--foreground) 10%, transparent);
-  --surface-veil: color-mix(in srgb, var(--muted) 50%, transparent);
-  --surface-soft: color-mix(in srgb, var(--muted) 30%, transparent);
-  --surface-softer: color-mix(in srgb, var(--muted) 20%, transparent);
-  --surface-strong: color-mix(in srgb, var(--background) 50%, transparent);
   --border-soft-primary: color-mix(in srgb, var(--primary) 15%, transparent);
-  --border-strong-primary: color-mix(in srgb, var(--primary) 30%, transparent);
-  --border-stronger-primary: color-mix(in srgb, var(--primary) 40%, transparent);
   --control-track: color-mix(in srgb, var(--foreground) 30%, transparent);
   --button-height: 2.75rem;
   --button-padding-x: 1rem;
   --button-hover-bg: var(--primary);
   --button-hover-fg: var(--primary-foreground);
   --button-hover-border: color-mix(in srgb, var(--primary) 84%, white 16%);
-  --theme-wipe-dark-start: hsl(240 10% 10%);
-  --theme-wipe-dark-end: hsl(24 100% 38%);
-  --theme-wipe-light-start: hsl(37 44% 94%);
-  --theme-wipe-light-end: hsl(30 100% 62%);
-  --shell-glow-a: color-mix(in srgb, hsl(24 100% 50%) 16%, transparent);
-  --shell-glow-b: color-mix(in srgb, hsl(35 72% 80%) 26%, transparent);
   color-scheme: light;
 }
 
@@ -190,19 +158,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
-:root {
-  --chart-palette-1: var(--chart-1);
-  --chart-palette-2: var(--chart-2);
-  --chart-palette-3: var(--chart-3);
-  --chart-palette-4: var(--chart-4);
-  --chart-palette-5: var(--chart-5);
-  --chart-palette-6: var(--chart-6);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: hsl(240 10% 6%);
-    --foreground: hsl(0 0% 96%);
+    --background: rgb(15, 15, 19);
+    --foreground: rgb(245, 245, 245);
   }
 }
 
@@ -228,3 +187,14 @@ button:not(:disabled) {
 }
 
 
+.recharts-wrapper:focus-visible,
+.recharts-surface:focus-visible,
+.recharts-rectangle:focus-visible {
+  outline: none !important;
+}
+.recharts-wrapper:focus,
+.recharts-surface:focus,
+.recharts-sector:focus,
+.recharts-rectangle:focus {
+  outline: none !important;
+}

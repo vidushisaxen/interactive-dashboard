@@ -14,22 +14,20 @@ import {
   Landmark,
   LayoutGrid,
   Lock,
-  Mail,
   MessageSquareText,
   MoonStar,
   PhoneCall,
-  QrCode,
-  ReceiptText,
-  SendHorizontal,
   ShieldCheck,
   Sparkles,
-  TimerReset,
   TrendingUp,
   UserRound,
   Wallet,
   WalletCards,
   BookOpen,
   FileText,
+  ArrowRightLeft,
+  HandCoins,
+  Send,
 } from "lucide-react";
 
 // Theme tokens and shared chart colors
@@ -281,14 +279,14 @@ export const HELP_ITEMS = [
 export const SIDEBAR_PRIMARY_ITEMS = [
   { label: "Dashboard", icon: LayoutGrid, href: "/" },
   { label: "Insights", icon: BarChart3, href: "/analytics" },
-  { label: "Stocks", icon: TrendingUp, href: "/stocks" },
+  { label: "Stocks", icon: CandlestickChart, href: "/stocks" },
   { label: "Accounts", icon: Landmark, href: "/pools" },
   { label: "Portfolio", icon: BriefcaseBusiness, href: "/overview" },
   { label: "Add Funds", icon: ArrowDownToLine, href: "/deposit" },
   { label: "Cash Out", icon: ArrowUpFromLine, href: "/withdraw" },
-   { label: "Move Money", icon: ArrowUpFromLine, href: "/move-money" },
-    { label: "Request", icon: ArrowUpFromLine, href: "/request" },
-     { label: "Transfer", icon: ArrowUpFromLine, href: "/transfer" },
+  { label: "Move Money", icon: ArrowRightLeft, href: "/move-money" },
+  { label: "Request Money", icon: HandCoins, href: "/request" },
+  { label: "Transfer Money", icon: Send, href: "/transfer" },
 ];
 
 export const SEARCH_TERMS = [
@@ -310,19 +308,351 @@ export const PROFILE_ACTION_DETAILS = {
 };
 // Reusable chart datasets and visual primitives
 export const POOLS = [
-  { id: 1, pair: "USDC / ETH", token0Icon: "💠", token1Icon: "🔷", type: "Stable", feeTier: "0.05%", liquidity: 48245750.4, apr: 18.42, volume24h: "$12.8M" },
-  { id: 2, pair: "WBTC / ETH", token0Icon: "🟠", token1Icon: "🔷", type: "Classic", feeTier: "0.30%", liquidity: 31890210.8, apr: 24.16, volume24h: "$9.4M" },
-  { id: 3, pair: "USDT / USDC", token0Icon: "🟢", token1Icon: "💠", type: "Stable", feeTier: "0.01%", liquidity: 27410880.1, apr: 9.87, volume24h: "$18.2M" },
-  { id: 4, pair: "SOL / USDC", token0Icon: "🟣", token1Icon: "💠", type: "Classic", feeTier: "0.30%", liquidity: 14622040.2, apr: 27.55, volume24h: "$6.1M" },
-  { id: 5, pair: "ARB / ETH", token0Icon: "🔵", token1Icon: "🔷", type: "Weighted", feeTier: "0.30%", liquidity: 9582430.5, apr: 31.08, volume24h: "$3.9M" },
-  { id: 6, pair: "LINK / ETH", token0Icon: "🔗", token1Icon: "🔷", type: "Classic", feeTier: "0.30%", liquidity: 7248950.7, apr: 22.63, volume24h: "$2.7M" },
-  { id: 7, pair: "OP / USDC", token0Icon: "🔴", token1Icon: "💠", type: "Classic", feeTier: "0.30%", liquidity: 6120184.9, apr: 28.91, volume24h: "$2.3M" },
-  { id: 8, pair: "MATIC / USDC", token0Icon: "🟣", token1Icon: "💠", type: "Classic", feeTier: "0.30%", liquidity: 5321080.6, apr: 17.46, volume24h: "$1.8M" },
-  { id: 9, pair: "AVAX / USDC", token0Icon: "🔺", token1Icon: "💠", type: "Classic", feeTier: "0.30%", liquidity: 3984145.2, apr: 19.82, volume24h: "$1.2M" },
-  { id: 10, pair: "EURC / USDC", token0Icon: "🇪🇺", token1Icon: "💠", type: "Stable", feeTier: "0.01%", liquidity: 2841900.3, apr: 8.51, volume24h: "$920K" },
-  { id: 11, pair: "AAVE / ETH", token0Icon: "👻", token1Icon: "🔷", type: "Weighted", feeTier: "0.30%", liquidity: 1968420.9, apr: 25.37, volume24h: "$610K" },
-  { id: 12, pair: "PEPE / ETH", token0Icon: "🐸", token1Icon: "🔷", type: "Classic", feeTier: "1.00%", liquidity: 1182405.8, apr: 42.14, volume24h: "$2.1M" },
+  {
+    id: 1,
+    slug: "magnificent-seven-core",
+    pair: "Magnificent Seven Core",
+    token0Icon: "AAPL",
+    token1Icon: "MSFT",
+    type: "Growth",
+    feeTier: "Tech Leaders",
+    liquidity: 126400000,
+    apr: 28.4,
+    volume24h: "$8.4M",
+    description:
+      "A concentrated large-cap pool built around the highest-conviction US technology leaders.",
+    paragraph:
+      "This pool is designed for users who want broad exposure to mega-cap innovation with a strong emphasis on cash-generative names and AI beneficiaries.",
+    benchmark: "NASDAQ 100",
+    riskLevel: "Moderate",
+    manager: "Quantro Equity Desk",
+    rebalance: "Monthly",
+    strategy: "Momentum + quality",
+    topHoldings: ["Apple", "Microsoft", "NVIDIA", "Amazon"],
+    statsByRange: {
+      "1H": { aum: "$126.4M", flow: "$210K", return: "+0.18%", drawdown: "-0.12%" },
+      "4H": { aum: "$126.9M", flow: "$640K", return: "+0.42%", drawdown: "-0.28%" },
+      "1D": { aum: "$127.8M", flow: "$1.8M", return: "+0.94%", drawdown: "-0.55%" },
+      "1W": { aum: "$129.5M", flow: "$5.7M", return: "+2.76%", drawdown: "-1.12%" },
+      "1M": { aum: "$132.2M", flow: "$11.1M", return: "+6.48%", drawdown: "-2.84%" },
+      "6M": { aum: "$138.6M", flow: "$31.4M", return: "+18.22%", drawdown: "-5.72%" },
+    },
+    chartScale: { aum: 1.42, flow: 0.31, price: 56, yield: 2.6 },
+  },
+  {
+    id: 2,
+    slug: "ai-infrastructure",
+    pair: "AI Infrastructure",
+    token0Icon: "NVDA",
+    token1Icon: "AMD",
+    type: "Growth",
+    feeTier: "Semiconductor",
+    liquidity: 84200000,
+    apr: 34.9,
+    volume24h: "$6.2M",
+    description:
+      "A high-beta stock pool focused on compute, networking, and data-center demand tied to AI adoption.",
+    paragraph:
+      "This pool leans into chipmakers and infrastructure suppliers that benefit from enterprise and hyperscaler spending cycles.",
+    benchmark: "PHLX Semiconductor",
+    riskLevel: "High",
+    manager: "Quantro Thematic Team",
+    rebalance: "Bi-weekly",
+    strategy: "Thematic growth",
+    topHoldings: ["NVIDIA", "AMD", "Broadcom", "TSMC"],
+    statsByRange: {
+      "1H": { aum: "$84.2M", flow: "$180K", return: "+0.26%", drawdown: "-0.18%" },
+      "4H": { aum: "$84.7M", flow: "$520K", return: "+0.58%", drawdown: "-0.42%" },
+      "1D": { aum: "$85.9M", flow: "$1.5M", return: "+1.12%", drawdown: "-0.91%" },
+      "1W": { aum: "$87.6M", flow: "$4.8M", return: "+3.91%", drawdown: "-1.84%" },
+      "1M": { aum: "$91.5M", flow: "$9.9M", return: "+9.34%", drawdown: "-4.37%" },
+      "6M": { aum: "$97.8M", flow: "$24.7M", return: "+24.68%", drawdown: "-8.42%" },
+    },
+    chartScale: { aum: 1.12, flow: 0.38, price: 72, yield: 3.2 },
+  },
+  {
+    id: 3,
+    slug: "dividend-defenders",
+    pair: "Dividend Defenders",
+    token0Icon: "KO",
+    token1Icon: "PG",
+    type: "Dividend",
+    feeTier: "Defensive",
+    liquidity: 69300000,
+    apr: 12.8,
+    volume24h: "$2.1M",
+    description:
+      "A lower-volatility pool built around dependable dividend names in staples, healthcare, and industrials.",
+    paragraph:
+      "The goal is to preserve capital better during market pullbacks while still compounding through income and selective growth.",
+    benchmark: "S&P 500 Value",
+    riskLevel: "Low",
+    manager: "Quantro Income Desk",
+    rebalance: "Quarterly",
+    strategy: "Dividend quality",
+    topHoldings: ["Coca-Cola", "Procter & Gamble", "Johnson & Johnson", "PepsiCo"],
+    statsByRange: {
+      "1H": { aum: "$69.3M", flow: "$72K", return: "+0.05%", drawdown: "-0.04%" },
+      "4H": { aum: "$69.4M", flow: "$210K", return: "+0.12%", drawdown: "-0.10%" },
+      "1D": { aum: "$69.8M", flow: "$640K", return: "+0.31%", drawdown: "-0.24%" },
+      "1W": { aum: "$70.4M", flow: "$1.9M", return: "+0.88%", drawdown: "-0.63%" },
+      "1M": { aum: "$71.5M", flow: "$4.3M", return: "+2.44%", drawdown: "-1.58%" },
+      "6M": { aum: "$73.9M", flow: "$8.8M", return: "+7.26%", drawdown: "-3.11%" },
+    },
+    chartScale: { aum: 0.94, flow: 0.14, price: 34, yield: 1.4 },
+  },
+  {
+    id: 4,
+    slug: "clean-energy-transition",
+    pair: "Clean Energy Transition",
+    token0Icon: "TSLA",
+    token1Icon: "NEE",
+    type: "Thematic",
+    feeTier: "Energy",
+    liquidity: 51200000,
+    apr: 21.2,
+    volume24h: "$3.3M",
+    description:
+      "A blended exposure pool across electrification, utilities, battery supply chains, and renewable infrastructure.",
+    paragraph:
+      "This pool balances disruptive growth names with steadier operators participating in the long-term energy transition.",
+    benchmark: "S&P Global Clean Energy",
+    riskLevel: "Moderate",
+    manager: "Quantro Sustainability Desk",
+    rebalance: "Monthly",
+    strategy: "Secular transition",
+    topHoldings: ["Tesla", "NextEra Energy", "First Solar", "Enphase"],
+    statsByRange: {
+      "1H": { aum: "$51.2M", flow: "$94K", return: "+0.09%", drawdown: "-0.08%" },
+      "4H": { aum: "$51.4M", flow: "$280K", return: "+0.24%", drawdown: "-0.19%" },
+      "1D": { aum: "$51.9M", flow: "$780K", return: "+0.62%", drawdown: "-0.48%" },
+      "1W": { aum: "$52.8M", flow: "$2.3M", return: "+1.94%", drawdown: "-1.22%" },
+      "1M": { aum: "$54.1M", flow: "$5.9M", return: "+5.16%", drawdown: "-3.27%" },
+      "6M": { aum: "$57.8M", flow: "$14.6M", return: "+13.42%", drawdown: "-6.74%" },
+    },
+    chartScale: { aum: 0.76, flow: 0.22, price: 41, yield: 2.1 },
+  },
+  {
+    id: 5,
+    slug: "global-fintech",
+    pair: "Global Fintech",
+    token0Icon: "V",
+    token1Icon: "PYPL",
+    type: "Balanced",
+    feeTier: "Payments",
+    liquidity: 44100000,
+    apr: 16.7,
+    volume24h: "$1.7M",
+    description:
+      "A payments and financial software pool spanning card networks, digital wallets, and infrastructure providers.",
+    paragraph:
+      "The basket aims to capture durable transaction growth with a mix of mature compounders and undervalued platform names.",
+    benchmark: "MSCI World Financials",
+    riskLevel: "Moderate",
+    manager: "Quantro Fintech Research",
+    rebalance: "Monthly",
+    strategy: "Compounders + turnaround",
+    topHoldings: ["Visa", "PayPal", "Mastercard", "Adyen"],
+    statsByRange: {
+      "1H": { aum: "$44.1M", flow: "$51K", return: "+0.07%", drawdown: "-0.06%" },
+      "4H": { aum: "$44.2M", flow: "$160K", return: "+0.19%", drawdown: "-0.15%" },
+      "1D": { aum: "$44.5M", flow: "$510K", return: "+0.47%", drawdown: "-0.36%" },
+      "1W": { aum: "$45.0M", flow: "$1.4M", return: "+1.28%", drawdown: "-0.92%" },
+      "1M": { aum: "$45.9M", flow: "$3.8M", return: "+3.67%", drawdown: "-2.16%" },
+      "6M": { aum: "$47.7M", flow: "$8.2M", return: "+9.85%", drawdown: "-4.24%" },
+    },
+    chartScale: { aum: 0.63, flow: 0.18, price: 29, yield: 1.8 },
+  },
+  {
+    id: 6,
+    slug: "healthcare-innovators",
+    pair: "Healthcare Innovators",
+    token0Icon: "LLY",
+    token1Icon: "UNH",
+    type: "Quality",
+    feeTier: "Healthcare",
+    liquidity: 58700000,
+    apr: 19.6,
+    volume24h: "$2.8M",
+    description:
+      "A healthcare pool mixing pharmaceutical leaders, managed care, and medical technology franchises.",
+    paragraph:
+      "The focus is on earnings resilience, pricing power, and innovation pipelines that can outperform across cycles.",
+    benchmark: "S&P 500 Health Care",
+    riskLevel: "Moderate",
+    manager: "Quantro Sector Rotation",
+    rebalance: "Monthly",
+    strategy: "Quality defensives",
+    topHoldings: ["Eli Lilly", "UnitedHealth", "AbbVie", "Intuitive Surgical"],
+    statsByRange: {
+      "1H": { aum: "$58.7M", flow: "$88K", return: "+0.11%", drawdown: "-0.07%" },
+      "4H": { aum: "$58.9M", flow: "$250K", return: "+0.23%", drawdown: "-0.18%" },
+      "1D": { aum: "$59.3M", flow: "$690K", return: "+0.51%", drawdown: "-0.41%" },
+      "1W": { aum: "$60.1M", flow: "$2.1M", return: "+1.62%", drawdown: "-1.04%" },
+      "1M": { aum: "$61.4M", flow: "$4.9M", return: "+4.41%", drawdown: "-2.63%" },
+      "6M": { aum: "$64.2M", flow: "$11.7M", return: "+11.93%", drawdown: "-4.98%" },
+    },
+    chartScale: { aum: 0.88, flow: 0.2, price: 37, yield: 2.0 },
+  },
+  {
+    id: 7,
+    slug: "cybersecurity-command",
+    pair: "Cybersecurity Command",
+    token0Icon: "CRWD",
+    token1Icon: "PANW",
+    type: "Growth",
+    feeTier: "Security Software",
+    liquidity: 47600000,
+    apr: 22.4,
+    volume24h: "$2.9M",
+    description:
+      "A software-focused pool built around endpoint, network, identity, and cloud security leaders.",
+    paragraph:
+      "The strategy targets durable enterprise spending categories where security budgets remain resilient even when broader IT demand softens.",
+    benchmark: "NYSE FactSet Cybersecurity",
+    riskLevel: "Moderate",
+    manager: "Quantro Security Themes",
+    rebalance: "Monthly",
+    strategy: "Secular software growth",
+    topHoldings: ["CrowdStrike", "Palo Alto Networks", "Zscaler", "Okta"],
+    statsByRange: {
+      "1H": { aum: "$47.6M", flow: "$66K", return: "+0.12%", drawdown: "-0.09%" },
+      "4H": { aum: "$47.8M", flow: "$230K", return: "+0.31%", drawdown: "-0.22%" },
+      "1D": { aum: "$48.2M", flow: "$740K", return: "+0.74%", drawdown: "-0.53%" },
+      "1W": { aum: "$49.1M", flow: "$2.2M", return: "+2.08%", drawdown: "-1.37%" },
+      "1M": { aum: "$50.5M", flow: "$5.4M", return: "+5.82%", drawdown: "-3.26%" },
+      "6M": { aum: "$53.4M", flow: "$12.8M", return: "+15.47%", drawdown: "-6.13%" },
+    },
+    chartScale: { aum: 0.71, flow: 0.24, price: 45, yield: 2.2 },
+  },
+  {
+    id: 8,
+    slug: "consumer-brands-premium",
+    pair: "Consumer Brands Premium",
+    token0Icon: "NKE",
+    token1Icon: "SBUX",
+    type: "Balanced",
+    feeTier: "Consumer",
+    liquidity: 38800000,
+    apr: 14.3,
+    volume24h: "$1.3M",
+    description:
+      "A global consumer pool built around premium brands, discretionary leaders, and repeat-purchase franchises.",
+    paragraph:
+      "This basket aims to combine brand pricing power with long-duration global demand across apparel, beverages, and lifestyle categories.",
+    benchmark: "MSCI World Consumer Discretionary",
+    riskLevel: "Moderate",
+    manager: "Quantro Consumer Desk",
+    rebalance: "Quarterly",
+    strategy: "Brand compounders",
+    topHoldings: ["Nike", "Starbucks", "Lululemon", "McDonald's"],
+    statsByRange: {
+      "1H": { aum: "$38.8M", flow: "$39K", return: "+0.06%", drawdown: "-0.05%" },
+      "4H": { aum: "$38.9M", flow: "$120K", return: "+0.18%", drawdown: "-0.13%" },
+      "1D": { aum: "$39.2M", flow: "$410K", return: "+0.39%", drawdown: "-0.29%" },
+      "1W": { aum: "$39.7M", flow: "$1.1M", return: "+1.11%", drawdown: "-0.81%" },
+      "1M": { aum: "$40.5M", flow: "$2.9M", return: "+3.18%", drawdown: "-1.94%" },
+      "6M": { aum: "$42.1M", flow: "$6.3M", return: "+8.64%", drawdown: "-3.88%" },
+    },
+    chartScale: { aum: 0.57, flow: 0.16, price: 27, yield: 1.7 },
+  },
+  {
+    id: 9,
+    slug: "industrial-automation",
+    pair: "Industrial Automation",
+    token0Icon: "HON",
+    token1Icon: "ROK",
+    type: "Quality",
+    feeTier: "Industrials",
+    liquidity: 53400000,
+    apr: 17.8,
+    volume24h: "$2.0M",
+    description:
+      "A precision industrial pool centered on automation, controls, aerospace systems, and smart manufacturing.",
+    paragraph:
+      "The portfolio is built for investors who want exposure to factory modernization, efficiency upgrades, and mission-critical industrial software.",
+    benchmark: "S&P 500 Industrials",
+    riskLevel: "Moderate",
+    manager: "Quantro Industrial Research",
+    rebalance: "Monthly",
+    strategy: "Quality cyclicals",
+    topHoldings: ["Honeywell", "Rockwell Automation", "Emerson", "GE Aerospace"],
+    statsByRange: {
+      "1H": { aum: "$53.4M", flow: "$58K", return: "+0.08%", drawdown: "-0.06%" },
+      "4H": { aum: "$53.6M", flow: "$170K", return: "+0.21%", drawdown: "-0.16%" },
+      "1D": { aum: "$54.0M", flow: "$530K", return: "+0.48%", drawdown: "-0.34%" },
+      "1W": { aum: "$54.8M", flow: "$1.7M", return: "+1.43%", drawdown: "-0.96%" },
+      "1M": { aum: "$56.0M", flow: "$4.2M", return: "+4.08%", drawdown: "-2.33%" },
+      "6M": { aum: "$58.7M", flow: "$9.4M", return: "+10.91%", drawdown: "-4.61%" },
+    },
+    chartScale: { aum: 0.81, flow: 0.19, price: 33, yield: 1.95 },
+  },
+  {
+    id: 10,
+    slug: "cloud-software-leaders",
+    pair: "Cloud Software Leaders",
+    token0Icon: "CRM",
+    token1Icon: "NOW",
+    type: "Growth",
+    feeTier: "Enterprise SaaS",
+    liquidity: 61800000,
+    apr: 26.1,
+    volume24h: "$3.6M",
+    description:
+      "A large-cap software pool focused on mission-critical enterprise platforms with high recurring revenue.",
+    paragraph:
+      "The pool emphasizes workflow, CRM, analytics, and collaboration platforms that can compound through subscription growth and operating leverage.",
+    benchmark: "BVP Nasdaq Emerging Cloud",
+    riskLevel: "Moderate",
+    manager: "Quantro Software Strategy",
+    rebalance: "Bi-weekly",
+    strategy: "Recurring revenue compounders",
+    topHoldings: ["Salesforce", "ServiceNow", "Adobe", "Datadog"],
+    statsByRange: {
+      "1H": { aum: "$61.8M", flow: "$91K", return: "+0.14%", drawdown: "-0.10%" },
+      "4H": { aum: "$62.0M", flow: "$280K", return: "+0.37%", drawdown: "-0.25%" },
+      "1D": { aum: "$62.6M", flow: "$860K", return: "+0.81%", drawdown: "-0.58%" },
+      "1W": { aum: "$63.7M", flow: "$2.6M", return: "+2.37%", drawdown: "-1.46%" },
+      "1M": { aum: "$65.5M", flow: "$6.5M", return: "+6.19%", drawdown: "-3.48%" },
+      "6M": { aum: "$69.2M", flow: "$15.1M", return: "+16.84%", drawdown: "-6.72%" },
+    },
+    chartScale: { aum: 0.92, flow: 0.28, price: 49, yield: 2.35 },
+  },
+  {
+    id: 11,
+    slug: "banking-and-brokers",
+    pair: "Banking and Brokers",
+    token0Icon: "JPM",
+    token1Icon: "GS",
+    type: "Dividend",
+    feeTier: "Financials",
+    liquidity: 70400000,
+    apr: 15.9,
+    volume24h: "$2.4M",
+    description:
+      "A diversified financials pool spanning money-center banks, brokers, exchanges, and custody businesses.",
+    paragraph:
+      "This strategy seeks a balance between dividend income, capital markets upside, and interest-rate sensitivity across the financial sector.",
+    benchmark: "KBW Bank Index",
+    riskLevel: "Moderate",
+    manager: "Quantro Financials Desk",
+    rebalance: "Quarterly",
+    strategy: "Income + cyclicals",
+    topHoldings: ["JPMorgan", "Goldman Sachs", "Morgan Stanley", "BlackRock"],
+    statsByRange: {
+      "1H": { aum: "$70.4M", flow: "$77K", return: "+0.09%", drawdown: "-0.07%" },
+      "4H": { aum: "$70.6M", flow: "$220K", return: "+0.24%", drawdown: "-0.18%" },
+      "1D": { aum: "$71.0M", flow: "$680K", return: "+0.56%", drawdown: "-0.39%" },
+      "1W": { aum: "$71.9M", flow: "$2.0M", return: "+1.58%", drawdown: "-1.01%" },
+      "1M": { aum: "$73.1M", flow: "$4.8M", return: "+4.29%", drawdown: "-2.45%" },
+      "6M": { aum: "$75.9M", flow: "$10.9M", return: "+11.62%", drawdown: "-4.79%" },
+    },
+    chartScale: { aum: 1.01, flow: 0.21, price: 35, yield: 1.9 },
+  },
 ];
+
+export const POOL_METRICS = ["AUM", "Net Flow", "Price", "Yield"];
+export const POOL_TIME_RANGES = ["1H", "4H", "1D", "1W", "1M", "6M"];
 
 export const CHART_RAW = {
   Liquidity: [
@@ -791,4 +1121,56 @@ export function sliceChartDataByRange(data = [], range) {
   }
 
   return data.slice(-limit);
+}
+
+const POOL_CHART_SOURCE_MAP = {
+  AUM: "Liquidity",
+  "Net Flow": "Volume",
+  Price: "ETH",
+  Yield: "GEH",
+};
+
+const POOL_CHART_DECIMALS = {
+  AUM: 1,
+  "Net Flow": 2,
+  Price: 2,
+  Yield: 2,
+};
+
+const POOL_CHART_OFFSETS = {
+  AUM: 18,
+  "Net Flow": 0.35,
+  Price: 95,
+  Yield: 1.4,
+};
+
+export function getPoolBySlug(slug) {
+  return POOLS.find((pool) => pool.slug === slug) || null;
+}
+
+export function getPoolChartData(pool, metric, range) {
+  const sourceKey = POOL_CHART_SOURCE_MAP[metric] || "Liquidity";
+  const baseSeries = sliceChartDataByRange(CHART_RAW[sourceKey] || [], range);
+
+  if (!pool) {
+    return baseSeries;
+  }
+
+  const scaleKey =
+    metric === "AUM"
+      ? "aum"
+      : metric === "Net Flow"
+        ? "flow"
+        : metric === "Price"
+          ? "price"
+          : "yield";
+
+  const multiplier = pool.chartScale?.[scaleKey] || 1;
+  const decimals = POOL_CHART_DECIMALS[metric] ?? 2;
+  const offset = POOL_CHART_OFFSETS[metric] ?? 0;
+
+  return baseSeries.map((point, index) => ({
+    label: point.label,
+    value: Number((point.value * multiplier + offset + index * 0.03).toFixed(decimals)),
+  }));
 }

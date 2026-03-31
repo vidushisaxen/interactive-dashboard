@@ -1,17 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ArrowDownLeft, ArrowUpFromLine, Wallet, Droplets, Coins } from "lucide-react";
-
+import { useMemo, useRef, useState } from "react";
+import { ArrowUpFromLine, Wallet, Droplets, Coins } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ExportCsvButton from "./ExportCsvButton";
-import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import LiquidityBarChart from "./LiquidityBarChart";
 import { BAR_RAW, WITHDRAW_STEP_CONTENT } from "./dashboard-data";
 import { AnimatedFadeUp } from "@/lib/animations";
@@ -33,18 +30,174 @@ const getPercentFromStep = (step) => {
 function WithdrawSkeleton() {
   return (
     <section className="space-y-7">
+      {/* HEADER */}
       <div className="space-y-2">
-        <Skeleton className="h-8 w-52" />
+        <Skeleton className="h-8 w-56" />
         <Skeleton className="h-4 w-96 max-w-full" />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Skeleton className="h-96 w-full rounded-xl" />
-        <Skeleton className="h-96 w-full rounded-xl" />
-        <Skeleton className="h-96 w-full rounded-xl" />
+      {/* STATUS */}
+      <div className="rounded-lg border border-border p-4 space-y-2">
+        <Skeleton className="h-4 w-40" />
+        <Skeleton className="h-3 w-full max-w-2xl" />
       </div>
 
-      <Skeleton className="h-96 w-full rounded-xl" />
+      {/* TOP 3 CARDS */}
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        
+        {/* WITHDRAW CARD */}
+        <div className="rounded-xl border border-border bg-card p-6 space-y-6">
+          
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-24" />
+            <Skeleton className="h-4 w-40" />
+          </div>
+
+          {/* percent */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-8 w-24" />
+            <Skeleton className="h-3 w-40" />
+          </div>
+
+          {/* slider */}
+          <Skeleton className="h-2 w-full rounded-full" />
+
+          {/* tabs */}
+          <div className="grid grid-cols-2 gap-3">
+            <Skeleton className="h-10 w-full rounded-lg" />
+            <Skeleton className="h-10 w-full rounded-lg" />
+          </div>
+
+          {/* expected receive */}
+          <div className="rounded-lg border border-border p-4 space-y-3">
+            <Skeleton className="h-3 w-32" />
+
+            {[1, 2].map((_, i) => (
+              <div key={i} className="flex justify-between">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-16" />
+              </div>
+            ))}
+          </div>
+
+          {/* checkbox */}
+          <div className="flex justify-between items-center">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-4 rounded-sm" />
+          </div>
+
+          {/* button */}
+          <Skeleton className="h-10 w-full rounded-lg" />
+        </div>
+
+        {/* PRICE CARD */}
+        <div className="rounded-xl border border-border bg-card p-6 space-y-5">
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-20" />
+            <Skeleton className="h-4 w-40" />
+          </div>
+
+          {[1, 2].map((_, i) => (
+            <div key={i} className="rounded-lg border border-border p-4 flex justify-between">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-28" />
+            </div>
+          ))}
+
+          <div className="grid grid-cols-2 gap-3">
+            {[1, 2].map((_, i) => (
+              <div key={i} className="rounded-lg border border-border p-4 space-y-2">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-5 w-16" />
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-lg border border-border p-4 space-y-2">
+            <Skeleton className="h-3 w-32" />
+            <Skeleton className="h-6 w-28" />
+          </div>
+        </div>
+
+        {/* POOL SHARE CARD */}
+        <div className="rounded-xl border border-border bg-card p-6 space-y-5">
+          
+          <div className="grid grid-cols-2 gap-3">
+            {[1, 2].map((_, i) => (
+              <div key={i} className="rounded-lg border border-border p-4 space-y-2">
+                <Skeleton className="h-3 w-28" />
+                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-3 w-32" />
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-lg border border-border p-4 space-y-3">
+            <Skeleton className="h-3 w-32" />
+            <div className="grid grid-cols-2 gap-3">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center border border-border p-4 rounded-lg">
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-28" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+            <Skeleton className="h-8 w-20 rounded-lg" />
+          </div>
+
+          <div className="rounded-lg border border-border p-4 space-y-2">
+            <Skeleton className="h-3 w-32" />
+            <Skeleton className="h-4 w-full" />
+          </div>
+        </div>
+      </div>
+
+      {/* BOTTOM CARD */}
+      <div className="rounded-xl border border-border bg-card p-6 space-y-6">
+        
+        {/* step header */}
+        <div className="flex justify-between">
+          <Skeleton className="h-5 w-28 rounded-full" />
+          <Skeleton className="h-4 w-48" />
+        </div>
+
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-4 w-72 max-w-full" />
+        </div>
+
+        {/* step cards */}
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          {[1, 2, 3, 4].map((_, i) => (
+            <Skeleton key={i} className="h-20 w-full rounded-lg" />
+          ))}
+        </div>
+
+        {/* summary */}
+        <div className="rounded-lg border border-border p-4 space-y-2">
+          <Skeleton className="h-3 w-40" />
+          <Skeleton className="h-4 w-full" />
+        </div>
+
+        {/* stats */}
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {[1, 2, 3, 4].map((_, i) => (
+            <Skeleton key={i} className="h-20 w-full rounded-lg" />
+          ))}
+        </div>
+
+        {/* chart */}
+        <div className="space-y-4">
+          <div className="flex justify-end">
+            <Skeleton className="h-9 w-32 rounded-lg" />
+          </div>
+          <Skeleton className="h-56 w-full rounded-lg" />
+        </div>
+      </div>
     </section>
   );
 }
@@ -55,6 +208,8 @@ const WithdrawScreen = () => {
   const [collectAsWeth, setCollectAsWeth] = useState(false);
   const [withdrawStatus, setWithdrawStatus] = useState("Choose a range and review the expected token output.");
   const loading = useScreenSkeleton();
+const trackRef = useRef(null);
+
 
   const percent = pct[0];
   const currentStepIndex = getStepFromPercent(percent) - 1;
@@ -65,8 +220,16 @@ const WithdrawScreen = () => {
   const totalUsd = 8426.4;
   const currentPoolShare = 4.8;
 
-  const eth = ((percent / 100) * totalEth).toFixed(3);
-  const bnb = ((percent / 100) * totalBnb).toFixed(3);
+  const baseEth = ((percent / 100) * totalEth).toFixed(3);
+  const baseBnb = ((percent / 100) * totalBnb).toFixed(3);
+  
+  // Mode-based calculations: Single heavily favors ETH, Balanced splits equally
+  const eth = mode === "single" 
+    ? (Number(baseEth) * 0.85).toFixed(3)
+    : (Number(baseEth) * 0.5).toFixed(3);
+  const bnb = mode === "single"
+    ? (Number(baseBnb) * 0.15).toFixed(3)
+    : (Number(baseBnb) * 0.5).toFixed(3);
 
   const remainingEth = (totalEth - Number(eth)).toFixed(3);
   const remainingBnb = (totalBnb - Number(bnb)).toFixed(3);
@@ -93,6 +256,30 @@ const WithdrawScreen = () => {
   if (loading) {
     return <WithdrawSkeleton />;
   }
+
+
+const handlePointerDown = (e) => {
+  const move = (moveEvent) => {
+    const track = trackRef.current
+    if (!track) return
+    const rect = track.getBoundingClientRect()
+    const clientX = moveEvent.touches ? moveEvent.touches[0].clientX : moveEvent.clientX
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
+    const val = Math.round(ratio * 100)
+    setPct([val])
+  }
+  const up = () => {
+    window.removeEventListener("mousemove", move)
+    window.removeEventListener("mouseup", up)
+    window.removeEventListener("touchmove", move)
+    window.removeEventListener("touchend", up)
+  }
+  window.addEventListener("mousemove", move)
+  window.addEventListener("mouseup", up)
+  window.addEventListener("touchmove", move)
+  window.addEventListener("touchend", up)
+  move(e)
+}
 
   return (
     <section className="space-y-7">
@@ -138,28 +325,38 @@ const WithdrawScreen = () => {
                 </p>
               </div>
 
-              <Slider
-                value={pct}
-                onValueChange={setPct}
-                max={100}
-                step={1}
-                className="w-full"
-              />
+              <div
+  ref={trackRef}
+  className="relative w-full h-2 rounded-full bg-muted cursor-pointer my-4"
+  onMouseDown={handlePointerDown}
+  onTouchStart={handlePointerDown}
+>
+  {/* filled range */}
+  <div
+    className="absolute left-0 top-0 h-full rounded-full bg-orange-500"
+    style={{ width: `${pct[0]}%` }}
+  />
+  {/* thumb */}
+  <div
+    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-orange-500 border-2 border-white/30 shadow-md"
+    style={{ left: `${pct[0]}%` }}
+  />
+</div>
 
               <Tabs value={mode} onValueChange={setMode}>
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="single">Single</TabsTrigger>
-                  <TabsTrigger value="balanced">Balanced</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 gap-3 rounded-lg p-1 h-auto bg-transparent">
+                  <TabsTrigger value="single" className="rounded-lg h-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                    Single
+                  </TabsTrigger>
+                  <TabsTrigger value="balanced" className="rounded-lg h-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                    Balanced
+                  </TabsTrigger>
                 </TabsList>
               </Tabs>
 
-              {mode === "single" && (
-                <p className="text-xs text-muted-foreground">
-                  You will receive a single-token oriented output preview.
-                </p>
-              )}
+             
 
-              <div className="space-y-3 rounded-lg border  border border-border p-4">
+              <div className="space-y-3 rounded-lg border border-border p-4">
                 <p className="text-xs text-muted-foreground">Expected to receive</p>
 
                 <div className="flex items-center justify-between text-sm">
@@ -215,14 +412,14 @@ const WithdrawScreen = () => {
             </CardHeader>
 
             <CardContent className="space-y-5 text-sm">
-              <div className="rounded-lg border  border border-border bg-muted/30 p-4">
+              <div className="rounded-lg border border-border bg-muted/30 p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">ETH → cBNB</span>
                   <span className="font-semibold">1 ETH = 5.845 cBNB</span>
                 </div>
               </div>
 
-              <div className="rounded-lg border  border border-border bg-muted/30 p-4">
+              <div className="rounded-lg border  border-border bg-muted/30 p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">cBNB → ETH</span>
                   <span className="font-semibold">1 cBNB = 0.171 ETH</span>
@@ -230,12 +427,12 @@ const WithdrawScreen = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg border  border border-border p-4">
+                <div className="rounded-lg border border-border p-4">
                   <p className="text-xs text-muted-foreground">Swap Fee</p>
                   <p className="mt-1 text-base font-semibold">0.20%</p>
                 </div>
 
-                <div className="rounded-lg border  border border-border p-4">
+                <div className="rounded-lg border border-border p-4">
                   <p className="text-xs text-muted-foreground">Price Impact</p>
                   <p className="mt-1 text-base font-semibold text-primary">
                     {(percent * 0.006).toFixed(2)}%
@@ -243,7 +440,7 @@ const WithdrawScreen = () => {
                 </div>
               </div>
 
-              <div className="rounded-lg border  border border-border p-4">
+              <div className="rounded-lg border border-border p-4">
                 <p className="text-xs text-muted-foreground">Estimated USD Value</p>
                 <p className="mt-1 text-xl font-semibold">${estimatedUsd}</p>
               </div>
@@ -263,7 +460,7 @@ const WithdrawScreen = () => {
 
             <CardContent className="space-y-5">
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg border  border border-border p-4">
+                <div className="rounded-lg border  border-border p-4">
                   <div className="flex items-center gap-2">
                     <Droplets className="h-4 w-4 text-primary" />
                     <p className="text-xs text-muted-foreground">Pool Share</p>
@@ -276,7 +473,7 @@ const WithdrawScreen = () => {
                   </p>
                 </div>
 
-                <div className="rounded-lg border  border border-border p-4">
+                <div className="rounded-lg border border-border p-4">
                   <div className="flex items-center gap-2">
                     <Wallet className="h-4 w-4 text-primary" />
                     <p className="text-xs text-muted-foreground">Remaining Value</p>
@@ -288,7 +485,7 @@ const WithdrawScreen = () => {
                 </div>
               </div>
 
-              <div className="rounded-lg border  border border-border p-4">
+              <div className="rounded-lg border border-border p-4">
                 <p className="text-xs text-muted-foreground">Deposited Assets</p>
 
                 <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
@@ -304,7 +501,7 @@ const WithdrawScreen = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between rounded-lg border  border border-border p-4">
+              <div className="flex items-center justify-between rounded-lg border border-border p-4">
                 <div>
                   <p className="text-xs text-muted-foreground">Claimable Fees</p>
                   <p className="mt-1 text-sm font-semibold">
@@ -312,17 +509,17 @@ const WithdrawScreen = () => {
                   </p>
                 </div>
 
-                <Button variant="secondary" size="sm" className="cursor-pointer">
+                <Button variant="secondary" size="sm" className="cursor-pointer rounded-lg h-10">
                   Claim
                 </Button>
               </div>
 
-              <div className="rounded-lg border  border border-border p-4">
+              <div className="rounded-lg border border-border p-4">
                 <div className="flex items-center gap-2">
                   <Coins className="h-4 w-4 text-primary" />
                   <p className="text-xs text-muted-foreground">LP Position Health</p>
                 </div>
-                <p className="mt-2 text-sm">
+                <p className="mt-2 text-sm h-10">
                   {percent <= 25
                     ? "Low impact withdrawal. Your pool position stays strong."
                     : percent <= 50
@@ -377,10 +574,10 @@ const WithdrawScreen = () => {
         onClick={() => setPct([getPercentFromStep(item.step)])}
         className={`rounded-lg border p-4 text-left transition-all cursor-pointer ${
           isActive
-            ? "border-[var(--border-stronger-primary)] bg-[var(--border-soft-primary)]"
+            ? "border-primary bg-primary/20"
             : isCompleted
-            ? "border-[var(--border-strong-primary)] bg-primary/10"
-            : " border border-border bg-background hover:border-[var(--border-strong-primary)] hover:bg-primary/5"
+            ? "border-primary/60 bg-primary/10"
+            : "border border-border bg-background hover:border-primary/40 hover:bg-primary/5"
         }`}
       >
         <div className="mb-2 flex items-center justify-between">
@@ -395,8 +592,8 @@ const WithdrawScreen = () => {
           </span>
 
           <span
-            className={`h-2.5 w-2.5 rounded-full ${
-              isActive || isCompleted ? "bg-primary" : "bg-[var(--control-track)]"
+            className={`h-3 w-3 rounded-full ${
+              isActive || isCompleted ? "bg-primary" : "bg-muted-foreground/30"
             }`}
           />
         </div>
@@ -407,35 +604,35 @@ const WithdrawScreen = () => {
   })}
 </div>
 
-        <div className="rounded-lg border  border border-border bg-muted/20 p-4">
+        <div className="rounded-lg border  border-border bg-muted/20 p-4">
           <p className="text-xs text-muted-foreground">Current Step Summary</p>
           <p className="mt-2 text-sm font-medium">{currentStep.summary}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <div className="rounded-lg border  border border-border p-4">
+        <div className="rounded-lg border  border-border p-4">
           <p className="text-xs text-muted-foreground">Withdraw %</p>
           <p className="mt-1 text-base font-semibold">{percent}%</p>
         </div>
 
-        <div className="rounded-lg border  border border-border p-4">
+        <div className="rounded-lg border  border-border p-4">
           <p className="text-xs text-muted-foreground">Current Step</p>
           <p className="mt-1 text-base font-semibold">{currentStep.step}</p>
         </div>
 
-        <div className="rounded-lg border  border border-border p-4">
+        <div className="rounded-lg border  border-border p-4">
           <p className="text-xs text-muted-foreground">ETH Output</p>
           <p className="mt-1 text-base font-semibold">{eth}</p>
         </div>
 
-        <div className="rounded-lg border  border border-border p-4">
+        <div className="rounded-lg border  border-border p-4">
           <p className="text-xs text-muted-foreground">cBNB Output</p>
           <p className="mt-1 text-base font-semibold">{bnb}</p>
         </div>
       </div>
 
-      <div className="rounded-lg border  border border-border p-4">
+      <div className="rounded-lg border  border-border p-4">
         <div className="mb-4 flex justify-end">
           <ExportCsvButton
             fileName={`quantro_withdraw_${percent}pct`}

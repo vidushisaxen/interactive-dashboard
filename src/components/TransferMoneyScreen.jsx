@@ -30,19 +30,151 @@ import { TRANSFER_BENEFICIARIES, TRANSFER_TYPES } from "./dashboard-data";
 function TransferMoneySkeleton() {
   return (
     <section className="space-y-7">
-      <div className="space-y-2">
+      {/* HEADER */}
+      <header className="space-y-2">
         <Skeleton className="h-6 w-24 rounded-full" />
-        <Skeleton className="h-9 w-52" />
-        <Skeleton className="h-4 w-96 max-w-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-64 max-w-full" />
+          <Skeleton className="h-4 w-96 max-w-full" />
+        </div>
+      </header>
+
+      {/* STATUS */}
+      <div className="rounded-lg border border-border p-4 space-y-2">
+        <Skeleton className="h-4 w-36" />
+        <Skeleton className="h-3 w-full max-w-2xl" />
       </div>
 
-      <Skeleton className="h-24 w-full rounded-xl" />
-
+      {/* MAIN GRID */}
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
-        <Skeleton className="h-96 w-full rounded-xl xl:col-span-3" />
+        
+        {/* LEFT: FORM */}
+        <div className="space-y-6 xl:col-span-3">
+          <div className="rounded-xl border border-border bg-card shadow-sm p-6 space-y-6">
+            
+            {/* Title */}
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-56" />
+              <Skeleton className="h-4 w-80 max-w-full" />
+            </div>
+
+            {/* Transfer type cards */}
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              {[1, 2].map((_, i) => (
+                <div
+                  key={i}
+                  className="rounded-lg border border-border p-4 space-y-3"
+                >
+                  <Skeleton className="h-10 w-10 rounded-lg" />
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-48" />
+                </div>
+              ))}
+            </div>
+
+            {/* Fields */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-12 w-full rounded-lg" />
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {[1, 2].map((_, i) => (
+                  <div key={i} className="space-y-2">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-12 w-full rounded-lg" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Review box */}
+            <div className="rounded-lg border border-border bg-muted/20 p-4 space-y-2">
+              <div className="flex gap-3">
+                <Skeleton className="h-8 w-8 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-full" />
+                </div>
+              </div>
+            </div>
+
+            {/* Info cards */}
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              {[1, 2].map((_, i) => (
+                <div
+                  key={i}
+                  className="rounded-lg border border-border bg-background/50 p-3 space-y-2"
+                >
+                  <Skeleton className="h-3 w-28" />
+                  <Skeleton className="h-4 w-40" />
+                </div>
+              ))}
+            </div>
+
+            {/* Capacity */}
+            <div className="rounded-lg border border-border p-4 space-y-2">
+              <Skeleton className="h-3 w-32" />
+              <div className="flex justify-between">
+                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end gap-3">
+              <Skeleton className="h-10 w-28 rounded-lg" />
+              <Skeleton className="h-10 w-40 rounded-lg" />
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE */}
         <div className="space-y-6 xl:col-span-2">
-          <Skeleton className="h-56 w-full rounded-xl" />
-          <Skeleton className="h-96 w-full rounded-xl" />
+          
+          {/* Transfer details */}
+          <div className="rounded-xl border border-border bg-card shadow-sm p-6 space-y-4">
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="h-4 w-72 max-w-full" />
+            </div>
+
+            {[1, 2, 3, 4].map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4"
+              >
+                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-4 w-20" />
+              </div>
+            ))}
+          </div>
+
+          {/* Beneficiaries */}
+          <div className="rounded-xl border border-border bg-card shadow-sm p-6 space-y-4">
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-44" />
+              <Skeleton className="h-4 w-72 max-w-full" />
+            </div>
+
+            {[1, 2, 3].map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between gap-4 rounded-lg border border-border p-4"
+              >
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-36" />
+                  <Skeleton className="h-3 w-28" />
+                </div>
+
+                <div className="space-y-2 text-right">
+                  <Skeleton className="h-4 w-20 ml-auto" />
+                  <Skeleton className="h-7 w-24 ml-auto rounded-lg" />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -194,7 +326,7 @@ const TransferMoneyScreen = () => {
                   </div>
                 </div>
 
-                <div className="rounded-lg border  border border-border bg-muted/20 p-4">
+                <div className="rounded-lg border border-border bg-muted/20 p-4">
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
                       <ShieldCheck className="h-4 w-4" />
@@ -300,7 +432,7 @@ const TransferMoneyScreen = () => {
                 {TRANSFER_BENEFICIARIES.map((item) => (
                   <div
                     key={`${item.name}-${item.amount}`}
-                    className="flex items-center justify-between gap-4 rounded-lg border  border border-border p-4"
+                    className="flex items-center justify-between gap-4 rounded-lg border border-border p-4"
                   >
                     <div>
                       <p className="text-sm font-medium">{item.name}</p>
@@ -353,7 +485,7 @@ const Field = ({ icon: Icon, label, placeholder, value, onChange }) => (
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-lg border  border border-border bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>

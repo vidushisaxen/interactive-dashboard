@@ -1,13 +1,5 @@
-"use client"
-import PoolsList from '@/components/PoolsList'
-import React from 'react'
+import PoolsList from "@/components/PoolsList";
 
-const page = () => {
-  return (
-   <>
-   <PoolsList/>
-   </>
-  )
+export default function PoolsPage() {
+  return <PoolsList />;
 }
-
-export default page

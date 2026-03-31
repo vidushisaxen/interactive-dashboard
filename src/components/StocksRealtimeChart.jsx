@@ -189,55 +189,72 @@ const StocksRealtimeChart = ({ activeRange, onRangeChange }) => {
         })}
       </div>
 
-      <div className="flex flex-wrap gap-1">
-        {stockSummary.map((stock, index) => {
-          const active = visibleSeries[stock.key];
+    <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+  {stockSummary.map((stock) => {
+    const active = visibleSeries[stock.key];
 
-          return (
-            <div key={index}>
-              <button
-                key={stock.key}
-                type="button"
-                onClick={() => toggleSeries(stock.key)}
-                className={cn(
-                  "rounded-lg border p-4 text-left transition-colors cursor-pointer flex-1 min-w-0",
-                  active
-                    ? "bg-primary border-primary"
-                    : "border-border bg-background/40 hover:bg-primary/20 hover:text-primary"
-                )}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className={cn("text-xs uppercase tracking-widest", active ? "text-primary-foreground" : "text-muted-foreground")}>
-                      {stock.label}
-                    </p>
-                    <p className={cn("mt-1 text-sm font-medium", active ? "text-primary-foreground" : "")}>{stock.name}</p>
-                  </div>
-                  <span
-                    className="h-2.5 w-2.5 rounded-full"
-                    style={{ backgroundColor: stock.stroke }}
-                  />
-                </div>
-                <p className={cn("mt-4 text-2xl font-semibold tracking-tight", active ? "text-primary-foreground" : "")}>
-                  ${stock.current}
-                </p>
-                <p
-                  className={cn(
-                    "mt-1 text-xs font-medium",
-                    stock.change >= 0
-                      ? "text-[var(--status-success)]"
-                      : "text-destructive"
-                  )}
-                >
-                  {stock.change >= 0 ? "+" : ""}
-                  {stock.change}%
-                </p>
-              </button>
-              {index < stockSummary.length - 1 && <span className="w-1" />}
-            </div>
-          );
-        })}
-      </div>
+    return (
+      <button
+        key={stock.key}
+        type="button"
+        onClick={() => toggleSeries(stock.key)}
+        className={cn(
+          "w-full rounded-lg border p-4 text-left transition-colors cursor-pointer min-w-0",
+          active
+            ? "bg-primary/20 border-primary"
+            : "border-border bg-background/40 hover:bg-primary/20 "
+        )}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p
+              className={cn(
+                "text-xs uppercase tracking-widest",
+                active ? "text-secondary-foreground" : ""
+              )}
+            >
+              {stock.label}
+            </p>
+            <p
+              className={cn(
+                "mt-1 text-sm font-medium",
+                active ? "text-secondary-foreground" : ""
+              )}
+            >
+              {stock.name}
+            </p>
+          </div>
+
+          <span
+            className="h-2.5 w-2.5 rounded-full"
+            style={{ backgroundColor: stock.stroke }}
+          />
+        </div>
+
+        <p
+          className={cn(
+            "mt-4 text-2xl font-semibold tracking-tight",
+            active ? "text-secondary-foreground" : ""
+          )}
+        >
+          ${stock.current}
+        </p>
+
+        <p
+          className={cn(
+            "mt-1 text-xs font-medium",
+            stock.change >= 0
+              ? "text-(--status-success)"
+              : "text-destructive"
+          )}
+        >
+          {stock.change >= 0 ? "+" : ""}
+          {stock.change}%
+        </p>
+      </button>
+    );
+  })}
+</div>
 
       <div className="flex items-center gap-2">
         <ExportCsvButton
@@ -249,7 +266,7 @@ const StocksRealtimeChart = ({ activeRange, onRangeChange }) => {
 
       <div
         ref={ref}
-        className="h-[380px] min-w-0 rounded-[28px] border border-border bg-background/40 p-4"
+        className="h-95 min-w-0 rounded-lg border border-border bg-background/40 p-4"
       >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart

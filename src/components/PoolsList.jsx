@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,15 +14,67 @@ import ExportCsvButton from "./ExportCsvButton";
 import { POOLS } from "./dashboard-data";
 
 const typeVariantMap = {
-  Classic: "secondary",
-  Stable: "outline",
-  Weighted: "secondary",
+  Growth: "secondary",
+  Dividend: "outline",
+  Thematic: "secondary",
+  Balanced: "outline",
+  Quality: "secondary",
 };
 
 const formatCurrency = (n) =>
   n >= 1e6
     ? `$${(n / 1e6).toFixed(2)}M`
     : `$${n.toLocaleString("en", { maximumFractionDigits: 1 })}`;
+
+const tickerStyleMap = {
+  AAPL: "bg-gradient-to-br from-slate-800 via-slate-700 to-slate-500 text-white",
+  MSFT: "bg-gradient-to-br from-sky-600 via-cyan-500 to-emerald-400 text-white",
+  NVDA: "bg-gradient-to-br from-lime-500 via-green-500 to-emerald-700 text-white",
+  AMD: "bg-gradient-to-br from-orange-500 via-red-500 to-rose-700 text-white",
+  KO: "bg-gradient-to-br from-red-500 via-rose-500 to-red-700 text-white",
+  PG: "bg-gradient-to-br from-blue-500 via-sky-500 to-indigo-700 text-white",
+  TSLA: "bg-gradient-to-br from-zinc-900 via-zinc-700 to-red-600 text-white",
+  NEE: "bg-gradient-to-br from-emerald-500 via-green-500 to-teal-700 text-white",
+  V: "bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-600 text-slate-950",
+  PYPL: "bg-gradient-to-br from-sky-500 via-blue-600 to-indigo-700 text-white",
+  LLY: "bg-gradient-to-br from-fuchsia-500 via-pink-500 to-rose-700 text-white",
+  UNH: "bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white",
+  CRWD: "bg-gradient-to-br from-rose-500 via-red-500 to-orange-700 text-white",
+  PANW: "bg-gradient-to-br from-orange-400 via-amber-500 to-red-600 text-slate-950",
+  NKE: "bg-gradient-to-br from-stone-800 via-zinc-700 to-slate-600 text-white",
+  SBUX: "bg-gradient-to-br from-emerald-500 via-green-600 to-teal-800 text-white",
+  HON: "bg-gradient-to-br from-amber-500 via-orange-500 to-red-700 text-white",
+  ROK: "bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-700 text-white",
+  CRM: "bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-700 text-white",
+  NOW: "bg-gradient-to-br from-zinc-700 via-slate-700 to-black text-white",
+  JPM: "bg-gradient-to-br from-slate-700 via-blue-800 to-slate-950 text-white",
+  GS: "bg-gradient-to-br from-cyan-400 via-sky-500 to-blue-700 text-white",
+};
+
+function PoolLogo({ icon }) {
+  if (icon && typeof icon === "object" && icon.src) {
+    return (
+      <Image
+        src={icon.src}
+        alt={icon.alt || icon.label || "Pool logo"}
+        width={40}
+        height={40}
+        className="h-10 w-10 rounded-full object-cover"
+      />
+    );
+  }
+
+  const label = typeof icon === "string" ? icon : icon?.label || "?";
+  const style = tickerStyleMap[label] || "bg-gradient-to-br from-slate-600 to-slate-800 text-white";
+
+  return (
+    <div
+      className={`flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-[10px] font-semibold tracking-wide shadow-sm ${style}`}
+    >
+      {label}
+    </div>
+  );
+}
 
 function PoolsListSkeleton() {
   return (
@@ -62,18 +116,14 @@ function PoolPair({ pool }) {
   return (
     <div className="flex items-center gap-3">
       <div className="flex -space-x-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-sm shadow-sm">
-          {pool.token0Icon}
-        </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-sm shadow-sm">
-          {pool.token1Icon}
-        </div>
+        <PoolLogo icon={pool.token0Icon} />
+        <PoolLogo icon={pool.token1Icon} />
       </div>
 
       <div className="min-w-0">
         <div className="truncate text-sm font-medium">{pool.pair}</div>
         <div className="truncate text-xs text-muted-foreground">
-          Fee {pool.feeTier}
+          {pool.feeTier}
         </div>
       </div>
     </div>
@@ -107,7 +157,7 @@ const PoolsList = ({ onSelectPool }) => {
 
           <AnimatedTextReveal delay={0.08}>
             <p className="text-sm text-muted-foreground">
-              Browse active liquidity pools with more realistic market size, volume, and APR.
+              Browse curated stock pools, then open any one to see its thesis, portfolio info, and performance chart.
             </p>
           </AnimatedTextReveal>
           </div>
@@ -116,12 +166,13 @@ const PoolsList = ({ onSelectPool }) => {
               <ExportCsvButton
                 fileName="quantro_pools"
                 rows={POOLS.map((pool) => ({
-                  pair: pool.pair,
+                  name: pool.pair,
                   type: pool.type,
-                  fee_tier: pool.feeTier,
-                  liquidity: pool.liquidity,
-                  volume_24h: pool.volume24h,
-                  apr: pool.apr,
+                  category: pool.feeTier,
+                  aum: pool.liquidity,
+                  net_flow_24h: pool.volume24h,
+                  ytd_return: pool.apr,
+                  benchmark: pool.benchmark,
                 }))}
                 className="rounded-lg"
               />
@@ -135,64 +186,68 @@ const PoolsList = ({ onSelectPool }) => {
             <div className="mb-3 hidden rounded-xl bg-background/35 px-5 py-4 text-xs uppercase tracking-widest text-muted-foreground lg:grid lg:grid-cols-5">
               <span>Pool</span>
               <span>Type</span>
-              <span className="text-right">Liquidity</span>
-              <span className="text-right">Volume</span>
-              <span className="text-right">APR</span>
+              <span className="text-right">AUM</span>
+              <span className="text-right">24h Flow</span>
+              <span className="text-right">YTD</span>
             </div>
 
             <div className="flex flex-col">
               {POOLS.map((pool, index) => (
                 
                 <React.Fragment key={pool.id}>
-                <motion.button
-                  type="button"
+                <motion.div
                   variants={fadeUp(20, 0.46, 0.06 + index * 0.04)}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.15 }}
-                  onClick={() => onSelectPool?.(pool)}
-                  className="grid w-full relative grid-cols-1 gap-4 rounded-xl bg-card/92 px-5 py-5 text-left transition-colors hover:bg-accent/30 lg:grid-cols-5 lg:items-center"
+                  className="relative"
                 >
-                  <PoolPair pool={pool} />
+                  <Link
+                    href={`/pools/${pool.slug}`}
+                    onClick={() => onSelectPool?.(pool)}
+                    className="grid w-full grid-cols-1 gap-4 rounded-xl bg-card/92 px-5 py-5 text-left transition-colors hover:bg-accent/30 lg:grid-cols-5 lg:items-center"
+                  >
+                    <PoolPair pool={pool} />
 
-                  <div>
-                    <Badge
-                      variant={typeVariantMap[pool.type] || "outline"}
-                      className="rounded-full"
-                    >
-                      {pool.type}
-                    </Badge>
-                  </div>
+                    <div>
+                      <Badge
+                        variant={typeVariantMap[pool.type] || "outline"}
+                        className="rounded-full"
+                      >
+                        {pool.type}
+                      </Badge>
+                    </div>
 
-                  <div className="lg:text-right">
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground lg:hidden">
-                      Liquidity
-                    </p>
-                    <p className="text-sm font-medium">{formatCurrency(pool.liquidity)}</p>
-                  </div>
+                    <div className="lg:text-right">
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground lg:hidden">
+                        AUM
+                      </p>
+                      <p className="text-sm font-medium">{formatCurrency(pool.liquidity)}</p>
+                    </div>
 
-                  <div className="lg:text-right">
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground lg:hidden">
-                      Volume
-                    </p>
-                    <p className="text-sm font-medium">{pool.volume24h}</p>
-                  </div>
+                    <div className="lg:text-right">
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground lg:hidden">
+                        24h Flow
+                      </p>
+                      <p className="text-sm font-medium">{pool.volume24h}</p>
+                    </div>
 
-                  <div className="lg:text-right">
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground lg:hidden">
-                      APR
-                    </p>
-                    <span
-                      className={
-                        pool.apr
-                          ? "text-sm font-semibold text-primary"
-                          : "text-sm text-muted-foreground"
-                      }
-                    >
-                      {pool.apr ? `${pool.apr}%` : "--%"}
-                    </span>
-                  </div>
-                </motion.button>
+                    <div className="lg:text-right">
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground lg:hidden">
+                        YTD
+                      </p>
+                      <span
+                        className={
+                          pool.apr
+                            ? "text-sm font-semibold text-primary"
+                            : "text-sm text-muted-foreground"
+                        }
+                      >
+                        {pool.apr ? `${pool.apr}%` : "--%"}
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
                 {index < POOLS.length - 1 && <span className="w-full h-px bg-border" />}
                 </React.Fragment>
               ))}

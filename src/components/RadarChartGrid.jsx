@@ -51,7 +51,7 @@ const RadarChartGrid = () => {
         </div>
       </div>
 
-      <div ref={ref} className="min-w-0 rounded-lg border  border border-border bg-background/40 p-4">
+      <div ref={ref} className="min-w-0 rounded-lg border border-border bg-background/40 p-4">
         <ResponsiveContainer
           width="100%"
           height={250}

@@ -22,7 +22,7 @@ const BalanceHero = ({
   onTransfer,
 }) => {
   return (
-    <Card className="border border border-border shadow-sm">
+    <Card className="border border-border shadow-sm">
       <CardContent className="flex flex-col gap-8 p-6 lg:p-7">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0 flex-1">
@@ -63,7 +63,7 @@ const BalanceHero = ({
           </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 xl:max-w-[34rem] xl:justify-end">
+          <div className="flex flex-wrap items-center gap-2 xl:max-w-136 xl:justify-end">
             <Button type="button" variant="outline" onClick={onMoveMoney} className="h-11 cursor-pointer rounded-lg">
               <MoveRight className="mr-2 h-4 w-4" />
               Move Money

@@ -26,7 +26,6 @@ const LoginScreen = ({ onLogin }) => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6 py-10 text-foreground">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,var(--shell-glow-a),transparent_26%),radial-gradient(circle_at_bottom_right,var(--shell-glow-b),transparent_24%)]" />
 
       {/* Card — mirrors dialog root: opacity + scale + y */}
       <motion.div

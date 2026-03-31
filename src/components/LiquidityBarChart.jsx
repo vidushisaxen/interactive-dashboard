@@ -33,7 +33,7 @@ export default function LiquidityBarChart({
         width="100%"
         height="100%"
         minWidth={0}
-        minHeight={minHeight}
+        minHeight={minHeight} 
       >
         <BarChart
           key={`liquidity-bar-${animationKey}`}
