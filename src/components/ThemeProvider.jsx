@@ -82,11 +82,8 @@ export function ThemeProvider({ children }) {
     const frameId = window.requestAnimationFrame(() => {
       setIsMounted(true);
 
-      const savedTheme = window.localStorage.getItem(STORAGE_KEY);
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-      const nextTheme = savedTheme || systemTheme;
+      const savedTheme = window.sessionStorage.getItem(STORAGE_KEY);
+      const nextTheme = savedTheme || "dark";
 
       setThemeState(nextTheme);
       document.documentElement.dataset.theme = nextTheme;
@@ -109,7 +106,7 @@ export function ThemeProvider({ children }) {
       return;
     }
     document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem(STORAGE_KEY, theme);
+    window.sessionStorage.setItem(STORAGE_KEY, theme);
   }, [isMounted, theme]);
 
   // ── Loader auto-dismiss ───────────────────────────────────────────────────
@@ -174,7 +171,7 @@ export function ThemeProvider({ children }) {
               }
             )
             .finished.finally(() => {
-              window.localStorage.setItem(STORAGE_KEY, nextTheme);
+              window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
               animatingRef.current = false;
             });
         })
@@ -200,7 +197,7 @@ export function ThemeProvider({ children }) {
     rippleThemeSwapTimeoutRef.current = window.setTimeout(() => {
       setThemeState(nextTheme);
       document.documentElement.dataset.theme = nextTheme;
-      window.localStorage.setItem(STORAGE_KEY, nextTheme);
+      window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
       rippleThemeSwapTimeoutRef.current = null;
     }, RIPPLE_DURATION * 1000 * 0.42);
   }, []);
@@ -213,7 +210,7 @@ export function ThemeProvider({ children }) {
       if (prefersReducedMotion) {
         setThemeState(nextTheme);
         document.documentElement.dataset.theme = nextTheme;
-        window.localStorage.setItem(STORAGE_KEY, nextTheme);
+        window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
         return;
       }
 
@@ -233,13 +230,18 @@ export function ThemeProvider({ children }) {
       setTheme: applyTheme,
       toggleTheme: (origin) =>
         applyTheme(theme === "dark" ? "light" : "dark", origin),
+      resetTheme: () => {
+        setThemeState("dark");
+        document.documentElement.dataset.theme = "dark";
+        window.sessionStorage.removeItem(STORAGE_KEY);
+      },
     }),
     [applyTheme, theme]
   );
 
   return (
     <ThemeContext.Provider value={value}>
-      {children}
+      {isMounted && !showLoader ? children : null}
 
       {ripple && (
         <RippleOverlay

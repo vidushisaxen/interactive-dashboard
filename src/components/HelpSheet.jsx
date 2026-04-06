@@ -100,7 +100,7 @@ const HelpSheet = ({ open, onOpenChange }) => {
                         duration={0.35}
                         delay={0.04}
                       >
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-muted-foreground w-35">
                           {item.text}
                         </div>
                       </AnimatedTextReveal>

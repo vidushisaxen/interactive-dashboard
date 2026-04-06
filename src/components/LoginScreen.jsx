@@ -45,12 +45,12 @@ const LoginScreen = ({ onLogin }) => {
       <motion.div
         className="pointer-events-none absolute rounded-full"
         style={{
-          width: 400,
-          height: 400,
-          top: -100,
-          left: -120,
+          width: 620,
+          height: 620,
+          top: -180,
+          left: -220,
           background: "radial-gradient(circle, var(--primary), color-mix(in srgb, var(--primary) 60%, black))",
-          filter: "blur(90px)",
+          filter: "blur(130px)",
           opacity: "var(--orb-opacity, 0.55)",
         }}
         animate={{ x: [0, 340, 160, -80, 0], y: [0, 180, 380, 220, 0], scale: [1, 1.12, 0.92, 1.08, 1] }}
@@ -59,12 +59,12 @@ const LoginScreen = ({ onLogin }) => {
       <motion.div
         className="pointer-events-none absolute rounded-full"
         style={{
-          width: 340,
-          height: 340,
-          bottom: -80,
-          right: -80,
+          width: 560,
+          height: 560,
+          bottom: -160,
+          right: -180,
           background: "radial-gradient(circle, color-mix(in srgb, var(--primary) 70%, white), var(--primary))",
-          filter: "blur(90px)",
+          filter: "blur(130px)",
           opacity: "var(--orb-opacity, 0.55)",
         }}
         animate={{ x: [0, -260, 200, 0], y: [0, 280, 120, 0], scale: [1, 1.1, 0.9, 1] }}
@@ -73,12 +73,12 @@ const LoginScreen = ({ onLogin }) => {
       <motion.div
         className="pointer-events-none absolute rounded-full"
         style={{
-          width: 300,
-          height: 300,
-          bottom: 60,
-          left: "38%",
+          width: 500,
+          height: 500,
+          bottom: -20,
+          left: "30%",
           background: "radial-gradient(circle, color-mix(in srgb, var(--primary) 80%, black), color-mix(in srgb, var(--primary) 50%, white))",
-          filter: "blur(80px)",
+          filter: "blur(120px)",
           opacity: "var(--orb-opacity, 0.55)",
         }}
         animate={{ x: [0, 180, -220, 100, 0], y: [0, -140, 200, 320, 0], scale: [1, 0.88, 1.15, 1.05, 1] }}

@@ -36,10 +36,10 @@ function DepositSkeleton() {
       </div>
 
       {/* MAIN GRID */}
-      <div className="grid grid-cols-1 gap-6 2xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
         
         {/* LEFT PANEL */}
-        <div className="space-y-6 2xl:col-span-1">
+        <div className="space-y-6 xl:col-span-4 2xl:col-span-3">
           <div className="rounded-xl border border-border bg-card p-5 space-y-4">
             
             {/* title */}
@@ -72,7 +72,7 @@ function DepositSkeleton() {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="flex flex-col gap-6 2xl:col-span-4">
+        <div className="flex min-w-0 flex-col gap-6 xl:col-span-8 2xl:col-span-9">
           
           {/* TOP 3 CARDS */}
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
@@ -195,11 +195,11 @@ const DepositScreen = () => {
         </div>
       </AnimatedFadeUp>
 
-      <div className="grid grid-cols-1 items-start gap-6 2xl:grid-cols-5">
+      <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-12">
         {/* LEFT PANEL */}
-        <div className="space-y-6 2xl:col-span-1">
+        <div className="space-y-6 xl:col-span-4 2xl:col-span-3">
           <AnimatedFadeUp delay={0.08}>
-            <Card className="border border-border shadow-sm ">
+            <Card className="border border-border shadow-sm xl:sticky xl:top-28">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">Tokens</CardTitle>
                 <CardDescription>Select amounts to deposit</CardDescription>
@@ -288,7 +288,7 @@ const DepositScreen = () => {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="flex min-w-0 flex-col gap-6 2xl:col-span-4">
+        <div className="flex min-w-0 flex-col gap-6 xl:col-span-8 2xl:col-span-9">
           {/* TOP 3 CARDS */}
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
             <AnimatedFadeUp delay={0.1}>
@@ -432,114 +432,114 @@ const DepositScreen = () => {
               </Card>
             </AnimatedFadeUp>
           </div>
-
-          <AnimatedFadeUp delay={0.22}>
-            <Card className="w-full border border-border shadow-sm ">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold tracking-tight">
-                  Deposit Progress & Liquidity
-                </CardTitle>
-                <CardDescription>
-                  Simulate deposit steps and see liquidity update in real-time
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="space-y-8">
-                <div className="space-y-5">
-                  <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <Badge variant="secondary" className="w-fit">
-                      Step {currentStep.step} / {DEPOSIT_STEP_CONTENT.length}
-                    </Badge>
-
-                    <span className="text-xs text-muted-foreground">
-                      Drag slider to simulate deposit steps
-                    </span>
-                  </div>
-
-                  <div className="space-y-1">
-                    <h4 className="text-base font-semibold">{currentStep.title}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {currentStep.description}
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-                      {DEPOSIT_STEP_CONTENT.map((step) => {
-                        const isActive = stepValue[0] === step.step;
-                        return (
-                          <button
-                            key={step.step}
-                            type="button"
-                            onClick={() => setStepValue([step.step])}
-                            className={`rounded-lg border p-3 text-left transition-colors hover:border-primary hover:bg-primary/10 ${
-                              isActive
-                                ? "border-primary bg-primary/10 text-primary"
-                                : "border-border bg-card"
-                            }`}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-bold">Step {step.step}</span>
-                              {isActive && <span className="text-[10px] font-medium uppercase">Active</span>}
-                            </div>
-                            <p className="mt-2 text-sm font-semibold">{step.title}</p>
-                            <p className="mt-1 text-xs text-muted-foreground">{step.description}</p>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                  <div className="rounded-lg border  border-border p-4">
-                    <p className="text-xs text-muted-foreground">Current Step</p>
-                    <p className="mt-1 text-base font-semibold">
-                      {currentStep.step}
-                    </p>
-                  </div>
-
-                  <div className="rounded-lg border  border-border p-4">
-                    <p className="text-xs text-muted-foreground">Progress Rate</p>
-                    <p className="mt-1 text-base font-semibold">
-                      {currentStep.progress}%
-                    </p>
-                  </div>
-
-                  <div className="rounded-lg border border-border p-4">
-                    <p className="text-xs text-muted-foreground">Liquidity Factor</p>
-                    <p className="mt-1 text-base font-semibold">
-                      {currentStep.multiplier}x
-                    </p>
-                  </div>
-
-                  <div className="rounded-lg border border-border p-4">
-                    <p className="text-xs text-muted-foreground">Estimated Growth</p>
-                    <p className="mt-1 text-base font-semibold text-primary">
-                      +{Math.round(currentStep.multiplier * 100)}%
-                    </p>
-                  </div>
-                </div>
-
-                <div className="rounded-lg border  border-border p-4">
-                  <div className="mb-4 flex justify-end">
-                    <ExportCsvButton
-                      fileName={`quantro_deposit_step_${String(currentStep.step).toLowerCase().replace(/\s+/g, "_")}`}
-                      rows={chartData}
-                      className="rounded-lg"
-                    />
-                  </div>
-                  <LiquidityBarChart
-                    key={`step-${currentStep.step}`}
-                    data={chartData}
-                    height={240}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </AnimatedFadeUp>
         </div>
       </div>
+
+      <AnimatedFadeUp delay={0.22}>
+        <Card className="w-full border border-border shadow-sm ">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold tracking-tight">
+              Deposit Progress & Liquidity
+            </CardTitle>
+            <CardDescription>
+              Simulate deposit steps and see liquidity update in real-time
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-8">
+            <div className="space-y-5">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <Badge variant="secondary" className="w-fit">
+                  Step {currentStep.step} / {DEPOSIT_STEP_CONTENT.length}
+                </Badge>
+
+                <span className="text-xs text-muted-foreground">
+                  Drag slider to simulate deposit steps
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="text-base font-semibold">{currentStep.title}</h4>
+                <p className="text-sm text-muted-foreground">
+                  {currentStep.description}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+                  {DEPOSIT_STEP_CONTENT.map((step) => {
+                    const isActive = stepValue[0] === step.step;
+                    return (
+                      <button
+                        key={step.step}
+                        type="button"
+                        onClick={() => setStepValue([step.step])}
+                        className={`rounded-lg border p-3 text-left transition-colors hover:border-primary hover:bg-primary/10 ${
+                          isActive
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border bg-card"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold">Step {step.step}</span>
+                          {isActive && <span className="text-[10px] font-medium uppercase">Active</span>}
+                        </div>
+                        <p className="mt-2 text-sm font-semibold">{step.title}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{step.description}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              <div className="rounded-lg border  border-border p-4">
+                <p className="text-xs text-muted-foreground">Current Step</p>
+                <p className="mt-1 text-base font-semibold">
+                  {currentStep.step}
+                </p>
+              </div>
+
+              <div className="rounded-lg border  border-border p-4">
+                <p className="text-xs text-muted-foreground">Progress Rate</p>
+                <p className="mt-1 text-base font-semibold">
+                  {currentStep.progress}%
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-border p-4">
+                <p className="text-xs text-muted-foreground">Liquidity Factor</p>
+                <p className="mt-1 text-base font-semibold">
+                  {currentStep.multiplier}x
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-border p-4">
+                <p className="text-xs text-muted-foreground">Estimated Growth</p>
+                <p className="mt-1 text-base font-semibold text-primary">
+                  +{Math.round(currentStep.multiplier * 100)}%
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-lg border  border-border p-4">
+              <div className="mb-4 flex justify-end">
+                <ExportCsvButton
+                  fileName={`quantro_deposit_step_${String(currentStep.step).toLowerCase().replace(/\s+/g, "_")}`}
+                  rows={chartData}
+                  className="rounded-lg"
+                />
+              </div>
+              <LiquidityBarChart
+                key={`step-${currentStep.step}`}
+                data={chartData}
+                height={240}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      </AnimatedFadeUp>
     </section>
   );
 };
