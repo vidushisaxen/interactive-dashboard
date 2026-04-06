@@ -9,42 +9,9 @@ const ActiveShape = ({
   endAngle = 0,
   fill = "var(--primary)",
   payload,
-  value,
 }) => {
-  const label = payload?.name ?? "";
-  const displayValue = value ?? "";
-
   return (
     <g>
-      {/* Center labels */}
-      <text
-        x={cx}
-        y={cy - 8}
-        textAnchor="middle"
-        dominantBaseline="central"
-        className="fill-foreground"
-        style={{
-          fontSize: 13,
-          fontWeight: 600,
-        }}
-      >
-        {label}
-      </text>
-
-      <text
-        x={cx}
-        y={cy + 14}
-        textAnchor="middle"
-        dominantBaseline="central"
-        className="fill-muted-foreground"
-        style={{
-          fontSize: 12,
-          fontWeight: 500,
-        }}
-      >
-        {displayValue}
-      </text>
-
       {/* Active slice */}
       <Sector
         cx={cx}
@@ -54,9 +21,9 @@ const ActiveShape = ({
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
-        style={{
-          filter: "drop-shadow(0 0 10px color-mix(in srgb, var(--primary) 35%, transparent))",
-        }}
+        // style={{
+        //   filter: "drop-shadow(0 0 8px color-mix(in srgb, var(--primary) 35%, transparent))",
+        // }}
       />
 
       {/* Outer highlight ring */}

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
-import { LogOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { slideIn, smoothTween, staggerContainer } from "@/lib/animations";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -89,17 +89,19 @@ function LogoutRow({ onClick, expanded = false, prefersReducedMotion }) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
+const FinanceSidebar = ({ pinned = false, onPinnedChange, onLogout }) => {
   const pathname = usePathname();
   const closeTimerRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const [hoverReady, setHoverReady] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
+  const [hoverExpanded, setHoverExpanded] = useState(false);
+  const isExpanded = pinned || hoverExpanded;
 
   useEffect(() => {
-    onExpandedChange?.(false);
+    onPinnedChange?.(false);
     return () => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current); };
-  }, [onExpandedChange]);
+  }, [onPinnedChange]);
 
   useEffect(() => {
     window.addEventListener("mousemove", () => setHoverReady(true), { once: true });
@@ -109,23 +111,57 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const handleExpand = () => {
-    if (!hoverReady) return;
+    if (!hoverReady || pinned) return;
     if (closeTimerRef.current) { clearTimeout(closeTimerRef.current); closeTimerRef.current = null; }
-    onExpandedChange?.(true);
+    setHoverExpanded(true);
   };
 
   const handleCollapse = () => {
+    if (pinned) return;
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     closeTimerRef.current = setTimeout(() => {
-      onExpandedChange?.(false);
+      setHoverExpanded(false);
       closeTimerRef.current = null;
     }, 80);
   };
 
+  const handlePinnedToggle = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+
+    if (pinned) {
+      onPinnedChange?.(false);
+      setHoverExpanded(false);
+      return;
+    }
+
+    onPinnedChange?.(true);
+    setHoverExpanded(false);
+  };
+
   return (
     <>
+      {hoverExpanded && !pinned ? (
+        <motion.div
+          className="fixed inset-0 z-40 bg-background/18 backdrop-blur-sm"
+          initial={prefersReducedMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.22, ease: EASE }}
+          onClick={handleCollapse}
+          aria-hidden="true"
+        />
+      ) : null}
+
       <motion.aside
-        className="fixed left-0 top-0 z-50 h-screen overflow-hidden border-r border-border bg-background/95 backdrop-blur-xl"
+        className={cn(
+          "fixed left-0 top-0 z-50 h-screen overflow-hidden border-r border-border backdrop-blur-md",
+          pinned
+            ? "bg-background/95"
+            : "bg-[color-mix(in_srgb,var(--background)_72%,transparent)] shadow-[0_24px_80px_rgba(0,0,0,0.22)]"
+        )}
         onMouseEnter={handleExpand}
         onMouseLeave={handleCollapse}
         initial={
@@ -137,7 +173,7 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
               }
         }
         animate={{
-          width: expanded ? 232 : 72,
+          width: isExpanded ? 232 : 72,
           opacity: 1,
           x: 0,
           y: 0,
@@ -154,25 +190,42 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
 
             {/* ── Logo row ── */}
             <motion.div variants={prefersReducedMotion ? undefined : sidebarItemVariants}>
-              <Link href="/" className="group mb-8 flex h-11 items-center no-underline">
-                {/* Q tile */}
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-primary text-white shadow-sm">
-                  <span className="text-base font-black">Q</span>
-                </div>
-
-                {/* Wordmark */}
-                <motion.div
-                  className="overflow-hidden"
-                  initial={false}
-                  animate={{ width: expanded ? 160 : 0, opacity: expanded ? 1 : 0 }}
-                  transition={prefersReducedMotion ? { duration: 0 } : labelTween}
-                >
-                  <div className="whitespace-nowrap pl-3">
-                    <p className="text-sm font-semibold tracking-wide text-foreground">QUANTRO</p>
-                    <p className="text-xs text-muted-foreground">Finance hub</p>
+              <div className="mb-8 flex items-start justify-between gap-2">
+                <Link href="/" className="group flex h-11 items-center no-underline">
+                  {/* Q tile */}
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-primary text-white shadow-sm">
+                    <span className="text-base font-black">Q</span>
                   </div>
-                </motion.div>
-              </Link>
+
+                  {/* Wordmark */}
+                  <motion.div
+                    className="overflow-hidden"
+                    initial={false}
+                    animate={{ width: isExpanded ? 108 : 0, opacity: isExpanded ? 1 : 0 }}
+                    transition={prefersReducedMotion ? { duration: 0 } : labelTween}
+                  >
+                    <div className="whitespace-nowrap pl-3">
+                      <p className="text-sm font-semibold tracking-wide text-foreground">QUANTRO</p>
+                      <p className="text-xs text-muted-foreground">Finance hub</p>
+                    </div>
+                  </motion.div>
+                </Link>
+
+                <motion.button
+                  type="button"
+                  onClick={handlePinnedToggle}
+                  className={cn(
+                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background/70 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground",
+                    isExpanded ? "opacity-100" : "opacity-0 pointer-events-none"
+                  )}
+                  initial={false}
+                  animate={{ opacity: isExpanded ? 1 : 0 }}
+                  transition={prefersReducedMotion ? { duration: 0 } : labelTween}
+                  aria-label={pinned ? "Collapse sidebar" : "Pin sidebar open"}
+                >
+                  {pinned ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                </motion.button>
+              </div>
             </motion.div>
 
             {/* ── Nav rows ── */}
@@ -185,7 +238,7 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
                   <NavRow
                     item={item}
                     active={isActiveRoute(item.href)}
-                    expanded={expanded}
+                    expanded={isExpanded}
                     prefersReducedMotion={prefersReducedMotion}
                   />
                 </motion.div>
@@ -199,7 +252,7 @@ const FinanceSidebar = ({ expanded = false, onExpandedChange, onLogout }) => {
             >
               <LogoutRow
                 onClick={() => setOpenLogout(true)}
-                expanded={expanded}
+                expanded={isExpanded}
                 prefersReducedMotion={prefersReducedMotion}
               />
             </motion.div>

@@ -1,10 +1,11 @@
 "use client";
 
 import { cloneElement, isValidElement, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { smoothTween } from "@/lib/animations";
+import { PageTransition } from "@/components/animations/FadeUp";
 import FinanceSidebar from "./FinanceSidebar";
 import FinanceTopbar from "./FinanceTopbar";
 import { useTheme } from "./ThemeProvider";
@@ -21,7 +22,8 @@ const AUTH_NAME_KEY = "quantro-auth-user";
 
 const FinanceDashboardShell = ({ children }) => {
   const router = useRouter();
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const pathname = usePathname();
+  const [sidebarPinned, setSidebarPinned] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { theme, toggleTheme } = useTheme();
   const prefersReducedMotion = useReducedMotion();
@@ -57,7 +59,7 @@ const FinanceDashboardShell = ({ children }) => {
     window.sessionStorage.removeItem(AUTH_STORAGE_KEY);
     window.sessionStorage.removeItem(AUTH_NAME_KEY);
     setSearchQuery("");
-    setSidebarExpanded(false);
+    setSidebarPinned(false);
     setUserName("");
     setIsAuthenticated(false);
     router.replace("/");
@@ -71,15 +73,15 @@ const FinanceDashboardShell = ({ children }) => {
     <div className="min-h-screen bg-background text-foreground">
       <div className="min-h-screen">
         <FinanceSidebar
-          expanded={sidebarExpanded}
-          onExpandedChange={setSidebarExpanded}
+          pinned={sidebarPinned}
+          onPinnedChange={setSidebarPinned}
           onLogout={handleLogout}
         />
 
         <motion.div
           className="ml-[88px] min-h-screen"
           initial={false}
-          animate={{ marginLeft: sidebarExpanded ? 240 : 88 }}
+          animate={{ marginLeft: sidebarPinned ? 240 : 88 }}
           transition={
             prefersReducedMotion
               ? { duration: 0 }
@@ -96,7 +98,11 @@ const FinanceDashboardShell = ({ children }) => {
 
           <main className="px-5 pb-5 pt-4 lg:px-6 lg:pb-6 lg:pt-5">
             <Card className="min-h-[calc(100vh-110px)] rounded-lg  border border-border bg-card/95 shadow-sm backdrop-blur">
-              <CardContent className="p-6 lg:p-7">{content}</CardContent>
+              <CardContent className="p-6 lg:p-7">
+                <PageTransition transitionKey={pathname}>
+                  {content}
+                </PageTransition>
+              </CardContent>
             </Card>
           </main>
         </motion.div>

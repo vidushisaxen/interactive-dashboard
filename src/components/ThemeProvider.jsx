@@ -18,10 +18,30 @@ const STORAGE_KEY = "interactive-dashboard-theme";
 const LOADER_STORAGE_KEY = "quantro-loader-seen";
 const LOADER_MS = 1500;
 
-// easeOutQuart — quick pop, smooth tail
-const RIPPLE_EASE = [0.5, 1, 0.8, 1];
-const RIPPLE_DURATION = 0.5;
+// easeOutQuart — quick pop, smooth tail (used for Motion ripple fallback)
+// const RIPPLE_EASE = [0.5, 1, 0.8, 1];
+const RIPPLE_EASE = [1,1,1,1];
+const RIPPLE_DURATION = 1.5;
 
+function getClipKeyframes(direction) {
+  switch (direction) {
+    case "rtl":
+      return ["inset(0 0 0 100%)", "inset(0 0 0 0)"];
+    case "ttb":
+      return ["inset(0 0 100% 0)", "inset(0 0 0 0)"];
+    case "btt":
+      return ["inset(100% 0 0 0)", "inset(0 0 0 0)"];
+    case "ltr":
+    default:
+      return ["inset(0 100% 0 0)", "inset(0 0 0 0)"];
+  }
+}
+
+function getDirectionForTheme(nextTheme) {
+  return nextTheme === "light" ? "ltr" : "rtl";
+}
+
+// ─── Radial ripple geometry (used only by Motion fallback) ───────────────────
 function getMaskRadius(x, y) {
   const w = window.innerWidth;
   const h = window.innerHeight;
@@ -35,7 +55,7 @@ function getMaskRadius(x, y) {
   );
 }
 
-// ─── Motion ripple overlay ────────────────────────────────────────────────────
+// ─── Motion ripple overlay (fallback when no startViewTransition) ─────────────
 function RippleOverlay({ origin, color, onComplete }) {
   const x = origin?.x ?? window.innerWidth / 2;
   const y = origin?.y ?? window.innerHeight / 2;
@@ -64,6 +84,10 @@ function RippleOverlay({ origin, color, onComplete }) {
 }
 
 // ─── Provider ────────────────────────────────────────────────────────────────
+/**
+ * @param {{ children: React.ReactNode, direction?: 'ltr'|'rtl'|'ttb'|'btt' }} props
+ *   direction – wipe direction for the view-transition animation (default: 'ltr')
+ */
 export function ThemeProvider({ children }) {
   const prefersReducedMotion = useReducedMotion();
 
@@ -71,7 +95,7 @@ export function ThemeProvider({ children }) {
   const [showLoader, setShowLoader] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Ripple state: null = idle, object = animating
+  // Ripple state: null = idle, object = animating (Motion fallback only)
   const [ripple, setRipple] = useState(null);
   const animatingRef = useRef(false);
   const isFirstRender = useRef(true);
@@ -119,7 +143,7 @@ export function ThemeProvider({ children }) {
     return () => window.clearTimeout(id);
   }, [prefersReducedMotion, showLoader]);
 
-  // ── Ripple complete: hide overlay, unlock ─────────────────────────────────
+  // ── Ripple complete: hide overlay, unlock (Motion fallback only) ──────────
   const handleRippleComplete = useCallback(() => {
     if (rippleThemeSwapTimeoutRef.current) {
       window.clearTimeout(rippleThemeSwapTimeoutRef.current);
@@ -138,60 +162,53 @@ export function ThemeProvider({ children }) {
     []
   );
 
-  // ── View Transition path ──────────────────────────────────────────────────
   const runViewTransitionAnimation = useCallback(
-    (nextTheme, origin) => {
-      const x = origin?.x ?? window.innerWidth / 2;
-      const y = origin?.y ?? window.innerHeight / 2;
-      const radius = getMaskRadius(x, y);
-
+    async (nextTheme) => {
       animatingRef.current = true;
 
-      const transition = document.startViewTransition(() => {
-        flushSync(() => {
-          setThemeState(nextTheme);
-          document.documentElement.dataset.theme = nextTheme;
-        });
-      });
+      const [fromClip, toClip] = getClipKeyframes(
+        getDirectionForTheme(nextTheme)
+      );
 
-      transition.ready
-        .then(() => {
-          document.documentElement
-            .animate(
-              {
-                clipPath: [
-                  `circle(0px at ${x}px ${y}px)`,
-                  `circle(${radius}px at ${x}px ${y}px)`,
-                ],
-              },
-              {
-                duration: RIPPLE_DURATION * 1000,
-                easing: `cubic-bezier(${RIPPLE_EASE.join(",")})`,
-                pseudoElement: "::view-transition-new(root)",
-              }
-            )
-            .finished.finally(() => {
-              window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
-              animatingRef.current = false;
-            });
-        })
-        .catch(() => {
-          // Fall through to Motion ripple
-          animatingRef.current = false;
-          runMotionRipple(nextTheme, origin);
+      try {
+        const transition = document.startViewTransition(() => {
+          flushSync(() => {
+            setThemeState(nextTheme);
+            document.documentElement.dataset.theme = nextTheme;
+          });
         });
+
+        await transition.ready;
+
+        await document.documentElement
+          .animate(
+            { clipPath: [fromClip, toClip] },
+            {
+              duration: 700,
+              easing: "ease-in-out",
+              pseudoElement: "::view-transition-new(root)",
+            }
+          )
+          .finished;
+
+        window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
+      } catch {
+        setThemeState(nextTheme);
+        document.documentElement.dataset.theme = nextTheme;
+        window.sessionStorage.setItem(STORAGE_KEY, nextTheme);
+      }
+
+      animatingRef.current = false;
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  // ── Motion ripple path (fallback / explicit) ──────────────────────────────
+  // ── Motion ripple path (fallback when startViewTransition unavailable) ────
   const runMotionRipple = useCallback((nextTheme, origin) => {
     const overlayColor = nextTheme === "dark" ? "#09090b" : "#f8fafc";
 
     animatingRef.current = true;
 
-    // Mount the overlay first, then swap the theme once the screen is mostly covered.
     setRipple({ origin, color: overlayColor, nextTheme });
 
     rippleThemeSwapTimeoutRef.current = window.setTimeout(() => {
@@ -203,10 +220,18 @@ export function ThemeProvider({ children }) {
   }, []);
 
   // ── Main applyTheme ───────────────────────────────────────────────────────
+  /**
+   * @param {string} nextTheme
+   * @param {{ x: number, y: number } | null} [origin]
+   *   origin is kept for API compatibility and used by the Motion ripple
+   *   fallback; the view-transition wipe ignores it (it's directional, not
+   *   origin-based).
+   */
   const applyTheme = useCallback(
     (nextTheme, origin) => {
       if (!nextTheme || nextTheme === theme || animatingRef.current) return;
 
+      // Respect prefers-reduced-motion: instant swap, no animation
       if (prefersReducedMotion) {
         setThemeState(nextTheme);
         document.documentElement.dataset.theme = nextTheme;
@@ -215,7 +240,7 @@ export function ThemeProvider({ children }) {
       }
 
       if (typeof document !== "undefined" && document.startViewTransition) {
-        runViewTransitionAnimation(nextTheme, origin);
+        runViewTransitionAnimation(nextTheme);
         return;
       }
 
@@ -243,6 +268,7 @@ export function ThemeProvider({ children }) {
     <ThemeContext.Provider value={value}>
       {isMounted && !showLoader ? children : null}
 
+      {/* Motion ripple overlay — only rendered when startViewTransition is absent */}
       {ripple && (
         <RippleOverlay
           key={ripple.nextTheme}
@@ -257,6 +283,9 @@ export function ThemeProvider({ children }) {
         ::view-transition-new(root) {
           animation: none;
           mix-blend-mode: normal;
+        }
+        ::view-transition-new(root) {
+          z-index: 1;
         }
       `}</style>
 

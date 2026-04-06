@@ -82,7 +82,7 @@ const PieChartStacked = () => {
       </div>
 
       <div ref={ref} className="flex justify-center">
-        <div className="rounded-lg border  border-border bg-background/40 p-4">
+        <div className="relative rounded-lg border border-border bg-background/40 p-4">
           <PieChart key={`pie-stacked-${animationKey}`} width={280} height={250}>
             <Pie
               data={outer}
@@ -127,6 +127,17 @@ const PieChartStacked = () => {
               ))}
             </Pie>
           </PieChart>
+
+          {activeItem ? (
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[108px] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/12 bg-[color-mix(in_srgb,var(--card)_58%,transparent)] px-4 py-3 text-center shadow-[0_16px_42px_rgba(0,0,0,0.2)] backdrop-blur-xl supports-[backdrop-filter]:bg-[color-mix(in_srgb,var(--card)_42%,transparent)]">
+              <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                {activeItem.name}
+              </p>
+              <p className="mt-1 text-lg font-semibold tracking-tight text-foreground">
+                {activeItem.value}
+              </p>
+            </div>
+          ) : null}
         </div>
       </div>
 

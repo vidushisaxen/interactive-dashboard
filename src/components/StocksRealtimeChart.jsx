@@ -283,14 +283,14 @@ const StocksRealtimeChart = ({ activeRange, onRangeChange }) => {
             <XAxis
               dataKey="label"
               minTickGap={18}
-              tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+              tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
               axisLine={false}
               tickLine={false}
               tickMargin={10}
             />
 
             <YAxis
-              tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+              tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
