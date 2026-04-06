@@ -43,11 +43,22 @@ function RippleOverlay({ origin, color, onComplete }) {
   return (
     <motion.div
       aria-hidden="true"
-      initial={{ clipPath: `circle(0px at ${x}px ${y}px)` }}
-      animate={{ clipPath: `circle(${r}px at ${x}px ${y}px)` }}
+      initial={{ scale: 0.02, opacity: 1 }}
+      animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: RIPPLE_DURATION, ease: RIPPLE_EASE }}
       onAnimationComplete={onComplete}
-      style={{ position: "fixed", inset: 0, zIndex: 100, pointerEvents: "none", backgroundColor: color }}
+      style={{
+        position: "fixed",
+        left: x - r,
+        top: y - r,
+        width: r * 2,
+        height: r * 2,
+        zIndex: 100,
+        pointerEvents: "none",
+        backgroundColor: color,
+        borderRadius: "9999px",
+        willChange: "transform",
+      }}
     />
   );
 }
@@ -64,6 +75,7 @@ export function ThemeProvider({ children }) {
   const [ripple, setRipple] = useState(null);
   const animatingRef = useRef(false);
   const isFirstRender = useRef(true);
+  const rippleThemeSwapTimeoutRef = useRef(null);
 
   // ── Hydrate from storage ───────────────────────────────────────────────────
   useEffect(() => {
@@ -112,9 +124,22 @@ export function ThemeProvider({ children }) {
 
   // ── Ripple complete: hide overlay, unlock ─────────────────────────────────
   const handleRippleComplete = useCallback(() => {
+    if (rippleThemeSwapTimeoutRef.current) {
+      window.clearTimeout(rippleThemeSwapTimeoutRef.current);
+      rippleThemeSwapTimeoutRef.current = null;
+    }
     setRipple(null);
     animatingRef.current = false;
   }, []);
+
+  useEffect(
+    () => () => {
+      if (rippleThemeSwapTimeoutRef.current) {
+        window.clearTimeout(rippleThemeSwapTimeoutRef.current);
+      }
+    },
+    []
+  );
 
   // ── View Transition path ──────────────────────────────────────────────────
   const runViewTransitionAnimation = useCallback(
@@ -169,14 +194,15 @@ export function ThemeProvider({ children }) {
 
     animatingRef.current = true;
 
-    // Mount the ripple overlay first, swap theme at ~35% of the animation
+    // Mount the overlay first, then swap the theme once the screen is mostly covered.
     setRipple({ origin, color: overlayColor, nextTheme });
 
-    window.setTimeout(() => {
+    rippleThemeSwapTimeoutRef.current = window.setTimeout(() => {
       setThemeState(nextTheme);
       document.documentElement.dataset.theme = nextTheme;
       window.localStorage.setItem(STORAGE_KEY, nextTheme);
-    }, RIPPLE_DURATION * 1000 * 0.3);
+      rippleThemeSwapTimeoutRef.current = null;
+    }, RIPPLE_DURATION * 1000 * 0.42);
   }, []);
 
   // ── Main applyTheme ───────────────────────────────────────────────────────

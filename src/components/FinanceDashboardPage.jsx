@@ -166,7 +166,7 @@ function OverviewCard({ title, description, icon: Icon, onOpen }) {
     <button
       type="button"
       onClick={onOpen}
-      className="group rounded-xl border  border-border bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+      className="group rounded-lg border  border-border bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary-foreground/16 group-hover:text-primary-foreground">
@@ -356,7 +356,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
             {DASHBOARD_METRIC_CARDS.map((item) => (
               <div
                 key={item.label}
-                className="rounded-xl border border-border bg-card/95 p-5 shadow-sm"
+                className="rounded-lg border border-border bg-card/95 p-5 shadow-sm"
               >
                 <p className="text-xs uppercase tracking-widest text-muted-foreground">
                   {item.label}

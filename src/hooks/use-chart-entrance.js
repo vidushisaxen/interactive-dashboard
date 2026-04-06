@@ -1,18 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useCallback, useRef } from "react";
+import { useInView, useReducedMotion } from "motion/react";
 
 const BASE_DELAY = 140;
-const MAX_DELAY = 720;
+const VIEWPORT_AMOUNT = 0.35;
 
 export function useChartEntrance() {
   const prefersReducedMotion = useReducedMotion();
-  const [animationKey, setAnimationKey] = useState(0);
-  const [animationDelay, setAnimationDelay] = useState(0);
   const nodeRef = useRef(null);
-  const timeoutRef = useRef(null);
-  const hasAnimatedRef = useRef(false);
+  const isInView = useInView(nodeRef, {
+    once: true,
+    amount: VIEWPORT_AMOUNT,
+  });
 
   const ref = useCallback(
     (node) => {
@@ -21,40 +21,14 @@ export function useChartEntrance() {
     []
   );
 
-  useEffect(() => {
-    if (prefersReducedMotion || hasAnimatedRef.current || !nodeRef.current) {
-      return;
-    }
-
-    const node = nodeRef.current;
-    const rect = node.getBoundingClientRect();
-    const relativeTop = Math.max(rect.top, 0);
-    const nextDelay = Math.min(
-      BASE_DELAY + Math.round(relativeTop * 0.18),
-      MAX_DELAY
-    );
-
-    setAnimationDelay(nextDelay);
-
-    timeoutRef.current = window.setTimeout(() => {
-      hasAnimatedRef.current = true;
-      setAnimationKey(1);
-      timeoutRef.current = null;
-    }, nextDelay);
-
-    return () => {
-      if (timeoutRef.current) {
-        window.clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-    };
-  }, [prefersReducedMotion]);
+  const hasEnteredView = prefersReducedMotion || isInView;
+  const animationKey = hasEnteredView ? 1 : 0;
 
   return {
     ref,
-    isChartVisible: prefersReducedMotion || animationKey > 0,
-    shouldAnimate: !prefersReducedMotion && animationKey > 0,
+    isChartVisible: hasEnteredView,
+    shouldAnimate: !prefersReducedMotion && hasEnteredView,
     animationKey,
-    animationDelay,
+    animationDelay: BASE_DELAY,
   };
 }

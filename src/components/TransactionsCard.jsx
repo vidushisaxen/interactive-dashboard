@@ -26,7 +26,7 @@ const TransactionsCard = ({
 
             <div>
               <h3 className="text-base font-semibold tracking-tight">{title}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+              <p className="mt-1 text-sm text-muted-foreground w-[10vw]">{subtitle}</p>
             </div>
           </div>
 
@@ -42,26 +42,6 @@ const TransactionsCard = ({
               className="rounded-lg"
             />
 
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={onFilter}
-              className="rounded-lg cursor-pointer"
-            >
-              <Filter className="mr-2 h-4 w-4" />
-              Filter
-            </Button>
-
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={onViewAll}
-              className="rounded-lg text-primary cursor-pointer"
-            >
-              View all
-            </Button>
           </div>
         </div>
 

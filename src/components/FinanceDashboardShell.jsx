@@ -1,6 +1,7 @@
 "use client";
 
 import { cloneElement, isValidElement, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { smoothTween } from "@/lib/animations";
@@ -16,14 +17,17 @@ const shellTween = {
 };
 
 const AUTH_STORAGE_KEY = "quantro-authenticated";
+const AUTH_NAME_KEY = "quantro-auth-user";
 
 const FinanceDashboardShell = ({ children }) => {
+  const router = useRouter();
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { theme, toggleTheme } = useTheme();
   const prefersReducedMotion = useReducedMotion();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthReady, setIsAuthReady] = useState(false);
+  const [userName, setUserName] = useState("");
 
   const content = isValidElement(children)
     ? cloneElement(children, { searchQuery })
@@ -34,22 +38,29 @@ const FinanceDashboardShell = ({ children }) => {
       setIsAuthenticated(
         window.sessionStorage.getItem(AUTH_STORAGE_KEY) === "true"
       );
+      setUserName(window.sessionStorage.getItem(AUTH_NAME_KEY) || "");
       setIsAuthReady(true);
     });
 
     return () => window.cancelAnimationFrame(frameId);
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = ({ userId } = {}) => {
     window.sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
+    const nextUserName = userId?.trim() || "there";
+    window.sessionStorage.setItem(AUTH_NAME_KEY, nextUserName);
+    setUserName(nextUserName);
     setIsAuthenticated(true);
   };
 
   const handleLogout = () => {
     window.sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    window.sessionStorage.removeItem(AUTH_NAME_KEY);
     setSearchQuery("");
     setSidebarExpanded(false);
+    setUserName("");
     setIsAuthenticated(false);
+    router.replace("/");
   };
 
   if (!isAuthReady || !isAuthenticated) {
@@ -80,6 +91,7 @@ const FinanceDashboardShell = ({ children }) => {
             onToggleTheme={toggleTheme}
             searchValue={searchQuery}
             onSearchChange={setSearchQuery}
+            userName={userName}
           />
 
           <main className="px-5 pb-5 pt-4 lg:px-6 lg:pb-6 lg:pt-5">

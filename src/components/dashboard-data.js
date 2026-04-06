@@ -77,7 +77,7 @@ export const DASHBOARD_HOLDINGS = [
 export const DASHBOARD_ALERTS = [
   { id: 1, title: "Budget alert", description: "Dining is 18% above your weekly budget.", severity: "warning" },
   { id: 2, title: "Price movement", description: "NVDA moved +4.8% and triggered your watchlist alert.", severity: "success" },
-  { id: 3, title: "Subscription reminder", description: "3 recurring payments renew in the next 7 days.", severity: "neutral" },
+  // { id: 3, title: "Subscription reminder", description: "3 recurring payments renew in the next 7 days.", severity: "neutral" },
 ];
 
 export const DASHBOARD_TRANSACTIONS = [
@@ -92,6 +92,7 @@ export const TRANSACTION_CARD_ITEMS = [
   { id: 2, title: "Apple Subscription", subtitle: "Today • Recurring Payment", amount: "-$12.99", positive: false, icon: ArrowUpRight },
   { id: 3, title: "Transfer to Savings", subtitle: "Yesterday • Internal Move", amount: "-$540.00", positive: false, icon: ArrowUpRight },
   { id: 4, title: "Freelance Payment", subtitle: "Yesterday • Incoming", amount: "+$920.00", positive: true, icon: ArrowDownLeft },
+  { id: 5, title: "Agency Payment", subtitle: "Yesterday • Recurring Payment", amount: "+$1020.00", positive: false, icon: ArrowDownLeft },
 ];
 
 export const ACTIVITY_METRICS = {

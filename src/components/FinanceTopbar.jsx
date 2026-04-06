@@ -96,6 +96,7 @@ const FinanceTopbar = ({
   onToggleTheme,
   searchValue = "",
   onSearchChange,
+  userName = "",
 }) => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
@@ -116,6 +117,28 @@ const FinanceTopbar = ({
     ).slice(0, 6);
   }, [searchValue]);
 
+  const displayName = useMemo(() => {
+    const trimmed = userName.trim();
+    if (!trimmed) return "there";
+
+    const [firstWord] = trimmed.split(/\s+/);
+    return firstWord.charAt(0).toUpperCase() + firstWord.slice(1);
+  }, [userName]);
+
+  const userInitials = useMemo(() => {
+    const segments = userName
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2);
+
+    if (!segments.length) return "U";
+
+    return segments
+      .map((segment) => segment.charAt(0).toUpperCase())
+      .join("");
+  }, [userName]);
+
   const handleProfileAction = (action) => {
     setProfileMenuOpen(false);
 
@@ -127,14 +150,28 @@ const FinanceTopbar = ({
     onNav?.(action);
   };
 
-const handleThemeToggle = () => {
-  onToggleTheme?.();
-};
+  const handleThemeToggle = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    onToggleTheme?.({
+      x: rect.left + rect.width / 2,
+      y: rect.top,
+    });
+  };
 
   return (
     <>
       <TooltipProvider delayDuration={120}>
-        <header className="sticky top-0 z-40 flex h-21 items-center justify-end  bg-background/80 px-6 backdrop-blur supports-backdrop-filter:bg-background/70 lg:px-8">
+        <header className="sticky top-0 z-40 flex h-21 items-center justify-between bg-background/80 px-6 backdrop-blur supports-backdrop-filter:bg-background/70 lg:px-8">
+          <div className="min-w-0 pr-6 pt-3">
+            <h1 className="truncate text-[1.9rem] font-semibold tracking-tight text-foreground">
+              Good to see you, {displayName}!
+            </h1>
+            <p className="mt-2 truncate text-sm text-muted-foreground">
+              Improve your finance management for better growth
+            </p>
+          </div>
+
           <div className="flex items-center gap-2">
             <div className="relative hidden sm:block">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -211,7 +248,7 @@ const handleThemeToggle = () => {
       type="button"
       variant="outline"
       size="icon"
-     onClick={handleThemeToggle}
+      onClick={handleThemeToggle}
       className="h-11 w-11 cursor-pointer rounded-full"
     >
       <span className="relative flex h-4.5 w-4.5 items-center justify-center overflow-hidden">
@@ -245,7 +282,7 @@ const handleThemeToggle = () => {
                 >
                   <Avatar className="h-8 w-8 border border-border">
                     <AvatarFallback className="bg-white text-xs font-bold text-primary">
-                      JK
+                      {userInitials}
                     </AvatarFallback>
                   </Avatar>
 

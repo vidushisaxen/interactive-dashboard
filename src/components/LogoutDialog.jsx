@@ -69,12 +69,12 @@ const LogoutDialog = ({ open, onClose, onConfirm }) => {
                 transition={{ delay: 0.2, duration: 0.25 }}
               >
                 <DialogFooter className="mt-4 gap-2 sm:justify-end">
-                  <Button variant="outline" onClick={onClose} className="cursor-pointer">
+                  <Button variant="outline" onClick={onClose} className="cursor-pointer rounded-lg">
                     <X className="mr-2 h-4 w-4" />
                     Cancel
                   </Button>
 
-                  <Button variant="destructive" onClick={onConfirm} className="cursor-pointer">
+                  <Button variant="destructive" onClick={onConfirm} className="cursor-pointer rounded-lg">
                     <LogOut className="mr-2 h-4 w-4" />
                     Log out
                   </Button>
