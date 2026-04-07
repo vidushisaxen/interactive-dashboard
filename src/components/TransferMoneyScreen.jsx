@@ -347,7 +347,9 @@ const TransferMoneyScreen = () => {
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                   <div className="rounded-lg border border-border bg-background/50 p-3 text-sm">
                     <p className="text-xs text-muted-foreground">Suggested memo</p>
-                    <p className="mt-1 font-medium">"Vendor invoice #4511 then reconcile"</p>
+                    <p className="mt-1 font-medium">
+                      &quot;Vendor invoice #4511 then reconcile&quot;
+                    </p>
                   </div>
                   <div className="rounded-lg border border-border bg-background/50 p-3 text-sm">
                     <p className="text-xs text-muted-foreground">Recommended risk level</p>

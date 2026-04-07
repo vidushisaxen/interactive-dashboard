@@ -15,7 +15,8 @@ import {
   AnimatedTextReveal,
   AnimatedFadeUp,
 } from "@/lib/animations";
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "./Themetoggler";
+import { ThemeToggleButton } from "./Themetoggler";
 import { SETTINGS_CHOICE_OPTIONS, SETTINGS_GROUPS } from "./dashboard-data";
 
 const SettingsSheet = ({ open, onOpenChange }) => {
@@ -183,13 +184,25 @@ const SettingsSheet = ({ open, onOpenChange }) => {
 
                       <AnimatedFadeUp delay={0.05} duration={0.35}>
                         {isToggle ? (
-                          <Switch
-                            checked={getSettingValue(item.key)}
-                            onCheckedChange={(checked) =>
-                              handleToggle(item.key, checked)
-                            }
-                            onClick={(event) => event.stopPropagation()}
-                          />
+                          item.key === "appearance" ? (
+                            <ThemeToggleButton
+                              theme={theme}
+                              onToggle={(event) => {
+                                event.stopPropagation();
+                                toggleTheme();
+                              }}
+                              variant="inline"
+                              className="h-9"
+                            />
+                          ) : (
+                            <Switch
+                              checked={getSettingValue(item.key)}
+                              onCheckedChange={(checked) =>
+                                handleToggle(item.key, checked)
+                              }
+                              onClick={(event) => event.stopPropagation()}
+                            />
+                          )
                         ) : (
                           <span className="inline-flex h-8 items-center rounded-lg border  border border-border px-3 text-xs font-medium text-primary">
                             Edit

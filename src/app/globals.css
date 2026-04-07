@@ -58,7 +58,8 @@
   color-scheme: dark;
 }
 
-:root[data-theme="light"] {
+:root[data-theme="light"]:not(.dark),
+:root:not(.dark) {
   --background: rgb(248, 244, 238);
   --foreground: rgb(30, 27, 24);
 
@@ -174,6 +175,12 @@
     fill 220ms ease,
     stroke 220ms ease,
     box-shadow 220ms ease;
+}
+
+:root[data-theme-switching="true"] *,
+:root[data-theme-switching="true"] *::before,
+:root[data-theme-switching="true"] *::after {
+  transition: none !important;
 }
 
 body {

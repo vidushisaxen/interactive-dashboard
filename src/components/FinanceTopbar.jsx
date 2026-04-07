@@ -7,10 +7,10 @@ import {
   ChevronDown,
   MoonStar,
   Search,
-  SunMedium,
   User,
   Settings,
   CircleHelp,
+  SunMedium,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,6 +94,38 @@ const searchItemVariants = {
 const topbarActionsVariants = staggerContainer(0.08, 0.16);
 const topbarActionItemVariants = slideIn("right", 18, 0.3);
 
+function TopbarThemeButton({ theme, onToggle }) {
+  const label =
+    theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-label={label}
+      title={label}
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition-all hover:border-[var(--button-hover-border)] hover:bg-[var(--button-hover-bg)] hover:text-[var(--button-hover-fg)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+    >
+      <span className="relative flex h-4.5 w-4.5 items-center justify-center overflow-hidden">
+        <SunMedium
+          className={`absolute h-4.5 w-4.5 transition-all duration-300 ${
+            theme === "light"
+              ? "rotate-0 scale-100 opacity-100"
+              : "-rotate-90 scale-0 opacity-0"
+          }`}
+        />
+        <MoonStar
+          className={`absolute h-4.5 w-4.5 transition-all duration-300 ${
+            theme === "dark"
+              ? "rotate-0 scale-100 opacity-100"
+              : "rotate-90 scale-0 opacity-0"
+          }`}
+        />
+      </span>
+    </button>
+  );
+}
+
 const FinanceTopbar = ({
   onNav,
   theme = "dark",
@@ -160,15 +192,6 @@ const FinanceTopbar = ({
     }
 
     onNav?.(action);
-  };
-
-  const handleThemeToggle = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-
-    onToggleTheme?.({
-      x: rect.left + rect.width / 2,
-      y: rect.top,
-    });
   };
 
   return (
@@ -285,37 +308,7 @@ const FinanceTopbar = ({
             </motion.div>
 
             <motion.div variants={prefersReducedMotion ? undefined : topbarActionItemVariants}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={handleThemeToggle}
-                    className="h-11 w-11 cursor-pointer rounded-full"
-                  >
-                    <span className="relative flex h-4.5 w-4.5 items-center justify-center overflow-hidden">
-                      <SunMedium
-                        className={`absolute h-4.5 w-4.5 transition-all duration-300 ${
-                          theme === "light"
-                            ? "rotate-0 scale-100 opacity-100"
-                            : "-rotate-90 scale-0 opacity-0"
-                        }`}
-                      />
-                      <MoonStar
-                        className={`absolute h-4.5 w-4.5 transition-all duration-300 ${
-                          theme === "dark"
-                            ? "rotate-0 scale-100 opacity-100"
-                            : "rotate-90 scale-0 opacity-0"
-                        }`}
-                      />
-                    </span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                </TooltipContent>
-              </Tooltip>
+              <TopbarThemeButton theme={theme} onToggle={onToggleTheme} />
             </motion.div>
 
             <motion.div variants={prefersReducedMotion ? undefined : topbarActionItemVariants}>
