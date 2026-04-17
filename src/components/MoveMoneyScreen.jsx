@@ -5,7 +5,7 @@ import {
   ArrowRightLeft,
   CalendarClock,
   Sparkles,
-} from "lucide-react";
+} from "@/components/icons";
 import { AnimatedFadeUp } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -254,7 +254,7 @@ const MoveMoneyScreen = () => {
     <section className="space-y-7">
       <header className="space-y-2">
         <AnimatedFadeUp>
-          <Badge variant="secondary" className="rounded-full">
+          <Badge variant="secondary">
             Move Money
           </Badge>
         </AnimatedFadeUp>

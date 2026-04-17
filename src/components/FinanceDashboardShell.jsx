@@ -12,6 +12,10 @@ import LoginScreen from "./LoginScreen";
 
 const AUTH_STORAGE_KEY = "quantro-authenticated";
 const AUTH_NAME_KEY = "quantro-auth-user";
+const SIDEBAR_PINNED_KEY = "quantro-sidebar-pinned";
+
+const SIDEBAR_COLLAPSED_OFFSET_PX = 88;
+const SIDEBAR_PINNED_OFFSET_PX = 248;
 
 const FinanceDashboardShell = ({ children }) => {
   const router = useRouter();
@@ -21,6 +25,7 @@ const FinanceDashboardShell = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [userName, setUserName] = useState("");
+  const [sidebarPinned, setSidebarPinned] = useState(false);
 
   const content = isValidElement(children)
     ? cloneElement(children, { searchQuery })
@@ -32,11 +37,17 @@ const FinanceDashboardShell = ({ children }) => {
         window.sessionStorage.getItem(AUTH_STORAGE_KEY) === "true"
       );
       setUserName(window.sessionStorage.getItem(AUTH_NAME_KEY) || "");
+      setSidebarPinned(window.localStorage.getItem(SIDEBAR_PINNED_KEY) === "true");
       setIsAuthReady(true);
     });
 
     return () => window.cancelAnimationFrame(frameId);
   }, []);
+
+  useEffect(() => {
+    if (!isAuthReady) return;
+    window.localStorage.setItem(SIDEBAR_PINNED_KEY, sidebarPinned ? "true" : "false");
+  }, [isAuthReady, sidebarPinned]);
 
   const handleLogin = ({ userId } = {}) => {
     window.sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
@@ -62,9 +73,20 @@ const FinanceDashboardShell = ({ children }) => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="min-h-screen">
-        <FinanceSidebar onLogout={handleLogout} />
+        <FinanceSidebar
+          onLogout={handleLogout}
+          pinned={sidebarPinned}
+          onPinnedChange={setSidebarPinned}
+        />
 
-        <div className="ml-[88px] min-h-screen">
+        <div
+          className="min-h-screen transition-[margin-left] duration-300 ease-out"
+          style={{
+            marginLeft: sidebarPinned
+              ? SIDEBAR_PINNED_OFFSET_PX
+              : SIDEBAR_COLLAPSED_OFFSET_PX,
+          }}
+        >
           <FinanceTopbar
             theme={theme}
             onToggleTheme={toggleTheme}
@@ -74,7 +96,7 @@ const FinanceDashboardShell = ({ children }) => {
           />
 
           <main className="px-5 pb-5 pt-4 lg:px-6 lg:pb-6 lg:pt-5">
-            <Card className="min-h-[calc(100vh-110px)] rounded-lg  border border-border bg-card/95 shadow-sm backdrop-blur">
+            <Card className="min-h-[calc(100vh-110px)] rounded-lg border-0 bg-transparent ring-0 shadow-none backdrop-blur-0">
               <CardContent className="p-6 lg:p-7">
                 <PageTransition transitionKey={pathname}>
                   {content}

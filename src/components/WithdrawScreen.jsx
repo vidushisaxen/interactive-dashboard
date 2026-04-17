@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { ArrowUpFromLine, Wallet, Droplets, Coins } from "lucide-react";
+import { ArrowUpFromLine, Wallet, Droplets, Coins } from "@/components/icons";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ExportCsvButton from "./ExportCsvButton";
@@ -208,6 +208,7 @@ const WithdrawScreen = () => {
   const [collectAsWeth, setCollectAsWeth] = useState(false);
   const [withdrawStatus, setWithdrawStatus] = useState("Choose a range and review the expected token output.");
   const loading = useScreenSkeleton();
+  const reviewIconRef = useRef(null);
 const trackRef = useRef(null);
 
 
@@ -393,8 +394,10 @@ const handlePointerDown = (e) => {
                     `Prepared a ${percent}% ${mode} withdrawal${collectAsWeth ? " collected as WETH" : ""}.`
                   )
                 }
+                onMouseEnter={() => reviewIconRef.current?.startAnimation?.()}
+                onMouseLeave={() => reviewIconRef.current?.stopAnimation?.()}
               >
-                <ArrowUpFromLine className="mr-2 h-4 w-4" />
+                <ArrowUpFromLine ref={reviewIconRef} className="mr-2 h-4 w-4" />
                 Review Withdrawal
               </Button>
             </CardContent>
@@ -562,47 +565,47 @@ const handlePointerDown = (e) => {
           </p>
         </div>
 
-       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-  {WITHDRAW_STEP_CONTENT.map((item) => {
-    const isActive = item.step === currentStep.step;
-    const isCompleted = item.step < currentStep.step;
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          {WITHDRAW_STEP_CONTENT.map((item) => {
+            const isActive = item.step === currentStep.step;
+            const isCompleted = item.step < currentStep.step;
 
-    return (
-      <button
-        key={item.step}
-        type="button"
-        onClick={() => setPct([getPercentFromStep(item.step)])}
-        className={`rounded-lg border p-4 text-left transition-all cursor-pointer ${
-          isActive
-            ? "border-primary bg-primary/20"
-            : isCompleted
-            ? "border-primary/60 bg-primary/10"
-            : "border border-border bg-background hover:border-primary/40 hover:bg-primary/5"
-        }`}
-      >
-        <div className="mb-2 flex items-center justify-between">
-          <span
-            className={`text-xs font-medium ${
-              isActive || isCompleted
-                ? "text-foreground"
-                : "text-muted-foreground"
-            }`}
-          >
-            Step {item.step}
-          </span>
+            return (
+              <button
+                key={item.step}
+                type="button"
+                onClick={() => setPct([getPercentFromStep(item.step)])}
+                className={`rounded-lg border p-4 text-left transition-all cursor-pointer ${
+                  isActive
+                    ? "border-primary bg-primary/20"
+                    : isCompleted
+                      ? "border-primary/60 bg-primary/10"
+                      : "border border-border bg-background hover:border-primary/40 hover:bg-primary/5"
+                }`}
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <span
+                    className={`text-xs font-medium ${
+                      isActive || isCompleted
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    Step {item.step}
+                  </span>
 
-          <span
-            className={`h-3 w-3 rounded-full ${
-              isActive || isCompleted ? "bg-primary" : "bg-muted-foreground/30"
-            }`}
-          />
+                  <span
+                    className={`h-3 w-3 rounded-full ${
+                      isActive || isCompleted ? "bg-primary" : "bg-muted-foreground/30"
+                    }`}
+                  />
+                </div>
+
+                <p className="text-sm font-medium">{item.title}</p>
+              </button>
+            );
+          })}
         </div>
-
-        <p className="text-sm font-medium">{item.title}</p>
-      </button>
-    );
-  })}
-</div>
 
         <div className="rounded-lg border  border-border bg-muted/20 p-4">
           <p className="text-xs text-muted-foreground">Current Step Summary</p>

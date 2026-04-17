@@ -2,7 +2,7 @@
 import * as React from "react";
 import { flushSync } from "react-dom";
 import { useReducedMotion } from "motion/react";
-import { MoonStar, SunMedium } from "lucide-react";
+import { MoonStar, SunMedium } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import AppLoader from "./AppLoader";

@@ -4,7 +4,7 @@ import {
   CheckCircle2,
   CircleHelp,
   Crown,
-} from "lucide-react";
+} from "@/components/icons";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 

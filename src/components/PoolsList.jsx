@@ -142,12 +142,11 @@ const PoolsList = ({ onSelectPool }) => {
       <header className="flex justify-between">
         <div className="space-y-3">
         <AnimatedFadeUp>
-          <Badge
-            variant="secondary"
-            className="rounded-full px-3 py-1 text-xs uppercase tracking-widest"
-          >
-            Pools
-          </Badge>
+        <Badge
+          variant="secondary"
+        >
+          Pools
+        </Badge>
         </AnimatedFadeUp>
 
         <div className="space-y-1">

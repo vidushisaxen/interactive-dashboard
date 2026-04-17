@@ -178,10 +178,10 @@ const StocksRealtimeChart = ({ activeRange, onRangeChange }) => {
             <Button
               key={rangeKey}
               type="button"
-              size="sm"
+              size="pill"
               variant={active ? "default" : "outline"}
               onClick={() => onRangeChange(rangeKey)}
-              className={cn("rounded-full px-3 cursor-pointer", !active && "text-muted-foreground")}
+              className={cn("cursor-pointer", !active && "text-muted-foreground")}
             >
               {rangeKey}
             </Button>

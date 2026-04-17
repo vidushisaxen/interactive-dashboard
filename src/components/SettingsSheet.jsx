@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Check,
   X,
-} from "lucide-react";
+} from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -21,6 +21,8 @@ import { SETTINGS_CHOICE_OPTIONS, SETTINGS_GROUPS } from "./dashboard-data";
 
 const SettingsSheet = ({ open, onOpenChange }) => {
   const { theme, toggleTheme } = useTheme();
+  const closeIconRef = useRef(null);
+  const saveIconRef = useRef(null);
   const [settings, setSettings] = useState({
     language: "English",
     notifications: true,
@@ -91,7 +93,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
             </div>
 
             <AnimatedFadeUp delay={0.08} duration={0.45}>
-              <Badge variant="secondary" className="rounded-full">
+              <Badge variant="secondary">
                 Secure
               </Badge>
             </AnimatedFadeUp>
@@ -263,9 +265,11 @@ const SettingsSheet = ({ open, onOpenChange }) => {
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              onMouseEnter={() => closeIconRef.current?.startAnimation?.()}
+              onMouseLeave={() => closeIconRef.current?.stopAnimation?.()}
               className="rounded-lg cursor-pointer"
             >
-              <X className="mr-2 h-4 w-4" />
+              <X ref={closeIconRef} className="mr-2 h-4 w-4" />
               Close
             </Button>
 
@@ -279,9 +283,11 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                 );
                 onOpenChange(false);
               }}
+              onMouseEnter={() => saveIconRef.current?.startAnimation?.()}
+              onMouseLeave={() => saveIconRef.current?.stopAnimation?.()}
               className="rounded-lg cursor-pointer"
             >
-              <Check className="mr-2 h-4 w-4" />
+              <Check ref={saveIconRef} className="mr-2 h-4 w-4" />
               Save changes
             </Button>
           </div>

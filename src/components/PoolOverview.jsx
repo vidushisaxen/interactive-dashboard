@@ -198,7 +198,7 @@ const PoolOverview = () => {
       {/* Header */}
       <div className="space-y-3">
         <AnimatedFadeUp>
-          <Badge variant="secondary" className="rounded-full">
+          <Badge variant="secondary">
             Classic Pool
           </Badge>
         </AnimatedFadeUp>

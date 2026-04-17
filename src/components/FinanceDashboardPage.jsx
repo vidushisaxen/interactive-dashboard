@@ -1,12 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ArrowUpRight,
   BellRing,
+  CandlestickChart,
   ShieldAlert,
   SlidersHorizontal,
-} from "lucide-react";
+  TimerReset,
+  LayoutGrid,
+} from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -162,17 +165,35 @@ function DashboardSkeleton() {
 }
 
 function OverviewCard({ title, description, icon: Icon, onOpen }) {
+  const iconRef = useRef(null);
+  const arrowRef = useRef(null);
+
+  const handleEnter = () => {
+    iconRef.current?.startAnimation?.();
+    arrowRef.current?.startAnimation?.();
+  };
+
+  const handleLeave = () => {
+    iconRef.current?.stopAnimation?.();
+    arrowRef.current?.stopAnimation?.();
+  };
+
   return (
     <button
       type="button"
       onClick={onOpen}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
       className="group rounded-lg border  border-border bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary-foreground/16 group-hover:text-primary-foreground">
-          <Icon className="h-5 w-5" />
+          <Icon ref={iconRef} className="h-5 w-5" />
         </div>
-        <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary-foreground" />
+        <ArrowUpRight
+          ref={arrowRef}
+          className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary-foreground"
+        />
       </div>
       <p className="mt-5 text-base font-semibold tracking-tight">{title}</p>
       <p className="mt-1 text-sm leading-6 text-muted-foreground transition-colors group-hover:text-primary-foreground/88">
@@ -188,7 +209,7 @@ function SnapshotCard({ title, subtitle, badge, action, children, className = ""
       <CardContent className="space-y-5 p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-3">
-            <Badge variant="secondary" className="w-fit rounded-full">
+            <Badge variant="secondary" className="w-fit">
               {badge}
             </Badge>
             <div>
@@ -299,7 +320,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
     <section className="space-y-7">
       <header className="space-y-2">
         <AnimatedFadeUp>
-          <Badge variant="secondary" className="rounded-full">
+          <Badge variant="secondary">
             Dashboard Home
           </Badge>
         </AnimatedFadeUp>
@@ -573,7 +594,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
               subtitle="Ingestion → normalization → enrichment → notifications"
               badge="Pipeline"
               action={
-                <Badge variant="outline" className="rounded-full text-xs">
+                <Badge variant="outline">
                   Live sync
                 </Badge>
               }

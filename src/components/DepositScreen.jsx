@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ArrowDownToLine } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { ArrowDownToLine } from "@/components/icons";
 import {
   Card,
   CardContent,
@@ -154,6 +154,7 @@ const DepositScreen = () => {
   const [balanced, setBalanced] = useState(true);
   const [depositStatus, setDepositStatus] = useState("Set token amounts to preview your deposit.");
   const loading = useScreenSkeleton();
+  const depositIconRef = useRef(null);
 
   const isDisabled = ethAmt === "0.0" && bnbAmt === "0.0";
   const currentStep = DEPOSIT_STEP_CONTENT[stepValue[0] - 1];
@@ -277,8 +278,10 @@ const DepositScreen = () => {
                         `Prepared ${ethAmt} ETH and ${bnbAmt} cBNB for a ${balanced ? "balanced" : "custom"} deposit mix.`
                       )
                     }
+                    onMouseEnter={() => depositIconRef.current?.startAnimation?.()}
+                    onMouseLeave={() => depositIconRef.current?.stopAnimation?.()}
                   >
-                    {!isDisabled && <ArrowDownToLine className="mr-2 h-4 w-4" />}
+                    {!isDisabled && <ArrowDownToLine ref={depositIconRef} className="mr-2 h-4 w-4" />}
                     {isDisabled ? "Enter amounts" : "Deposit Liquidity"}
                   </Button>
                 </AnimatedFadeUp>
@@ -482,7 +485,11 @@ const DepositScreen = () => {
                       >
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold">Step {step.step}</span>
-                          {isActive && <span className="text-[10px] font-medium uppercase">Active</span>}
+                          {isActive && (
+                            <span className="text-[10px] font-medium uppercase">
+                              Active
+                            </span>
+                          )}
                         </div>
                         <p className="mt-2 text-sm font-semibold">{step.title}</p>
                         <p className="mt-1 text-xs text-muted-foreground">{step.description}</p>

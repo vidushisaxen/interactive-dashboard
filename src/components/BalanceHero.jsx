@@ -5,7 +5,8 @@ import {
   Plus,
   ReceiptText,
   SendHorizontal,
-} from "lucide-react";
+} from "@/components/icons";
+import { useRef } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,12 +22,18 @@ const BalanceHero = ({
   onRequest,
   onTransfer,
 }) => {
+  const visibilityIconRef = useRef(null);
+  const moveMoneyIconRef = useRef(null);
+  const requestIconRef = useRef(null);
+  const transferIconRef = useRef(null);
+  const plusIconRef = useRef(null);
+
   return (
     <Card className="border border-border shadow-sm">
       <CardContent className="flex flex-col gap-8 p-6 lg:p-7">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0 flex-1">
-          <Badge variant="secondary" className="mb-3 rounded-full">
+          <Badge variant="secondary" className="mb-3">
             Available Balance
           </Badge>
 
@@ -49,9 +56,15 @@ const BalanceHero = ({
               variant="outline"
               size="icon"
               onClick={onToggleHidden}
+              onMouseEnter={() => visibilityIconRef.current?.startAnimation?.()}
+              onMouseLeave={() => visibilityIconRef.current?.stopAnimation?.()}
               className="h-10 w-10 rounded-lg cursor-pointer"
             >
-              {hidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+              {hidden ? (
+                <Eye ref={visibilityIconRef} className="h-4 w-4" />
+              ) : (
+                <EyeOff ref={visibilityIconRef} className="h-4 w-4" />
+              )}
             </Button>
           </div>
 
@@ -64,23 +77,51 @@ const BalanceHero = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 xl:max-w-136 xl:justify-end">
-            <Button type="button" variant="outline" onClick={onMoveMoney} className="h-11 cursor-pointer rounded-lg">
-              <MoveRight className="mr-2 h-4 w-4" />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onMoveMoney}
+              onMouseEnter={() => moveMoneyIconRef.current?.startAnimation?.()}
+              onMouseLeave={() => moveMoneyIconRef.current?.stopAnimation?.()}
+              className="h-11 cursor-pointer rounded-lg"
+            >
+              <MoveRight ref={moveMoneyIconRef} className="mr-2 h-4 w-4" />
               Move Money
             </Button>
 
-            <Button type="button" variant="outline" onClick={onRequest} className="h-11 cursor-pointer rounded-lg">
-              <ReceiptText className="mr-2 h-4 w-4" />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onRequest}
+              onMouseEnter={() => requestIconRef.current?.startAnimation?.()}
+              onMouseLeave={() => requestIconRef.current?.stopAnimation?.()}
+              className="h-11 cursor-pointer rounded-lg"
+            >
+              <ReceiptText ref={requestIconRef} className="mr-2 h-4 w-4" />
               Request
             </Button>
 
-            <Button type="button" onClick={onTransfer} className="h-11 cursor-pointer rounded-lg">
+            <Button
+              type="button"
+              onClick={onTransfer}
+              onMouseEnter={() => transferIconRef.current?.startAnimation?.()}
+              onMouseLeave={() => transferIconRef.current?.stopAnimation?.()}
+              className="h-11 cursor-pointer rounded-lg"
+            >
               Transfer
-              <SendHorizontal className="ml-2 h-4 w-4" />
+              <SendHorizontal ref={transferIconRef} className="ml-2 h-4 w-4" />
             </Button>
 
-            <Button type="button" variant="outline" size="icon" onClick={onMoveMoney} className="h-11 w-11 cursor-pointer rounded-full">
-              <Plus className="h-4 w-4" />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={onMoveMoney}
+              onMouseEnter={() => plusIconRef.current?.startAnimation?.()}
+              onMouseLeave={() => plusIconRef.current?.stopAnimation?.()}
+              className="h-11 w-11 cursor-pointer rounded-full"
+            >
+              <Plus ref={plusIconRef} className="h-4 w-4" />
             </Button>
           </div>
         </div>

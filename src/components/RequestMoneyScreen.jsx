@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Clock3,
   Mail,
@@ -8,7 +8,7 @@ import {
   ReceiptText,
   SendHorizontal,
   UserRound,
-} from "lucide-react";
+} from "@/components/icons";
 
 import { AnimatedFadeUp } from "@/lib/animations";
 import { Badge } from "@/components/ui/badge";
@@ -173,6 +173,8 @@ const RequestMoneyScreen = () => {
     "Create a request by username, email, or QR and track how quickly people respond."
   );
   const loading = useScreenSkeleton();
+  const generateQrIconRef = useRef(null);
+  const sendRequestIconRef = useRef(null);
 
   if (loading) {
     return <RequestMoneySkeleton />;
@@ -184,7 +186,7 @@ const RequestMoneyScreen = () => {
     <section className="space-y-7">
       <header className="space-y-2">
         <AnimatedFadeUp>
-          <Badge variant="secondary" className="rounded-full">
+          <Badge variant="secondary">
             Request
           </Badge>
         </AnimatedFadeUp>
@@ -386,8 +388,10 @@ const RequestMoneyScreen = () => {
                             `QR request created for ${amountLabel} with note "${form.reason || form.message || "Payment request"}".`
                           )
                         }
+                        onMouseEnter={() => generateQrIconRef.current?.startAnimation?.()}
+                        onMouseLeave={() => generateQrIconRef.current?.stopAnimation?.()}
                       >
-                        <QrCode className="mr-2 h-4 w-4" />
+                        <QrCode ref={generateQrIconRef} className="mr-2 h-4 w-4" />
                         Generate QR request
                       </Button>
                     </div>
@@ -447,8 +451,10 @@ const RequestMoneyScreen = () => {
                             : `QR request published for ${amountLabel} with ready-to-scan checkout access.`
                       )
                     }
+                    onMouseEnter={() => sendRequestIconRef.current?.startAnimation?.()}
+                    onMouseLeave={() => sendRequestIconRef.current?.stopAnimation?.()}
                   >
-                    <SendHorizontal className="mr-2 h-4 w-4" />
+                    <SendHorizontal ref={sendRequestIconRef} className="mr-2 h-4 w-4" />
                     Send request
                   </Button>
                 </div>

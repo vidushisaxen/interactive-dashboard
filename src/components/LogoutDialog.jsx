@@ -1,7 +1,8 @@
 "use client";
 
-import { LogOut, X } from "lucide-react";
+import { LogOut, X } from "@/components/icons";
 import { AnimatePresence, motion } from "motion/react";
+import { useRef } from "react";
 
 import {
   Dialog,
@@ -15,6 +16,10 @@ import {
 import { Button } from "@/components/ui/button";
 
 const LogoutDialog = ({ open, onClose, onConfirm }) => {
+  const heroIconRef = useRef(null);
+  const cancelIconRef = useRef(null);
+  const confirmIconRef = useRef(null);
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-md overflow-hidden rounded-lg border-(--overlay) bg-background/95 p-0">
@@ -38,7 +43,7 @@ const LogoutDialog = ({ open, onClose, onConfirm }) => {
                   transition={{ delay: 0.08, duration: 0.25 }}
                   className="flex h-14 w-14 items-center justify-center rounded-lg bg-destructive/10 text-destructive"
                 >
-                  <LogOut className="h-6 w-6" />
+                  <LogOut ref={heroIconRef} className="h-6 w-6" />
                 </motion.div>
 
                 <motion.div
@@ -69,13 +74,25 @@ const LogoutDialog = ({ open, onClose, onConfirm }) => {
                 transition={{ delay: 0.2, duration: 0.25 }}
               >
                 <DialogFooter className="mt-4 gap-2 sm:justify-end">
-                  <Button variant="outline" onClick={onClose} className="cursor-pointer rounded-lg">
-                    <X className="mr-2 h-4 w-4" />
+                  <Button
+                    variant="outline"
+                    onClick={onClose}
+                    onMouseEnter={() => cancelIconRef.current?.startAnimation?.()}
+                    onMouseLeave={() => cancelIconRef.current?.stopAnimation?.()}
+                    className="cursor-pointer rounded-lg"
+                  >
+                    <X ref={cancelIconRef} className="mr-2 h-4 w-4" />
                     Cancel
                   </Button>
 
-                  <Button variant="destructive" onClick={onConfirm} className="cursor-pointer rounded-lg">
-                    <LogOut className="mr-2 h-4 w-4" />
+                  <Button
+                    variant="destructive"
+                    onClick={onConfirm}
+                    onMouseEnter={() => confirmIconRef.current?.startAnimation?.()}
+                    onMouseLeave={() => confirmIconRef.current?.stopAnimation?.()}
+                    className="cursor-pointer rounded-lg"
+                  >
+                    <LogOut ref={confirmIconRef} className="mr-2 h-4 w-4" />
                     Log out
                   </Button>
                 </DialogFooter>

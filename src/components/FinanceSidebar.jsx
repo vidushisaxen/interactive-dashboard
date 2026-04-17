@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, LogOut } from "lucide-react";
+import { LogOut, PanelLeftIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { slideIn, smoothTween, staggerContainer } from "@/lib/animations";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -22,9 +22,18 @@ const sidebarItemVariants = slideIn("left", 18, 0.32);
 // so hovering anywhere on the row lights up both icon and label identically.
 function NavRow({ item, active = false, expanded = false, prefersReducedMotion }) {
   const Icon = item.icon;
+  const iconRef = useRef(null);
+
+  const handleRowEnter = () => iconRef.current?.startAnimation?.();
+  const handleRowLeave = () => iconRef.current?.stopAnimation?.();
 
   return (
-    <Link href={item.href} className="group block no-underline my-2">
+    <Link
+      href={item.href}
+      className="group block no-underline my-2"
+      onMouseEnter={handleRowEnter}
+      onMouseLeave={handleRowLeave}
+    >
       <div className="flex h-11 items-center">
         {/* Icon tile — fixed 52px, never moves */}
         <div
@@ -35,7 +44,7 @@ function NavRow({ item, active = false, expanded = false, prefersReducedMotion }
               : "border-border text-muted-foreground group-hover:bg-primary/50 group-hover:text-primary-foreground"
           )}
         >
-          <Icon className="h-4 w-4 shrink-0" />
+          <Icon ref={iconRef} className="h-4 w-4 shrink-0" />
         </div>
 
         {/* Label — slides in/out */}
@@ -63,14 +72,20 @@ function NavRow({ item, active = false, expanded = false, prefersReducedMotion }
 
 // ── Logout row (button, not link) ─────────────────────────────────────────────
 function LogoutRow({ onClick, expanded = false, prefersReducedMotion }) {
+  const iconRef = useRef(null);
+  const handleEnter = () => iconRef.current?.startAnimation?.();
+  const handleLeave = () => iconRef.current?.stopAnimation?.();
+
   return (
     <button
       type="button"
       onClick={onClick}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
       className="group flex h-11 w-full items-center justify-start my-2 bg-transparent cursor-pointer p-0 outline-none [border:none]"
     >
       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border text-destructive transition-colors duration-200 group-hover:bg-destructive/10">
-        <LogOut className="h-4 w-4 shrink-0" />
+        <LogOut ref={iconRef} className="h-4 w-4 shrink-0" />
       </div>
 
       <motion.div
@@ -89,14 +104,14 @@ function LogoutRow({ onClick, expanded = false, prefersReducedMotion }) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-const FinanceSidebar = ({ onLogout }) => {
+const FinanceSidebar = ({ onLogout, pinned = false, onPinnedChange }) => {
   const pathname = usePathname();
   const closeTimerRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const [hoverReady, setHoverReady] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
   const [hoverExpanded, setHoverExpanded] = useState(false);
-  const isExpanded = hoverExpanded;
+  const isExpanded = pinned || hoverExpanded;
 
   useEffect(() => {
     return () => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current); };
@@ -110,12 +125,14 @@ const FinanceSidebar = ({ onLogout }) => {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const handleExpand = () => {
+    if (pinned) return;
     if (!hoverReady) return;
     if (closeTimerRef.current) { clearTimeout(closeTimerRef.current); closeTimerRef.current = null; }
     setHoverExpanded(true);
   };
 
   const handleCollapse = () => {
+    if (pinned) return;
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     closeTimerRef.current = setTimeout(() => {
       setHoverExpanded(false);
@@ -131,9 +148,21 @@ const FinanceSidebar = ({ onLogout }) => {
     setHoverExpanded(false);
   };
 
+  const handleTogglePinned = () => {
+    const nextPinned = !pinned;
+    onPinnedChange?.(nextPinned);
+    if (nextPinned) {
+      setHoverExpanded(false);
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+    }
+  };
+
   return (
     <>
-      {hoverExpanded ? (
+      {hoverExpanded && !pinned ? (
         <motion.div
           className="fixed inset-0 z-40 bg-background/18 backdrop-blur-sm"
           initial={prefersReducedMotion ? false : { opacity: 0 }}
@@ -199,20 +228,25 @@ const FinanceSidebar = ({ onLogout }) => {
                   </motion.div>
                 </Link>
 
-                <motion.button
-                  type="button"
-                  onClick={handleSidebarClose}
-                  className={cn(
-                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background/70 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground",
-                    isExpanded ? "opacity-100" : "opacity-0 pointer-events-none"
-                  )}
-                  initial={false}
-                  animate={{ opacity: isExpanded ? 1 : 0 }}
-                  transition={prefersReducedMotion ? { duration: 0 } : labelTween}
-                  aria-label="Close sidebar"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </motion.button>
+                <div className={cn("flex items-center gap-2", isExpanded ? "opacity-100" : "opacity-0 pointer-events-none")}>
+                  <motion.button
+                    type="button"
+                    onClick={handleTogglePinned}
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background/70 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                    initial={false}
+                    animate={{ opacity: isExpanded ? 1 : 0 }}
+                    transition={prefersReducedMotion ? { duration: 0 } : labelTween}
+                    aria-label={pinned ? "Unpin sidebar" : "Pin sidebar"}
+                    aria-pressed={pinned}
+                  >
+                    <PanelLeftIcon
+                      className={cn(
+                        "h-4 w-4 transition-transform duration-200",
+                        pinned ? "rotate-180" : "rotate-0"
+                      )}
+                    />
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
 

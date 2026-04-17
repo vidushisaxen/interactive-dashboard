@@ -28,7 +28,8 @@ import {
   ArrowRightLeft,
   HandCoins,
   Send,
-} from "lucide-react";
+} from "@/components/icons";
+import { Upload } from "lucide-react";
 
 // Theme tokens and shared chart colors
 export const T = {
@@ -287,7 +288,7 @@ export const SIDEBAR_PRIMARY_ITEMS = [
   { label: "Cash Out", icon: ArrowUpFromLine, href: "/withdraw" },
   { label: "Move Money", icon: ArrowRightLeft, href: "/move-money" },
   { label: "Request Money", icon: HandCoins, href: "/request" },
-  { label: "Transfer Money", icon: Send, href: "/transfer" },
+  { label: "Transfer Money", icon: Upload, href: "/transfer" },
 ];
 
 export const SEARCH_TERMS = [

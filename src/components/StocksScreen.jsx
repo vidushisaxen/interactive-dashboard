@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight, CandlestickChart, Sparkles, TimerReset } from "lucide-react";
+import { ArrowUpRight, CandlestickChart, Sparkles, TimerReset } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -129,7 +129,7 @@ const StocksScreen = () => {
       <header className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div className="space-y-3">
           <AnimatedFadeUp>
-            <Badge variant="secondary" className="rounded-full">
+            <Badge variant="secondary">
               Stocks
             </Badge>
           </AnimatedFadeUp>

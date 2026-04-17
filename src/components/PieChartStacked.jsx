@@ -150,10 +150,10 @@ const PieChartStacked = () => {
               key={item.name}
               type="button"
               variant={isActive ? "secondary" : "ghost"}
-              size="sm"
+              size="pill"
               onClick={() => setActive(i)}
               className={cn(
-                "h-8 cursor-pointer rounded-full px-3 text-[11px]",
+                "cursor-pointer",
                 isActive &&
                   "bg-primary text-primary-foreground hover:bg-primary/90"
               )}

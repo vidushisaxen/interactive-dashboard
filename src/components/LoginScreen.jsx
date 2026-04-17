@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { LockKeyhole, ShieldCheck, UserRound } from "lucide-react";
+import { useRef, useState } from "react";
+import { LockKeyhole, ShieldCheck, UserRound } from "@/components/icons";
 import { motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ const LoginScreen = ({ onLogin }) => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const submitIconRef = useRef(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -250,8 +251,10 @@ const LoginScreen = ({ onLogin }) => {
                     color: "var(--primary-foreground)",
                     boxShadow: "0 4px 18px color-mix(in srgb, var(--primary) 35%, transparent)",
                   }}
+                  onMouseEnter={() => submitIconRef.current?.startAnimation?.()}
+                  onMouseLeave={() => submitIconRef.current?.stopAnimation?.()}
                 >
-                  <ShieldCheck className="mr-2 h-4 w-4" />
+                  <ShieldCheck ref={submitIconRef} className="mr-2 h-4 w-4" />
                   Login To Dashboard
                 </Button>
               </motion.div>

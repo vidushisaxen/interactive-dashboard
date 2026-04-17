@@ -1,6 +1,6 @@
 "use client"
 import { useMemo, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "@/components/icons";
 
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -42,11 +42,11 @@ const ActivityCard = () => {
                 <Button
                   key={range}
                   type="button"
-                  size="sm"
+                  size="pill"
                   variant={active ? "default" : "outline"}
                   onClick={() => setActiveRange(range)}
                   className={cn(
-                    "h-8 rounded-full px-3 cursor-pointer text-xs",
+                    "cursor-pointer",
                     !active && "text-muted-foreground"
                   )}
                 >
@@ -83,10 +83,10 @@ const ActivityCard = () => {
 
                   <span
                     className={cn(
-                      "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
+                      "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium leading-none",
                       active
                         ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+                        : "bg-(--border-soft-primary) text-primary hover:bg-primary hover:text-primary-foreground"
                     )}
                   >
                     {item.change}

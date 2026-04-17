@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ExternalLink,
-} from "lucide-react";
+} from "@/components/icons";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,24 @@ import {
   AnimatedFadeUp,
 } from "@/lib/animations";
 import { HELP_ITEMS } from "./dashboard-data";
+
+const HelpActionButton = ({ variant, onClick, children }) => {
+  const iconRef = useRef(null);
+
+  return (
+    <Button
+      size="sm"
+      variant={variant}
+      onClick={onClick}
+      onMouseEnter={() => iconRef.current?.startAnimation?.()}
+      onMouseLeave={() => iconRef.current?.stopAnimation?.()}
+      className="rounded-lg cursor-pointer"
+    >
+      {children}
+      <ExternalLink ref={iconRef} className="ml-2 h-3.5 w-3.5" />
+    </Button>
+  );
+};
 
 const HelpSheet = ({ open, onOpenChange }) => {
   const [activeItem, setActiveItem] = useState(HELP_ITEMS[1]);
@@ -108,15 +126,12 @@ const HelpSheet = ({ open, onOpenChange }) => {
                   </div>
 
                   <AnimatedFadeUp delay={0.05} duration={0.35}>
-                    <Button
-                      size="sm"
+                    <HelpActionButton
                       variant={isPrimary ? "default" : "outline"}
                       onClick={() => setActiveItem(item)}
-                      className="rounded-lg cursor-pointer"
                     >
                       {item.action}
-                      <ExternalLink className="ml-2 h-3.5 w-3.5" />
-                    </Button>
+                    </HelpActionButton>
                   </AnimatedFadeUp>
                 </div>
               </AnimatedSlideIn>

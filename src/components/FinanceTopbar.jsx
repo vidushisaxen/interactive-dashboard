@@ -11,7 +11,7 @@ import {
   Settings,
   CircleHelp,
   SunMedium,
-} from "lucide-react";
+} from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -198,7 +198,7 @@ const FinanceTopbar = ({
     <>
       <TooltipProvider delayDuration={120}>
         <motion.header
-          className="sticky top-0 z-40 flex h-21 items-center justify-between bg-background/80 px-6 backdrop-blur supports-backdrop-filter:bg-background/70 lg:px-8"
+          className="sticky top-0 z-40 flex h-full pb-5 left-0 items-center justify-between bg-background/80 px-6 backdrop-blur supports-backdrop-filter:bg-background/70 lg:px-8"
           initial={prefersReducedMotion ? false : "hidden"}
           animate={prefersReducedMotion ? undefined : "visible"}
           variants={prefersReducedMotion ? undefined : fadeDown(18, 0.34)}
@@ -218,7 +218,7 @@ const FinanceTopbar = ({
               Good to see you, {displayName}!
             </motion.h1>
             <motion.p
-              className="mt-2 truncate text-sm text-muted-foreground"
+              className="mt-2 truncate text-sm text-muted-foreground "
               initial={prefersReducedMotion ? false : "hidden"}
               animate={prefersReducedMotion ? undefined : "visible"}
               variants={prefersReducedMotion ? undefined : textReveal(14, "4px", 0.34, 0.12)}
@@ -303,7 +303,6 @@ const FinanceTopbar = ({
                     <span className="absolute right-1 -top-0.5 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-background animate-pulse" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Notifications</TooltipContent>
               </Tooltip>
             </motion.div>
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   CheckCheck,
-} from "lucide-react";
+} from "@/components/icons";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ import { NOTIFICATION_ITEMS } from "./dashboard-data";
 
 const NotificationsSheet = ({ open, onOpenChange }) => {
   const [notifications, setNotifications] = useState(NOTIFICATION_ITEMS);
+  const markAllIconRef = useRef(null);
   const [activeId, setActiveId] = useState(NOTIFICATION_ITEMS[0]?.id ?? null);
   const unreadCount = notifications.filter((item) => item.unread).length;
   const activeNotification = useMemo(
@@ -59,9 +60,11 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
                     prev.map((item) => ({ ...item, unread: false }))
                   )
                 }
+                onMouseEnter={() => markAllIconRef.current?.startAnimation?.()}
+                onMouseLeave={() => markAllIconRef.current?.stopAnimation?.()}
                 className="rounded-lg cursor-pointer"
               >
-                <CheckCheck className="mr-2 h-4 w-4" />
+                <CheckCheck ref={markAllIconRef} className="mr-2 h-4 w-4" />
                 Mark all
               </Button>
             </AnimatedFadeUp>

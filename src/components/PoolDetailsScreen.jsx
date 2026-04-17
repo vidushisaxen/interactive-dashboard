@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, ChartSpline, Layers3 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChartSpline, Layers3 } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,7 +82,7 @@ export default function PoolDetailsScreen({ pool }) {
 
       <header className="space-y-4">
         <AnimatedFadeUp>
-          <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs uppercase tracking-widest">
+          <Badge variant="secondary">
             {pool.type} Pool
           </Badge>
         </AnimatedFadeUp>

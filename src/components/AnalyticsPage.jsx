@@ -65,7 +65,6 @@ const AnalyticsPage = () => {
         <AnimatedFadeUp>
           <Badge
             variant="secondary"
-            className="rounded-full px-3 py-1 text-xs uppercase tracking-widest"
           >
             Analytics
           </Badge>

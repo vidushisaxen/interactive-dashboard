@@ -1,5 +1,6 @@
-import { X } from "lucide-react";
+import { X } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { useRef } from "react";
 import {
   Sheet,
   SheetContent,
@@ -25,6 +26,7 @@ const SidePanel = ({
   width = "md",
 }) => {
   const panelWidth = widthClassMap[width] || widthClassMap.md;
+  const closeIconRef = useRef(null);
 
   return (
     <Sheet open={open} onOpenChange={(next) => !next && onClose?.()}>
@@ -50,9 +52,11 @@ const SidePanel = ({
             variant="outline"
             size="icon"
             onClick={onClose}
+            onMouseEnter={() => closeIconRef.current?.startAnimation?.()}
+            onMouseLeave={() => closeIconRef.current?.stopAnimation?.()}
             className="h-10 w-10 rounded-lg cursor-pointer"
           >
-            <X className="h-4 w-4" />
+            <X ref={closeIconRef} className="h-4 w-4" />
           </Button>
         </div>
 

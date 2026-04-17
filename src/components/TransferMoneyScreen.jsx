@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   Building2,
@@ -8,7 +8,7 @@ import {
   SendHorizontal,
   ShieldCheck,
   UserRound,
-} from "lucide-react";
+} from "@/components/icons";
 
 import { AnimatedFadeUp } from "@/lib/animations";
 import { cn } from "@/lib/utils";
@@ -192,6 +192,7 @@ const TransferMoneyScreen = () => {
     "Choose a destination, review dummy fees, and finalize the outgoing transfer."
   );
   const loading = useScreenSkeleton();
+  const continueIconRef = useRef(null);
 
   if (loading) {
     return <TransferMoneySkeleton />;
@@ -205,7 +206,7 @@ const TransferMoneyScreen = () => {
     <section className="space-y-7">
       <header className="space-y-2">
         <AnimatedFadeUp>
-          <Badge variant="secondary" className="rounded-full">
+          <Badge variant="secondary">
             Transfer
           </Badge>
         </AnimatedFadeUp>
@@ -387,8 +388,10 @@ const TransferMoneyScreen = () => {
                         `${transferType === "bank" ? "Bank transfer" : "Personal transfer"} ready for $${amountValue.toFixed(2)} to ${form.recipient}.`
                       )
                     }
+                    onMouseEnter={() => continueIconRef.current?.startAnimation?.()}
+                    onMouseLeave={() => continueIconRef.current?.stopAnimation?.()}
                   >
-                    <SendHorizontal className="mr-2 h-4 w-4" />
+                    <SendHorizontal ref={continueIconRef} className="mr-2 h-4 w-4" />
                     Continue transfer
                   </Button>
                 </div>
