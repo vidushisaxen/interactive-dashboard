@@ -25,11 +25,10 @@ import {
   WalletCards,
   BookOpen,
   FileText,
-  ArrowRightLeft,
   HandCoins,
-  Send,
+  ArrowRightLeft,
+  MoveRight,
 } from "@/components/icons";
-import { Upload } from "lucide-react";
 
 // Theme tokens and shared chart colors
 export const T = {
@@ -84,8 +83,9 @@ export const DASHBOARD_ALERTS = [
 export const DASHBOARD_TRANSACTIONS = [
   { id: 1, title: "Salary Deposit", subtitle: "Today • Payroll", amount: "+$3,850.00", positive: true, icon: ArrowDownLeft },
   { id: 2, title: "Apple Subscription", subtitle: "Today • Entertainment", amount: "-$12.99", positive: false, icon: ArrowUpRight },
-  { id: 3, title: "Transfer to Savings", subtitle: "Yesterday • Goal contribution", amount: "-$540.00", positive: false, icon: ArrowUpRight },
-  { id: 4, title: "Freelance Payment", subtitle: "Yesterday • Incoming", amount: "+$920.00", positive: true, icon: ArrowDownLeft },
+   { id: 3, title: "Salary Deposit", subtitle: "Today • Payroll", amount: "+$3,850.00", positive: true, icon: ArrowDownLeft },
+  { id: 4, title: "Apple Subscription", subtitle: "Today • Entertainment", amount: "-$12.99", positive: false, icon: ArrowUpRight },
+  
 ];
 
 export const TRANSACTION_CARD_ITEMS = [
@@ -288,7 +288,7 @@ export const SIDEBAR_PRIMARY_ITEMS = [
   { label: "Cash Out", icon: ArrowUpFromLine, href: "/withdraw" },
   { label: "Move Money", icon: ArrowRightLeft, href: "/move-money" },
   { label: "Request Money", icon: HandCoins, href: "/request" },
-  { label: "Transfer Money", icon: Upload, href: "/transfer" },
+  { label: "Transfer Money", icon: MoveRight, href: "/transfer" },
 ];
 
 export const SEARCH_TERMS = [

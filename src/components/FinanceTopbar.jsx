@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Bell,
@@ -104,7 +104,7 @@ function TopbarThemeButton({ theme, onToggle }) {
       onClick={onToggle}
       aria-label={label}
       title={label}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition-all hover:border-[var(--button-hover-border)] hover:bg-[var(--button-hover-bg)] hover:text-[var(--button-hover-fg)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-white/10 text-foreground transition-all hover:border-[var(--button-hover-border)] hover:bg-[var(--button-hover-bg)] hover:text-[var(--button-hover-fg)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
     >
       <span className="relative flex h-4.5 w-4.5 items-center justify-center overflow-hidden">
         <SunMedium
@@ -141,6 +141,7 @@ const FinanceTopbar = ({
   const [searchFocused, setSearchFocused] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
   const [openHelp, setOpenHelp] = useState(false);
+  const profileMenuIconRefs = useRef({});
 
   const searchSuggestions = useMemo(() => {
     const normalized = searchValue.trim().toLowerCase();
@@ -198,7 +199,7 @@ const FinanceTopbar = ({
     <>
       <TooltipProvider delayDuration={120}>
         <motion.header
-          className="sticky top-0 z-40 flex h-full pb-5 left-0 items-center justify-between bg-background/80 px-6 backdrop-blur supports-backdrop-filter:bg-background/70 lg:px-8"
+          className="sticky top-0 z-40 flex h-full border-b border-white/10 pb-5 left-0 items-center justify-between bg-background/80 px-6 backdrop-blur supports-backdrop-filter:bg-background/70 lg:px-8"
           initial={prefersReducedMotion ? false : "hidden"}
           animate={prefersReducedMotion ? undefined : "visible"}
           variants={prefersReducedMotion ? undefined : fadeDown(18, 0.34)}
@@ -247,7 +248,7 @@ const FinanceTopbar = ({
                 onBlur={() => {
                   window.setTimeout(() => setSearchFocused(false), 120);
                 }}
-                className="h-11 w-80 rounded-lg pl-10"
+                className="h-11 w-85 rounded-lg pl-10"
               />
 
               <AnimatePresence>
@@ -340,71 +341,123 @@ const FinanceTopbar = ({
                   </Button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent
-                  align="end"
-                  sideOffset={10}
-                  className="w-56 rounded-lg border border-border bg-popover/95 p-2 shadow-lg backdrop-blur"
-                >
-                  <motion.div
-                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                    className="space-y-2"
-                  >
-                    <div className="rounded-lg border border-border bg-background/70 p-3">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="text-sm font-bold">
-                            JK
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-semibold">
-                            {displayName}
-                          </p>
-                          <p className="truncate text-xs text-muted-foreground">
-                            {profileEmail}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+               <DropdownMenuContent
+  align="end"
+  sideOffset={10}
+  className="w-56 rounded-lg border border-border bg-popover/95 p-2 shadow-lg backdrop-blur
+    data-[state=open]:animate-in data-[state=closed]:animate-out
+    data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0
+    data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95
+    data-[side=bottom]:slide-in-from-top-2"
+>
+  <div className="space-y-2">
 
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setProfileMenuOpen(false);
-                        handleProfileAction("profile");
-                      }}
-                      className="cursor-pointer rounded-lg px-3 py-2"
-                    >
-                      <User className="mr-2 h-4 w-4" />
-                      Open profile
-                    </DropdownMenuItem>
+    {/* Profile card */}
+    <motion.div
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.06, duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+      className="rounded-lg border border-border bg-background/70 p-3"
+    >
+      <div className="flex items-center gap-3">
+        <Avatar className="h-10 w-10">
+          <AvatarFallback className="text-sm font-bold">
+            {userInitials}
+          </AvatarFallback>
+        </Avatar>
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold">{displayName}</p>
+          <p className="truncate text-xs text-muted-foreground">{profileEmail}</p>
+        </div>
+      </div>
+    </motion.div>
 
-                    <DropdownMenuSeparator />
+    {/* Open profile item */}
+    <motion.div
+      initial={{ opacity: 0, x: -8 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.14, duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <DropdownMenuItem
+        onClick={() => {
+          setProfileMenuOpen(false);
+          handleProfileAction("profile");
+        }}
+        onMouseEnter={() => profileMenuIconRefs.current.profile?.startAnimation?.()}
+        onMouseLeave={() => profileMenuIconRefs.current.profile?.stopAnimation?.()}
+        className="cursor-pointer rounded-lg px-3 py-2"
+      >
+        <User
+          ref={(node) => {
+            profileMenuIconRefs.current.profile = node;
+          }}
+          className="mr-2 h-4 w-4"
+        />
+        Open profile
+      </DropdownMenuItem>
+    </motion.div>
 
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setProfileMenuOpen(false);
-                        setOpenSettings(true);
-                      }}
-                      className="cursor-pointer rounded-lg px-3 py-2"
-                    >
-                      <Settings className="mr-2 h-4 w-4" />
-                      Settings
-                    </DropdownMenuItem>
+    {/* Separator line draw */}
+    <motion.div
+      initial={{ scaleX: 0, opacity: 0 }}
+      animate={{ scaleX: 1, opacity: 1 }}
+      transition={{ delay: 0.20, duration: 0.22, ease: "easeOut" }}
+      style={{ transformOrigin: "left" }}
+      className="my-1 h-px bg-border"
+    />
 
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setProfileMenuOpen(false);
-                        setOpenHelp(true);
-                      }}
-                      className="cursor-pointer rounded-lg px-3 py-2"
-                    >
-                      <CircleHelp className="mr-2 h-4 w-4" />
-                      Help
-                    </DropdownMenuItem>
-                  </motion.div>
-                </DropdownMenuContent>
+    {/* Settings item */}
+    <motion.div
+      initial={{ opacity: 0, x: -8 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.26, duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <DropdownMenuItem
+        onClick={() => {
+          setProfileMenuOpen(false);
+          setOpenSettings(true);
+        }}
+        onMouseEnter={() => profileMenuIconRefs.current.settings?.startAnimation?.()}
+        onMouseLeave={() => profileMenuIconRefs.current.settings?.stopAnimation?.()}
+        className="cursor-pointer rounded-lg px-3 py-2"
+      >
+        <Settings
+          ref={(node) => {
+            profileMenuIconRefs.current.settings = node;
+          }}
+          className="mr-2 h-4 w-4"
+        />
+        Settings
+      </DropdownMenuItem>
+    </motion.div>
+
+    {/* Help item */}
+    <motion.div
+      initial={{ opacity: 0, x: -8 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.32, duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <DropdownMenuItem
+        onClick={() => {
+          setProfileMenuOpen(false);
+          setOpenHelp(true);
+        }}
+        onMouseEnter={() => profileMenuIconRefs.current.help?.startAnimation?.()}
+        onMouseLeave={() => profileMenuIconRefs.current.help?.stopAnimation?.()}
+        className="cursor-pointer rounded-lg px-3 py-2"
+      >
+        <CircleHelp
+          ref={(node) => {
+            profileMenuIconRefs.current.help = node;
+          }}
+          className="mr-2 h-4 w-4"
+        />
+        Help
+      </DropdownMenuItem>
+    </motion.div>
+
+  </div>
+</DropdownMenuContent>
               </DropdownMenu>
             </motion.div>
           </motion.div>

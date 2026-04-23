@@ -38,13 +38,16 @@ function NavRow({ item, active = false, expanded = false, prefersReducedMotion }
         {/* Icon tile — fixed 52px, never moves */}
         <div
           className={cn(
-            "flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border transition-colors duration-200 ",
+            "relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-200 bg-[color:var(--icon-tile-bg)]",
             active
-              ? "border-primary bg-primary text-primary-foreground ring-1 ring-(--sidebar-active-ring) shadow-sm"
-              : "border-border text-muted-foreground group-hover:bg-primary/50 group-hover:text-primary-foreground"
+              ? "border-primary/30 text-primary ring-1 ring-(--sidebar-active-ring)"
+              : "border-[color:var(--card-border)] text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
           )}
         >
           <Icon ref={iconRef} className="h-4 w-4 shrink-0" />
+          {active ? (
+            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-primary ring-2 ring-background animate-pulse" />
+          ) : null}
         </div>
 
         {/* Label — slides in/out */}
@@ -84,7 +87,7 @@ function LogoutRow({ onClick, expanded = false, prefersReducedMotion }) {
       onMouseLeave={handleLeave}
       className="group flex h-11 w-full items-center justify-start my-2 bg-transparent cursor-pointer p-0 outline-none [border:none]"
     >
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border text-destructive transition-colors duration-200 group-hover:bg-destructive/10">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[color:var(--card-border)] bg-white/10 text-destructive transition-colors duration-200 group-hover:bg-destructive/10">
         <LogOut ref={iconRef} className="h-4 w-4 shrink-0" />
       </div>
 
@@ -164,7 +167,7 @@ const FinanceSidebar = ({ onLogout, pinned = false, onPinnedChange }) => {
     <>
       {hoverExpanded && !pinned ? (
         <motion.div
-          className="fixed inset-0 z-40 bg-background/18 backdrop-blur-sm"
+          className="fixed inset-0 z-40 bg-background/18 backdrop-blur-sm "
           initial={prefersReducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -176,7 +179,7 @@ const FinanceSidebar = ({ onLogout, pinned = false, onPinnedChange }) => {
 
       <motion.aside
         className={cn(
-          "fixed left-0 top-0 z-50 h-screen overflow-hidden border-r border-border backdrop-blur-md",
+          "fixed left-0 top-0 z-50 h-screen overflow-hidden border-r border-white/10 backdrop-blur-md",
           "bg-[color-mix(in_srgb,var(--background)_72%,transparent)] shadow-[0_24px_80px_rgba(0,0,0,0.22)]"
         )}
         onMouseEnter={handleExpand}
@@ -229,14 +232,14 @@ const FinanceSidebar = ({ onLogout, pinned = false, onPinnedChange }) => {
                 </Link>
 
                 <div className={cn("flex items-center gap-2", isExpanded ? "opacity-100" : "opacity-0 pointer-events-none")}>
-                  <motion.button
-                    type="button"
-                    onClick={handleTogglePinned}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background/70 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-                    initial={false}
-                    animate={{ opacity: isExpanded ? 1 : 0 }}
-                    transition={prefersReducedMotion ? { duration: 0 } : labelTween}
-                    aria-label={pinned ? "Unpin sidebar" : "Pin sidebar"}
+	                  <motion.button
+	                    type="button"
+	                    onClick={handleTogglePinned}
+	                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[color:var(--card-border)] bg-white/10 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+	                    initial={false}
+	                    animate={{ opacity: isExpanded ? 1 : 0 }}
+	                    transition={prefersReducedMotion ? { duration: 0 } : labelTween}
+	                    aria-label={pinned ? "Unpin sidebar" : "Pin sidebar"}
                     aria-pressed={pinned}
                   >
                     <PanelLeftIcon

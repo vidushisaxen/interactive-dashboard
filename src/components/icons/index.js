@@ -170,8 +170,6 @@ const LoaderCircle = forwardRef((props, ref) => (
 ));
 
 LoaderCircle.displayName = "LoaderCircle";
-
-// --- lucide-react compatible exports (used across the app) ---
 export {
   // Base lucide names
   ArrowDownLeftIcon as ArrowDownLeft,

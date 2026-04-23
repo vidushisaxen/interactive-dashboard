@@ -29,7 +29,7 @@ import {
   DASHBOARD_STOCK_WATCHLIST,
   DASHBOARD_TRANSACTIONS,
 } from "./dashboard-data";
-import { cn } from "@/lib/utils";
+import { cn, getTrendDirection } from "@/lib/utils";
 
 function DashboardSkeleton() {
   return (
@@ -184,10 +184,10 @@ function OverviewCard({ title, description, icon: Icon, onOpen }) {
       onClick={onOpen}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className="group rounded-lg border  border-border bg-card/95 p-5 text-left shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+      className="group rounded-lg border border-[color:var(--card-border)] bg-card/90 p-5 text-left shadow-[var(--card-shadow)] transition-colors hover:bg-primary hover:text-primary-foreground"
     >
       <div className="flex items-center justify-between gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary-foreground/16 group-hover:text-primary-foreground">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-primary transition-colors group-hover:bg-primary-foreground/16 group-hover:text-primary-foreground">
           <Icon ref={iconRef} className="h-5 w-5" />
         </div>
         <ArrowUpRight
@@ -205,8 +205,8 @@ function OverviewCard({ title, description, icon: Icon, onOpen }) {
 
 function SnapshotCard({ title, subtitle, badge, action, children, className = "" }) {
   return (
-    <Card className={cn("border border-border bg-card shadow-sm", className)}>
-      <CardContent className="space-y-5 p-6">
+    <Card className={cn("h-full", className)}>
+      <CardContent className="flex min-h-0 flex-1 flex-col gap-5">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-3">
             <Badge variant="secondary" className="w-fit">
@@ -219,7 +219,9 @@ function SnapshotCard({ title, subtitle, badge, action, children, className = ""
           </div>
           {action}
         </div>
-        {children}
+        <div className="min-h-0 flex-1 overflow-auto pr-1">
+          {children}
+        </div>
       </CardContent>
     </Card>
   );
@@ -374,30 +376,41 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
       {sectionVisibility.metrics ? (
         <AnimatedFadeUp delay={0.16}>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {DASHBOARD_METRIC_CARDS.map((item) => (
-              <div
-                key={item.label}
-                className="rounded-lg border border-border bg-card/95 p-5 shadow-sm"
-              >
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                  {item.label}
-                </p>
-                <p className="mt-3 text-2xl font-semibold tracking-tight">{item.value}</p>
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
-                    {item.change}
-                  </span>
-                  <span className="text-xs text-muted-foreground">{item.note}</span>
+            {DASHBOARD_METRIC_CARDS.map((item) => {
+              const direction = getTrendDirection(item.change);
+
+              return (
+                <div
+                  key={item.label}
+                  className="rounded-lg border border-[color:var(--card-border)] bg-card/90 p-5 shadow-[var(--card-shadow)]"
+                >
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                    {item.label}
+                  </p>
+                  <p className="mt-3 text-2xl font-semibold tracking-tight">{item.value}</p>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span
+                      className={cn(
+                        "rounded-full px-2 py-0.5 text-xs font-medium text-white",
+                        direction === "up" && "bg-[color:var(--status-success)]",
+                        direction === "down" && "bg-[color:var(--status-danger)]",
+                        direction === "neutral" && "bg-muted text-muted-foreground"
+                      )}
+                    >
+                      {item.change}
+                    </span>
+                    <span className="text-xs text-muted-foreground">{item.note}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </AnimatedFadeUp>
       ) : null}
 
       {!hasVisibleSections ? (
         <AnimatedFadeUp delay={0.22}>
-          <div className="rounded-xl  border-dashed border border-border/70 bg-background/40 p-10 text-center">
+          <div className="rounded-xl border border-dashed border-[color:var(--card-border)] bg-background/40 p-10 text-center">
             <p className="text-base font-semibold tracking-tight">
               No dashboard results for &quot;{searchQuery}&quot;
             </p>
@@ -433,17 +446,26 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                 {filteredAccounts.map((item) => (
                   <div
                     key={item.id}
-                    className="rounded-lg border border-border bg-background/50 p-4"
+                    className="rounded-lg bg-background/50 p-4"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="text-sm font-medium">{item.name}</p>
                         <p className="mt-1 text-xs text-muted-foreground">{item.institution}</p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm font-semibold">{item.balance}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{item.change}</p>
-                      </div>
+	                      <div className="text-right">
+	                        <p className="text-sm font-semibold">{item.balance}</p>
+	                        <p
+	                          className={cn(
+	                            "mt-1 text-xs",
+	                            getTrendDirection(item.change) === "up" && "text-(--status-success)",
+	                            getTrendDirection(item.change) === "down" && "text-(--status-danger)",
+	                            getTrendDirection(item.change) === "neutral" && "text-muted-foreground"
+	                          )}
+	                        >
+	                          {item.change}
+	                        </p>
+	                      </div>
                     </div>
                   </div>
                 ))}
@@ -471,8 +493,8 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                 />
               }
             >
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-lg border border-border bg-background/50 p-4">
+              <div className="grid gap-3 sm:grid-cols-2 mb-4">
+                <div className="rounded-lg bg-background/50 p-4">
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <SlidersHorizontal className="h-4 w-4 text-primary" />
                     Active filters
@@ -482,7 +504,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                   </p>
                 </div>
 
-                <div className="rounded-lg border border-border bg-background/50 p-4">
+                <div className="rounded-lg bg-background/50 p-4">
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <BellRing className="h-4 w-4 text-primary" />
                     Alert details
@@ -497,14 +519,14 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                 {filteredAlerts.map((item) => (
                   <div
                     key={item.id}
-                    className="rounded-lg border border-border bg-background/50 p-4"
+                    className="rounded-lg bg-background/50 p-4"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
+                      <div className="mt-0.5 rounded-full bg-white/10 p-3 text-primary w-10 h-10  flex items-center justify-center">
                         {item.severity === "warning" ? (
-                          <ShieldAlert className="h-4 w-4" />
+                          <ShieldAlert  className="h-5 w-5"/>
                         ) : (
-                          <BellRing className="h-4 w-4" />
+                          <BellRing className="h-5 w-5" />
                         )}
                       </div>
                       <div>
@@ -561,16 +583,25 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                 {filteredWatchlist.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background/50 p-4"
+                    className="flex items-center justify-between gap-3 rounded-lg bg-background/50 p-4"
                   >
                     <div>
                       <p className="text-sm font-medium">{item.ticker}</p>
                       <p className="mt-1 text-xs text-muted-foreground">{item.company}</p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm font-semibold">{item.price}</p>
-                      <p className="mt-1 text-xs text-primary">{item.move} • {item.signal}</p>
-                    </div>
+	                    <div className="text-right">
+	                      <p className="text-sm font-semibold">{item.price}</p>
+	                      <p
+	                        className={cn(
+	                          "mt-1 text-xs",
+	                          getTrendDirection(item.move) === "up" && "text-(--status-success)",
+	                          getTrendDirection(item.move) === "down" && "text-(--status-danger)",
+	                          getTrendDirection(item.move) === "neutral" && "text-muted-foreground"
+	                        )}
+	                      >
+	                        {item.move} • {item.signal}
+	                      </p>
+	                    </div>
                   </div>
                 ))}
                 <Button
@@ -603,7 +634,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                 Pipeline status: ingest → normalize → enrich → notify
               </p>
 
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid gap-2 mb-8">
                 {[
                   ["Sources", "11 connected"],
                   ["Sync", "Real-time"],
@@ -612,7 +643,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                 ].map(([label, value]) => (
                   <div
                     key={label}
-                    className="rounded-lg border border-border bg-background/45 p-3"
+                    className="rounded-lg bg-background/45 p-3"
                   >
                     <p className="text-xs text-muted-foreground">{label}</p>
                     <p className="text-sm font-medium">{value}</p>
@@ -653,7 +684,7 @@ const FinanceDashboardPage = ({ onNav, searchQuery = "" }) => {
                 {filteredHoldings.map((item) => (
                   <div
                     key={item.id}
-                    className="rounded-lg border border-border bg-background/50 p-4"
+                    className="rounded-lg bg-background/50 p-4"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div>

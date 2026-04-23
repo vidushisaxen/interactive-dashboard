@@ -32,7 +32,7 @@ const seriesConfig = [
   },
 ];
 
-const LineChartMultiple = ({ isActive = false }) => {
+const LineChartMultiple = ({ className, isActive = false }) => {
   const [show, setShow] = useState({
     desktop: true,
     mobile: isActive ? false : true,
@@ -61,6 +61,7 @@ const LineChartMultiple = ({ isActive = false }) => {
 
   return (
     <ChartCard
+      className={className}
       title="Performance Overview"
       description="Showing total visitors for the last 6 months"
       action={

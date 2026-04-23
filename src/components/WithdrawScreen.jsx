@@ -309,7 +309,7 @@ const handlePointerDown = (e) => {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         {/* WITHDRAW */}
         <AnimatedFadeUp delay={0.06}>
-          <Card className="h-full  border border-border">
+          <Card className="h-full">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-semibold tracking-tight">Withdraw</CardTitle>
               <CardDescription>
@@ -317,7 +317,8 @@ const handlePointerDown = (e) => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-6">
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+              <div className="space-y-6">
               <div>
                 <p className="text-xs text-muted-foreground">Withdrawal Amount</p>
                 <p className="text-3xl font-semibold">{percent}%</p>
@@ -357,8 +358,8 @@ const handlePointerDown = (e) => {
 
              
 
-              <div className="space-y-3 rounded-lg border border-border p-4">
-                <p className="text-xs text-muted-foreground">Expected to receive</p>
+	              <div className="space-y-3 rounded-lg bg-muted/20 p-4">
+	                <p className="text-xs text-muted-foreground">Expected to receive</p>
 
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
@@ -400,13 +401,14 @@ const handlePointerDown = (e) => {
                 <ArrowUpFromLine ref={reviewIconRef} className="mr-2 h-4 w-4" />
                 Review Withdrawal
               </Button>
+              </div>
             </CardContent>
           </Card>
         </AnimatedFadeUp>
 
         {/* PRICE */}
         <AnimatedFadeUp delay={0.1}>
-          <Card className="h-full  border border-border">
+          <Card className="h-full">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-semibold tracking-tight">Price</CardTitle>
               <CardDescription>
@@ -414,38 +416,40 @@ const handlePointerDown = (e) => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-5 text-sm">
-              <div className="rounded-lg border border-border bg-muted/30 p-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">ETH → cBNB</span>
-                  <span className="font-semibold">1 ETH = 5.845 cBNB</span>
-                </div>
-              </div>
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1 text-sm">
+              <div className="space-y-5">
+	              <div className="rounded-lg bg-muted/20 p-4">
+	                <div className="flex items-center justify-between">
+	                  <span className="text-muted-foreground">ETH → cBNB</span>
+	                  <span className="font-semibold">1 ETH = 5.845 cBNB</span>
+	                </div>
+	              </div>
 
-              <div className="rounded-lg border  border-border bg-muted/30 p-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">cBNB → ETH</span>
-                  <span className="font-semibold">1 cBNB = 0.171 ETH</span>
-                </div>
-              </div>
+	              <div className="rounded-lg bg-muted/20 p-4">
+	                <div className="flex items-center justify-between">
+	                  <span className="text-muted-foreground">cBNB → ETH</span>
+	                  <span className="font-semibold">1 cBNB = 0.171 ETH</span>
+	                </div>
+	              </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg border border-border p-4">
-                  <p className="text-xs text-muted-foreground">Swap Fee</p>
-                  <p className="mt-1 text-base font-semibold">0.20%</p>
-                </div>
+	              <div className="grid grid-cols-2 gap-3">
+	                <div className="rounded-lg bg-background/50 p-4">
+	                  <p className="text-xs text-muted-foreground">Swap Fee</p>
+	                  <p className="mt-1 text-base font-semibold">0.20%</p>
+	                </div>
 
-                <div className="rounded-lg border border-border p-4">
-                  <p className="text-xs text-muted-foreground">Price Impact</p>
-                  <p className="mt-1 text-base font-semibold text-primary">
-                    {(percent * 0.006).toFixed(2)}%
-                  </p>
-                </div>
-              </div>
+	                <div className="rounded-lg bg-background/50 p-4">
+	                  <p className="text-xs text-muted-foreground">Price Impact</p>
+	                  <p className="mt-1 text-base font-semibold text-primary">
+	                    {(percent * 0.006).toFixed(2)}%
+	                  </p>
+	                </div>
+	              </div>
 
-              <div className="rounded-lg border border-border p-4">
-                <p className="text-xs text-muted-foreground">Estimated USD Value</p>
-                <p className="mt-1 text-xl font-semibold">${estimatedUsd}</p>
+	              <div className="rounded-lg bg-background/50 p-4">
+	                <p className="text-xs text-muted-foreground">Estimated USD Value</p>
+	                <p className="mt-1 text-xl font-semibold">${estimatedUsd}</p>
+	              </div>
               </div>
             </CardContent>
           </Card>
@@ -453,7 +457,7 @@ const handlePointerDown = (e) => {
 
         {/* POOL SHARE + DEPOSITED MERGED */}
         <AnimatedFadeUp delay={0.14}>
-          <Card className="h-full  border border-border">
+          <Card className="h-full">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-semibold tracking-tight">Pool Share & Deposited</CardTitle>
               <CardDescription>
@@ -461,13 +465,14 @@ const handlePointerDown = (e) => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-5">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg border  border-border p-4">
-                  <div className="flex items-center gap-2">
-                    <Droplets className="h-4 w-4 text-primary" />
-                    <p className="text-xs text-muted-foreground">Pool Share</p>
-                  </div>
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+	              <div className="space-y-5">
+	              <div className="grid grid-cols-2 gap-3">
+	                <div className="rounded-lg bg-background/50 p-4">
+	                  <div className="flex items-center gap-2">
+	                    <Droplets className="h-4 w-4 text-primary" />
+	                    <p className="text-xs text-muted-foreground">Pool Share</p>
+	                  </div>
                   <p className="mt-2 text-xl font-semibold">
                     {projectedPoolShare}%
                   </p>
@@ -476,11 +481,11 @@ const handlePointerDown = (e) => {
                   </p>
                 </div>
 
-                <div className="rounded-lg border border-border p-4">
-                  <div className="flex items-center gap-2">
-                    <Wallet className="h-4 w-4 text-primary" />
-                    <p className="text-xs text-muted-foreground">Remaining Value</p>
-                  </div>
+	                <div className="rounded-lg bg-background/50 p-4">
+	                  <div className="flex items-center gap-2">
+	                    <Wallet className="h-4 w-4 text-primary" />
+	                    <p className="text-xs text-muted-foreground">Remaining Value</p>
+	                  </div>
                   <p className="mt-2 text-xl font-semibold">${remainingUsd}</p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     Position left in pool
@@ -488,8 +493,8 @@ const handlePointerDown = (e) => {
                 </div>
               </div>
 
-              <div className="rounded-lg border border-border p-4">
-                <p className="text-xs text-muted-foreground">Deposited Assets</p>
+	              <div className="rounded-lg bg-background/50 p-4">
+	                <p className="text-xs text-muted-foreground">Deposited Assets</p>
 
                 <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
                   <div>
@@ -504,11 +509,11 @@ const handlePointerDown = (e) => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between rounded-lg border border-border p-4">
-                <div>
-                  <p className="text-xs text-muted-foreground">Claimable Fees</p>
-                  <p className="mt-1 text-sm font-semibold">
-                    🔷 {feesEth} + 🟡 {feesBnb}
+	              <div className="flex items-center justify-between rounded-lg bg-background/50 p-4">
+	                <div>
+	                  <p className="text-xs text-muted-foreground">Claimable Fees</p>
+	                  <p className="mt-1 text-sm font-semibold">
+	                    🔷 {feesEth} + 🟡 {feesBnb}
                   </p>
                 </div>
 
@@ -517,11 +522,11 @@ const handlePointerDown = (e) => {
                 </Button>
               </div>
 
-              <div className="rounded-lg border border-border p-4">
-                <div className="flex items-center gap-2">
-                  <Coins className="h-4 w-4 text-primary" />
-                  <p className="text-xs text-muted-foreground">LP Position Health</p>
-                </div>
+	              <div className="rounded-lg bg-background/50 p-4">
+	                <div className="flex items-center gap-2">
+	                  <Coins className="h-4 w-4 text-primary" />
+	                  <p className="text-xs text-muted-foreground">LP Position Health</p>
+	                </div>
                 <p className="mt-2 text-sm h-10">
                   {percent <= 25
                     ? "Low impact withdrawal. Your pool position stays strong."
@@ -532,13 +537,14 @@ const handlePointerDown = (e) => {
                     : "Very high withdrawal. Most of the liquidity position will be removed."}
                 </p>
               </div>
+              </div>
             </CardContent>
           </Card>
         </AnimatedFadeUp>
       </div>
 
       <AnimatedFadeUp delay={0.18}>
-  <Card className="w-full  border border-border">
+  <Card className="w-full">
     <CardHeader>
       <CardTitle className="text-base font-semibold tracking-tight">Withdrawal Progress & Liquidity</CardTitle>
       <CardDescription>
@@ -607,35 +613,35 @@ const handlePointerDown = (e) => {
           })}
         </div>
 
-        <div className="rounded-lg border  border-border bg-muted/20 p-4">
+        <div className="rounded-lg bg-muted/20 p-4">
           <p className="text-xs text-muted-foreground">Current Step Summary</p>
           <p className="mt-2 text-sm font-medium">{currentStep.summary}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <div className="rounded-lg border  border-border p-4">
+        <div className="rounded-lg bg-background/50 p-4">
           <p className="text-xs text-muted-foreground">Withdraw %</p>
           <p className="mt-1 text-base font-semibold">{percent}%</p>
         </div>
 
-        <div className="rounded-lg border  border-border p-4">
+        <div className="rounded-lg bg-background/50 p-4">
           <p className="text-xs text-muted-foreground">Current Step</p>
           <p className="mt-1 text-base font-semibold">{currentStep.step}</p>
         </div>
 
-        <div className="rounded-lg border  border-border p-4">
+        <div className="rounded-lg bg-background/50 p-4">
           <p className="text-xs text-muted-foreground">ETH Output</p>
           <p className="mt-1 text-base font-semibold">{eth}</p>
         </div>
 
-        <div className="rounded-lg border  border-border p-4">
+        <div className="rounded-lg bg-background/50 p-4">
           <p className="text-xs text-muted-foreground">cBNB Output</p>
           <p className="mt-1 text-base font-semibold">{bnb}</p>
         </div>
       </div>
 
-      <div className="rounded-lg border  border-border p-4">
+      <div className="rounded-lg border border-border/35 bg-background/40 p-4">
         <div className="mb-4 flex justify-end">
           <ExportCsvButton
             fileName={`quantro_withdraw_${percent}pct`}

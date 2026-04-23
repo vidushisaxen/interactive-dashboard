@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatedFadeUp, AnimatedTextReveal, fadeUp } from "@/lib/animations";
 import { motion } from "motion/react";
 import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
+import { cn, getTrendDirection } from "@/lib/utils";
 import ExportCsvButton from "./ExportCsvButton";
 
 import { POOLS } from "./dashboard-data";
@@ -179,10 +180,10 @@ const PoolsList = ({ onSelectPool }) => {
       </header>
      
 
-      <AnimatedFadeUp delay={0.08} className="pt-3">
-        <Card className=" bg-transparent shadow-none border border-border px-3">
+      <AnimatedFadeUp delay={0.08} className="px-0">
+        <Card className=" bg-transparent shadow-none border border-border">
           <CardContent className="px-0 py-0 ">
-            <div className="mb-3 hidden rounded-xl bg-background/35 px-5 py-4 text-xs uppercase tracking-widest text-muted-foreground lg:grid lg:grid-cols-5">
+            <div className="mb-3 hidden rounded-xl bg-background/35 text-xs uppercase tracking-widest text-muted-foreground lg:grid lg:grid-cols-5">
               <span>Pool</span>
               <span>Type</span>
               <span className="text-right">AUM</span>
@@ -190,7 +191,7 @@ const PoolsList = ({ onSelectPool }) => {
               <span className="text-right">YTD</span>
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col space-y-2">
               {POOLS.map((pool, index) => (
                 
                 <React.Fragment key={pool.id}>
@@ -235,15 +236,18 @@ const PoolsList = ({ onSelectPool }) => {
                       <p className="text-xs uppercase tracking-widest text-muted-foreground lg:hidden">
                         YTD
                       </p>
-                      <span
-                        className={
-                          pool.apr
-                            ? "text-sm font-semibold text-primary"
-                            : "text-sm text-muted-foreground"
-                        }
-                      >
-                        {pool.apr ? `${pool.apr}%` : "--%"}
-                      </span>
+	                      <span
+	                        className={cn(
+	                          "text-sm font-semibold",
+	                          pool.apr === null || pool.apr === undefined
+	                            ? "text-muted-foreground"
+	                            : getTrendDirection(pool.apr) === "down"
+	                              ? "text-(--status-danger)"
+	                              : "text-(--status-success)"
+	                        )}
+	                      >
+	                        {pool.apr ? `${pool.apr}%` : "--%"}
+	                      </span>
                     </div>
                   </Link>
                 </motion.div>

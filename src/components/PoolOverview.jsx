@@ -220,7 +220,7 @@ const PoolOverview = () => {
       {/* Top cards side by side */}
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
         <AnimatedFadeUp delay={0.1}>
-          <Card className="h-full border border-border shadow-sm  ">
+          <Card className="h-full">
             <CardHeader>
               <CardTitle className="text-base font-semibold tracking-tight">Pool Info</CardTitle>
             </CardHeader>
@@ -257,7 +257,7 @@ const PoolOverview = () => {
         </AnimatedFadeUp>
 
         <AnimatedFadeUp delay={0.16}>
-          <Card className="h-full border border-border shadow-sm ">
+          <Card className="h-full">
             <CardHeader>
               <CardTitle className="text-base font-semibold tracking-tight">Stats</CardTitle>
             </CardHeader>
@@ -291,8 +291,8 @@ const PoolOverview = () => {
 
       {/* Chart below */}
       <AnimatedFadeUp delay={0.22}>
-        <Card className="border border-border shadow-sm">
-          <CardContent className="space-y-6 pt-5">
+        <Card>
+          <CardContent className="space-y-6">
             {/* Tabs + Filters */}
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex flex-wrap gap-2">
@@ -305,7 +305,7 @@ const PoolOverview = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => setActiveChart(t)}
-                        className={`rounded-lg  border border-border cursor-pointer transition-all duration-300 ease-in ${
+                        className={`rounded-lg border border-border/60 cursor-pointer transition-colors ${
                           isActive
                             ? "border-primary/40 bg-primary text-primary-foreground "
                             : "hover:bg-primary hover:text-primary-foreground"

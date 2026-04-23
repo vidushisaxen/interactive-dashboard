@@ -17,6 +17,75 @@ import {
   AnimatedFadeUp,
 } from "@/lib/animations";
 import { NOTIFICATION_ITEMS } from "./dashboard-data";
+import { cn } from "@/lib/utils";
+
+function NotificationRow({ item, active, onSelect }) {
+  const Icon = item.icon;
+  const iconRef = useRef(null);
+
+  const handleEnter = () => iconRef.current?.startAnimation?.();
+  const handleLeave = () => iconRef.current?.stopAnimation?.();
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      className={cn(
+        "w-full rounded-lg cursor-pointer border border-[color:var(--card-border)] bg-background/60 p-4 text-left transition-colors hover:bg-accent/40",
+        active && "bg-primary/5"
+      )}
+    >
+      <div className="flex gap-3">
+        <AnimatedFadeUp delay={0.02} duration={0.35}>
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--icon-tile-bg)] text-primary">
+            <Icon ref={iconRef} className="h-4.5 w-4.5" />
+            {active ? (
+              <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-primary ring-2 ring-background animate-pulse" />
+            ) : null}
+          </div>
+        </AnimatedFadeUp>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <AnimatedTextReveal y={10} blur="4px" duration={0.35}>
+                <p className="text-base font-medium">{item.title}</p>
+              </AnimatedTextReveal>
+
+              {item.unread && (
+                <AnimatedFadeUp delay={0.04} duration={0.3}>
+                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                </AnimatedFadeUp>
+              )}
+            </div>
+
+            <AnimatedTextReveal
+              y={10}
+              blur="4px"
+              duration={0.35}
+              delay={0.03}
+            >
+              <span className="shrink-0 text-xs text-muted-foreground">
+                {item.time}
+              </span>
+            </AnimatedTextReveal>
+          </div>
+
+          <AnimatedTextReveal
+            y={10}
+            blur="4px"
+            duration={0.35}
+            delay={0.05}
+          >
+            <p className="mt-1 text-sm text-muted-foreground">{item.text}</p>
+          </AnimatedTextReveal>
+        </div>
+      </div>
+    </button>
+  );
+}
 
 const NotificationsSheet = ({ open, onOpenChange }) => {
   const [notifications, setNotifications] = useState(NOTIFICATION_ITEMS);
@@ -88,81 +157,27 @@ const NotificationsSheet = ({ open, onOpenChange }) => {
 
         <AnimatedSlideIn direction="right" duration={0.55} delay={0.12}>
           <ScrollArea className="h-105 pr-2">
-            <div className="space-y-4">
-              {notifications.map((item, index) => {
-                const Icon = item.icon;
-
-                return (
-                  <AnimatedSlideIn
-                    key={item.id}
-                    direction="right"
-                    duration={0.45}
-                    delay={0.14 + index * 0.05}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setActiveId(item.id);
-                        markAsRead(item.id);
-                      }}
-                      className="w-full rounded-lg cursor-pointer border  border border-border bg-background/60 p-4 text-left transition-colors hover:bg-accent/40"
-                    >
-                      <div className="flex gap-3">
-                        <AnimatedFadeUp delay={0.02} duration={0.35}>
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                            <Icon className="h-4.5 w-4.5" />
-                          </div>
-                        </AnimatedFadeUp>
-
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="flex items-center gap-2">
-                              <AnimatedTextReveal
-                                y={10}
-                                blur="4px"
-                                duration={0.35}
-                              >
-                                <p className="text-base font-medium">
-                                  {item.title}
-                                </p>
-                              </AnimatedTextReveal>
-
-                              {item.unread && (
-                                <AnimatedFadeUp delay={0.04} duration={0.3}>
-                                  <span className="h-2 w-2 rounded-full bg-primary" />
-                                </AnimatedFadeUp>
-                              )}
-                            </div>
-
-                            <AnimatedTextReveal
-                              y={10}
-                              blur="4px"
-                              duration={0.35}
-                              delay={0.03}
-                            >
-                              <span className="shrink-0 text-xs text-muted-foreground">
-                                {item.time}
-                              </span>
-                            </AnimatedTextReveal>
-                          </div>
-
-                          <AnimatedTextReveal
-                            y={10}
-                            blur="4px"
-                            duration={0.35}
-                            delay={0.05}
-                          >
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              {item.text}
-                            </p>
-                          </AnimatedTextReveal>
-                        </div>
-                      </div>
-                    </button>
-                  </AnimatedSlideIn>
-                );
-              })}
-            </div>
+	            <div className="space-y-4">
+	              {notifications.map((item, index) => {
+	                return (
+	                  <AnimatedSlideIn
+	                    key={item.id}
+	                    direction="right"
+	                    duration={0.45}
+	                    delay={0.14 + index * 0.05}
+	                  >
+	                    <NotificationRow
+	                      item={item}
+	                      active={activeId === item.id}
+	                      onSelect={() => {
+	                        setActiveId(item.id);
+	                        markAsRead(item.id);
+	                      }}
+	                    />
+	                  </AnimatedSlideIn>
+	                );
+	              })}
+	            </div>
           </ScrollArea>
         </AnimatedSlideIn>
       </div>

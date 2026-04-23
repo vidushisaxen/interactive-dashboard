@@ -29,8 +29,8 @@ const BalanceHero = ({
   const plusIconRef = useRef(null);
 
   return (
-    <Card className="border border-border shadow-sm">
-      <CardContent className="flex flex-col gap-8 p-6 lg:p-7">
+    <Card>
+      <CardContent className="flex flex-col gap-8">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0 flex-1">
           <Badge variant="secondary" className="mb-3">

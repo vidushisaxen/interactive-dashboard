@@ -2,7 +2,6 @@
 
 import { cloneElement, isValidElement, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
 import { PageTransition } from "@/components/animations/FadeUp";
 import FinanceSidebar from "./FinanceSidebar";
 import FinanceTopbar from "./FinanceTopbar";
@@ -93,16 +92,14 @@ const FinanceDashboardShell = ({ children }) => {
             searchValue={searchQuery}
             onSearchChange={setSearchQuery}
             userName={userName}
-          />
+	          />
 
-          <main className="px-5 pb-5 pt-4 lg:px-6 lg:pb-6 lg:pt-5">
-            <Card className="min-h-[calc(100vh-110px)] rounded-lg border-0 bg-transparent ring-0 shadow-none backdrop-blur-0">
-              <CardContent className="p-6 lg:p-7">
-                <PageTransition transitionKey={pathname}>
-                  {content}
-                </PageTransition>
-              </CardContent>
-            </Card>
+	          <main className="px-5 pb-5 pt-4 lg:px-6 lg:pb-6 lg:pt-5">
+	            <div className="min-h-[calc(100vh-110px)]">
+	              <PageTransition transitionKey={pathname}>
+	                {content}
+	              </PageTransition>
+	            </div>
           </main>
         </div>
         <ChatbotWidget />

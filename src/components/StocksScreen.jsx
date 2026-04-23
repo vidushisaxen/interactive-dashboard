@@ -165,7 +165,7 @@ const StocksScreen = () => {
       </header>
 
       <AnimatedFadeUp delay={0.15}>
-        <Card className=" border border-border bg-card shadow-sm">
+        <Card>
           <CardHeader className="gap-3">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div className="space-y-2">
@@ -209,14 +209,16 @@ const StocksScreen = () => {
       </AnimatedFadeUp>
 
       <AnimatedFadeUp delay={0.2}>
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3 items-stretch">
           {STOCK_INSIGHT_CARDS.map((item) => (
-            <Card key={item.title} className=" border border-border bg-card shadow-sm">
-              <CardContent className="p-6">
+            <Card key={item.title} className="h-full">
+              <CardContent className="flex min-h-0 flex-1 flex-col">
                 <p className="text-sm font-semibold tracking-tight">{item.title}</p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {item.body}
-                </p>
+                <div className="mt-2 min-h-0 flex-1 overflow-auto pr-1">
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    {item.body}
+                  </p>
+                </div>
                 <a href="#" className="mt-4 cursor-pointer inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors relative group">
                   Learn more
                   <ArrowUpRight className="h-4 w-4" />

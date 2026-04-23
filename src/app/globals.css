@@ -4,8 +4,12 @@
   --background: rgb(15, 15, 19);
   --foreground: rgb(245, 245, 245);
 
-  --card: rgb(20, 20, 24);
+  --card: rgb(26, 26, 32);
   --card-foreground: rgb(245, 245, 245);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --layout-divider: color-mix(in srgb, var(--foreground) 14%, transparent);
+  --card-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+  --icon-tile-bg: color-mix(in srgb, var(--muted) 62%, transparent);
 
   --popover: rgb(20, 20, 24);
   --popover-foreground: rgb(245, 245, 245);
@@ -25,7 +29,7 @@
   --destructive: rgb(221, 60, 60);
   --destructive-foreground: rgb(245, 245, 245);
 
-  --border: rgba(255, 255, 255, 0.16);
+  --border: transparent;
   --input: rgb(43, 43, 49);
   --ring: rgb(255, 102, 0);
 
@@ -37,8 +41,8 @@
   --chart-4: rgb(255, 177, 92);
   --chart-5: rgb(255, 197, 125);
   --chart-6: rgb(255, 217, 163);
-  --chart-grid: color-mix(in srgb, var(--border) 70%, transparent);
-  --chart-grid-strong: color-mix(in srgb, var(--border) 65%, transparent);
+  --chart-grid: color-mix(in srgb, var(--muted-foreground) 18%, transparent);
+  --chart-grid-strong: color-mix(in srgb, var(--muted-foreground) 26%, transparent);
   --chart-cursor: color-mix(in srgb, var(--muted) 70%, transparent);
   --chart-area-start: color-mix(in srgb, var(--primary) 22%, transparent);
   --chart-area-end: color-mix(in srgb, var(--primary) 2%, transparent);
@@ -63,8 +67,12 @@
   --background: rgb(248, 244, 238);
   --foreground: rgb(30, 27, 24);
 
-  --card: rgb(255, 251, 246);
+  --card: rgb(244, 238, 231);
   --card-foreground: rgb(30, 27, 24);
+  --card-border: rgba(46, 33, 22, 0.1);
+  --layout-divider: color-mix(in srgb, var(--foreground) 14%, transparent);
+  --card-shadow: none;
+  --icon-tile-bg: color-mix(in srgb, var(--muted) 52%, transparent);
 
   --popover: rgb(255, 251, 246);
   --popover-foreground: rgb(30, 27, 24);
@@ -84,7 +92,7 @@
   --destructive: rgb(217, 69, 69);
   --destructive-foreground: rgb(255, 255, 255);
 
-  --border: rgba(46, 33, 22, 0.12);
+  --border: transparent;
   --input: rgb(226, 214, 202);
   --ring: rgb(255, 102, 0);
 
@@ -94,8 +102,8 @@
   --chart-4: rgb(224, 165, 93);
   --chart-5: rgb(212, 185, 126);
   --chart-6: rgb(201, 205, 160);
-  --chart-grid: color-mix(in srgb, var(--border) 70%, transparent);
-  --chart-grid-strong: color-mix(in srgb, var(--border) 65%, transparent);
+  --chart-grid: color-mix(in srgb, var(--muted-foreground) 18%, transparent);
+  --chart-grid-strong: color-mix(in srgb, var(--muted-foreground) 26%, transparent);
   --chart-cursor: color-mix(in srgb, var(--muted) 70%, transparent);
   --chart-area-start: color-mix(in srgb, var(--primary) 22%, transparent);
   --chart-area-end: color-mix(in srgb, var(--primary) 2%, transparent);
@@ -155,8 +163,8 @@
   --radius-2xl: calc(var(--radius) + 4px);
   --radius-3xl: calc(var(--radius) + 8px);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -167,7 +175,6 @@
 }
 
 * {
-  border-color: var(--border);
   transition:
     background-color 220ms ease,
     border-color 220ms ease,
@@ -186,7 +193,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family:  Helvetica;
+  font-family: var(--font-sans);
 }
 
 button:not(:disabled) {

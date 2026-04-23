@@ -19,7 +19,7 @@ const PIE_SCALE = [
   "var(--chart-6)",
 ];
 
-const PieChartStacked = () => {
+const PieChartStacked = ({ className }) => {
   const [active, setActive] = useState(0);
   const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
 
@@ -46,6 +46,7 @@ const PieChartStacked = () => {
 
   return (
     <ChartCard
+      className={className}
       title="Allocation Breakdown"
       description="Showing total distribution for the last 6 months"
       action={
@@ -82,7 +83,7 @@ const PieChartStacked = () => {
       </div>
 
       <div ref={ref} className="flex justify-center">
-        <div className="relative rounded-lg border border-border bg-background/40 p-4">
+        <div className="relative rounded-lg bg-background/40 p-4">
           <PieChart key={`pie-stacked-${animationKey}`} width={280} height={250}>
             <Pie
               data={outer}

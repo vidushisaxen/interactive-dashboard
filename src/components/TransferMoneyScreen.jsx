@@ -40,7 +40,7 @@ function TransferMoneySkeleton() {
       </header>
 
       {/* STATUS */}
-      <div className="rounded-lg border border-border p-4 space-y-2">
+      <div className="rounded-lg bg-muted/20 p-4 space-y-2">
         <Skeleton className="h-4 w-36" />
         <Skeleton className="h-3 w-full max-w-2xl" />
       </div>
@@ -63,7 +63,7 @@ function TransferMoneySkeleton() {
               {[1, 2].map((_, i) => (
                 <div
                   key={i}
-                  className="rounded-lg border border-border p-4 space-y-3"
+                  className="rounded-lg bg-background/50 p-4 space-y-3"
                 >
                   <Skeleton className="h-10 w-10 rounded-lg" />
                   <Skeleton className="h-4 w-32" />
@@ -90,7 +90,7 @@ function TransferMoneySkeleton() {
             </div>
 
             {/* Review box */}
-            <div className="rounded-lg border border-border bg-muted/20 p-4 space-y-2">
+            <div className="rounded-lg bg-muted/20 p-4 space-y-2">
               <div className="flex gap-3">
                 <Skeleton className="h-8 w-8 rounded-lg" />
                 <div className="flex-1 space-y-2">
@@ -105,7 +105,7 @@ function TransferMoneySkeleton() {
               {[1, 2].map((_, i) => (
                 <div
                   key={i}
-                  className="rounded-lg border border-border bg-background/50 p-3 space-y-2"
+                  className="rounded-lg bg-background/50 p-3 space-y-2"
                 >
                   <Skeleton className="h-3 w-28" />
                   <Skeleton className="h-4 w-40" />
@@ -114,7 +114,7 @@ function TransferMoneySkeleton() {
             </div>
 
             {/* Capacity */}
-            <div className="rounded-lg border border-border p-4 space-y-2">
+            <div className="rounded-lg bg-background/50 p-4 space-y-2">
               <Skeleton className="h-3 w-32" />
               <div className="flex justify-between">
                 <Skeleton className="h-4 w-40" />
@@ -143,7 +143,7 @@ function TransferMoneySkeleton() {
             {[1, 2, 3, 4].map((_, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4"
+                className="flex items-center justify-between rounded-lg bg-muted/20 p-4"
               >
                 <Skeleton className="h-4 w-40" />
                 <Skeleton className="h-4 w-20" />
@@ -161,7 +161,7 @@ function TransferMoneySkeleton() {
             {[1, 2, 3].map((_, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between gap-4 rounded-lg border border-border p-4"
+                className="flex items-center justify-between gap-4 rounded-lg bg-background/50 p-4"
               >
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-36" />
@@ -225,7 +225,7 @@ const TransferMoneyScreen = () => {
       </header>
 
       <AnimatedFadeUp delay={0.08}>
-        <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-lg border border-[color:var(--layout-divider)] p-4">
           <p className="text-sm font-medium">Transfer status</p>
           <p className="mt-1 text-xs text-muted-foreground">
             {transferStatus}
@@ -236,7 +236,7 @@ const TransferMoneyScreen = () => {
       <div className="grid min-h-[calc(100vh-220px)] grid-cols-1 gap-6 items-start xl:grid-cols-5 xl:items-stretch">
         <div className="space-y-6 xl:col-span-3 xl:h-full">
           <AnimatedFadeUp delay={0.12}>
-            <Card className="h-full border border-border">
+            <Card className="h-full">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Outgoing transfer builder
@@ -246,7 +246,8 @@ const TransferMoneyScreen = () => {
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+                <div className="space-y-6">
                 <div className="space-y-4">
                   <p className="text-sm font-medium">Transfer type</p>
                   <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -260,11 +261,11 @@ const TransferMoneyScreen = () => {
                           type="button"
                           onClick={() => setTransferType(item.id)}
                           className={cn(
-                            "rounded-lg border p-4 text-left transition-colors",
+                            "rounded-lg p-4 text-left transition-colors ring-1 ring-inset",
                             "hover:bg-accent/40",
                             active
-                              ? "border-primary/30 bg-primary/5"
-                              : " border border-border bg-background/60"
+                              ? "ring-primary/25 bg-primary/5"
+                              : "ring-border/15 bg-background/60"
                           )}
                         >
                           <div
@@ -327,7 +328,7 @@ const TransferMoneyScreen = () => {
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-border bg-muted/20 p-4">
+                <div className="rounded-lg bg-muted/20 p-4">
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
                       <ShieldCheck className="h-4 w-4" />
@@ -346,19 +347,19 @@ const TransferMoneyScreen = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                  <div className="rounded-lg border border-border bg-background/50 p-3 text-sm">
+                  <div className="rounded-lg bg-background/50 p-3 text-sm">
                     <p className="text-xs text-muted-foreground">Suggested memo</p>
                     <p className="mt-1 font-medium">
                       &quot;Vendor invoice #4511 then reconcile&quot;
                     </p>
                   </div>
-                  <div className="rounded-lg border border-border bg-background/50 p-3 text-sm">
+                  <div className="rounded-lg bg-background/50 p-3 text-sm">
                     <p className="text-xs text-muted-foreground">Recommended risk level</p>
                     <p className="mt-1 font-medium">Medium</p>
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
+                <div className="rounded-lg bg-muted/20 p-4">
                   <p className="text-xs text-muted-foreground">Transfer capacity</p>
                   <div className="mt-2 flex items-center justify-between">
                     <span className="text-sm font-medium">Used: $2,450 / $50,000</span>
@@ -395,6 +396,7 @@ const TransferMoneyScreen = () => {
                     Continue transfer
                   </Button>
                 </div>
+                </div>
               </CardContent>
             </Card>
           </AnimatedFadeUp>
@@ -402,7 +404,7 @@ const TransferMoneyScreen = () => {
 
         <div className="space-y-7 xl:col-span-2 flex h-full flex-col">
           <AnimatedFadeUp delay={0.14}>
-            <Card className="h-full border border-border">
+            <Card className="h-full">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Transfer details
@@ -411,20 +413,22 @@ const TransferMoneyScreen = () => {
                   Dummy summary values for the outgoing payment rail.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-5">
-                <MetricRow label="Available to send" value="$10,254.00" />
-                <MetricRow label="Transfer fee" value="$0.00" />
-                <MetricRow
-                  label="Estimated arrival"
-                  value={transferType === "bank" ? "Same day" : "Instant"}
-                />
-                <MetricRow label="Approval required" value="No" />
+              <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+                <div className="space-y-3">
+                  <MetricRow label="Available to send" value="$10,254.00" />
+                  <MetricRow label="Transfer fee" value="$0.00" />
+                  <MetricRow
+                    label="Estimated arrival"
+                    value={transferType === "bank" ? "Same day" : "Instant"}
+                  />
+                  <MetricRow label="Approval required" value="No" />
+                </div>
               </CardContent>
             </Card>
           </AnimatedFadeUp>
 
           <AnimatedFadeUp delay={0.18}>
-            <Card className="h-full border border-border">
+            <Card className="h-full">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Recent beneficiaries
@@ -433,38 +437,40 @@ const TransferMoneyScreen = () => {
                   Sample transfer destinations to make the screen feel complete.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-5">
-                {TRANSFER_BENEFICIARIES.map((item) => (
-                  <div
-                    key={`${item.name}-${item.amount}`}
-                    className="flex items-center justify-between gap-4 rounded-lg border border-border p-4"
-                  >
-                    <div>
-                      <p className="text-sm font-medium">{item.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {item.type} • {item.arrival}
-                      </p>
+              <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+                <div className="space-y-3">
+                  {TRANSFER_BENEFICIARIES.map((item) => (
+                    <div
+                      key={`${item.name}-${item.amount}`}
+                      className="flex items-center justify-between gap-4 rounded-lg bg-muted/20 p-4"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium">{item.name}</p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {item.type} • {item.arrival}
+                        </p>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <p className="text-sm font-semibold">{item.amount}</p>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="mt-1 h-7 rounded-lg px-2"
+                          onClick={() =>
+                            setForm((prev) => ({
+                              ...prev,
+                              recipient: item.name,
+                              amount: item.amount.replace(/[$,]/g, ""),
+                            }))
+                          }
+                        >
+                          Use details
+                        </Button>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm font-semibold">{item.amount}</p>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="mt-1 h-7 rounded-lg px-2"
-                        onClick={() =>
-                          setForm((prev) => ({
-                            ...prev,
-                            recipient: item.name,
-                            amount: item.amount.replace(/[$,]/g, ""),
-                          }))
-                        }
-                      >
-                        Use details
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </AnimatedFadeUp>
@@ -490,7 +496,7 @@ const Field = ({ icon: Icon, label, placeholder, value, onChange }) => (
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-lg bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>

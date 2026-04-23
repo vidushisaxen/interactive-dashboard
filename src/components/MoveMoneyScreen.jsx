@@ -43,7 +43,7 @@ function MoveMoneySkeleton() {
       </header>
 
       {/* Status */}
-      <div className="rounded-lg border border-border p-4">
+      <div className="rounded-lg bg-muted/20 p-4">
         <div className="space-y-2">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-3 w-full max-w-2xl" />
@@ -273,14 +273,14 @@ const MoveMoneyScreen = () => {
       </header>
 
       <AnimatedFadeUp delay={0.08}>
-        <div className="rounded-lg border border-primary/15 bg-primary/5 p-4">
+        <div className="rounded-lg border border-[color:var(--layout-divider)] p-4">
           <p className="text-sm font-medium">Transfer status</p>
           <p className="mt-1 text-xs text-muted-foreground">{status}</p>
         </div>
       </AnimatedFadeUp>
 
       <AnimatedFadeUp delay={0.12}>
-        <Card className=" border border-border">
+        <Card>
           <CardHeader>
             <CardTitle className="text-base font-semibold tracking-tight">
               Account routing
@@ -335,7 +335,7 @@ const MoveMoneyScreen = () => {
               </div>
             </div>
 
-            <div className="rounded-lg border border-border bg-muted/20 p-4">
+            <div className="rounded-lg bg-muted/20 p-4">
               <div className="flex items-start gap-3">
                 <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
                   <ArrowRightLeft className="h-4 w-4" />
@@ -382,96 +382,100 @@ const MoveMoneyScreen = () => {
         </Card>
       </AnimatedFadeUp>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <div className="space-y-6 xl:col-span-1">
-          <AnimatedFadeUp delay={0.16}>
-            <Card className=" border border-border">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold tracking-tight">
-                  Recent internal moves
-                </CardTitle>
-                <CardDescription>
-                  Dummy activity to show how treasury balancing has been flowing
-                  this week.
-                </CardDescription>
-              </CardHeader>
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2 xl:[grid-auto-rows:1fr]">
+        <AnimatedFadeUp delay={0.16} className="h-full">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold tracking-tight">
+                Recent internal moves
+              </CardTitle>
+              <CardDescription>
+                Dummy activity to show how treasury balancing has been flowing
+                this week.
+              </CardDescription>
+            </CardHeader>
 
-              <CardContent className="space-y-4">
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+              <div className="space-y-3">
                 {MOVE_MONEY_ACTIVITY_FEED.map((item) => (
                   <div
                     key={`${item.label}-${item.time}`}
-                    className="flex items-center justify-between gap-4 rounded-lg border border-border p-4"
+                    className="flex items-center justify-between gap-4 rounded-lg bg-muted/20 p-4"
                   >
-                    <div>
-                      <p className="text-sm font-medium">{item.label}</p>
-                      <p className="text-xs text-muted-foreground">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium">{item.label}</p>
+                      <p className="truncate text-xs text-muted-foreground">
                         {item.meta} • {item.time}
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="shrink-0 text-right">
                       <p className="text-sm font-semibold">{item.amount}</p>
                       <p className="text-xs text-(--status-success)">Completed</p>
                     </div>
                   </div>
                 ))}
-              </CardContent>
-            </Card>
-          </AnimatedFadeUp>
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedFadeUp>
 
-          <AnimatedFadeUp delay={0.18}>
-            <Card className=" border border-border">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold tracking-tight">
-                  Transfer history
-                </CardTitle>
-                <CardDescription>
-                  Detailed logs of all internal fund movements.
-                </CardDescription>
-              </CardHeader>
+        <AnimatedFadeUp delay={0.14} className="h-full">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold tracking-tight">
+                Treasury snapshot
+              </CardTitle>
+              <CardDescription>
+                Quick dummy metrics for today&apos;s available finance rails.
+              </CardDescription>
+            </CardHeader>
 
-              <CardContent className="space-y-4">
-                <MetricRow label="Total transfers this month" value="24" />
-                <MetricRow label="Average transfer amount" value="$2,450" />
-                <MetricRow label="Pending approvals" value="2" />
-                <MetricRow label="Failed transfers" value="0" />
-              </CardContent>
-            </Card>
-          </AnimatedFadeUp>
-        </div>
-
-        <div className="space-y-6 xl:col-span-1">
-          <AnimatedFadeUp delay={0.14}>
-            <Card className=" border border-border">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold tracking-tight">
-                  Treasury snapshot
-                </CardTitle>
-                <CardDescription>
-                  Quick dummy metrics for today&apos;s available finance rails.
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+              <div className="space-y-3">
                 <MetricRow label="Instant transfer limit" value="$25,000" />
                 <MetricRow label="Same-day settlement left" value="$9,600" />
                 <MetricRow label="Auto-rules firing today" value="3 rules" />
                 <MetricRow label="Reserve ratio" value="41%" />
-              </CardContent>
-            </Card>
-          </AnimatedFadeUp>
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedFadeUp>
 
-          <AnimatedFadeUp delay={0.20}>
-            <Card className=" border border-border">
-              <CardHeader>
-                <CardTitle className="text-base font-semibold tracking-tight">
-                  Smart suggestions
-                </CardTitle>
-                <CardDescription>
-                  Helpful prompts based on the balances in this demo workspace.
-                </CardDescription>
-              </CardHeader>
+        <AnimatedFadeUp delay={0.18} className="h-full">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold tracking-tight">
+                Transfer history
+              </CardTitle>
+              <CardDescription>
+                Detailed logs of all internal fund movements.
+              </CardDescription>
+            </CardHeader>
 
-              <CardContent className="space-y-4">
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+              <div className="space-y-3">
+                <MetricRow label="Total transfers this month" value="24" />
+                <MetricRow label="Average transfer amount" value="$2,450" />
+                <MetricRow label="Pending approvals" value="2" />
+                <MetricRow label="Failed transfers" value="0" />
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedFadeUp>
+
+        <AnimatedFadeUp delay={0.20} className="h-full">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold tracking-tight">
+                Smart suggestions
+              </CardTitle>
+              <CardDescription>
+                Helpful prompts based on the balances in this demo workspace.
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+              <div className="space-y-3">
                 <SuggestionCard
                   icon={CalendarClock}
                   title="Payroll buffer is below target"
@@ -482,10 +486,10 @@ const MoveMoneyScreen = () => {
                   title="Campaign wallet is trending high"
                   description="Shift excess spend back to Main Balance to keep this week&apos;s runway healthy."
                 />
-              </CardContent>
-            </Card>
-          </AnimatedFadeUp>
-        </div>
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedFadeUp>
       </div>
     </section>
   );
@@ -505,11 +509,11 @@ const AccountSelector = ({ label, selectedId, onSelect }) => (
             type="button"
             onClick={() => onSelect(account.id)}
             className={cn(
-              "rounded-lg border p-4 text-left transition-colors",
+              "rounded-lg p-4 text-left transition-colors ring-1 ring-inset",
               "hover:bg-accent/40",
               active
-                ? "border-primary/30 bg-primary/5"
-                : " border border-border bg-background/60"
+                ? "ring-primary/25 bg-primary/5"
+                : "ring-border/15 bg-background/60"
             )}
           >
             <div
@@ -547,14 +551,14 @@ const Field = ({ label, placeholder, value, onChange }) => (
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-lg bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>
 );
 
 const SuggestionCard = ({ icon: Icon, title, description }) => (
-  <div className="rounded-lg border border-border p-4">
+  <div className="rounded-lg bg-background/50 p-4">
     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
       <Icon className="h-4 w-4" />
     </div>

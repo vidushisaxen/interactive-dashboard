@@ -15,7 +15,7 @@ import CTip from "./CTip";
 import { ChartCard } from "./ChartCard";
 import { useChartEntrance } from "@/hooks/use-chart-entrance";
 
-const RadarChartGrid = () => {
+const RadarChartGrid = ({ className }) => {
   const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
   const average =
     Math.round(
@@ -25,6 +25,7 @@ const RadarChartGrid = () => {
 
   return (
     <ChartCard
+      className={className}
       title="Radar Performance"
       description="Showing total visitors for the last 6 months"
       action={
@@ -51,7 +52,7 @@ const RadarChartGrid = () => {
         </div>
       </div>
 
-      <div ref={ref} className="min-w-0 rounded-lg border border-border bg-background/40 p-4">
+      <div ref={ref} className="min-w-0 rounded-lg bg-background/40 p-4">
         <ResponsiveContainer
           width="100%"
           height={250}

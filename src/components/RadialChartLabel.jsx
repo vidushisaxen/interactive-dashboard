@@ -41,7 +41,7 @@ const RadialTooltip = ({ active, payload }) => {
   );
 };
 
-const RadialChartLabel = () => {
+const RadialChartLabel = ({ className }) => {
   const [hovered, setHovered] = useState(null);
   const { ref, shouldAnimate, animationKey, animationDelay } = useChartEntrance();
 
@@ -59,6 +59,7 @@ const RadialChartLabel = () => {
 
   return (
     <ChartCard
+      className={className}
       title="Traffic Breakdown"
       description="Showing total visitors for the last 6 months"
       action={
@@ -91,7 +92,7 @@ const RadialChartLabel = () => {
         </div>
       </div>
 
-      <div ref={ref} className="rounded-lg border border-border bg-background/40 p-4">
+      <div ref={ref} className="rounded-lg bg-background/40 p-4">
         <div className="relative flex justify-center">
           <RadialBarChart
             key={`radial-chart-${animationKey}`}
@@ -133,10 +134,11 @@ const RadialChartLabel = () => {
               })}
             </RadialBar>
 
-            <Tooltip content={<RadialTooltip />} />
+            <Tooltip content={<RadialTooltip />} wrapperStyle={{ zIndex: 50 }}  />
+
           </RadialBarChart>
 
-          <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+          <div className="pointer-events-none z-10 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
             <div className="text-2xl font-bold tracking-tight">
               {activeItem
                 ? activeItem.visitors.toLocaleString()
@@ -162,10 +164,10 @@ const RadialChartLabel = () => {
               onFocus={() => setHovered(i)}
               onBlur={() => setHovered(null)}
               className={cn(
-                "flex w-full items-center cursor-pointer justify-between rounded-lg border px-3 py-2 text-left transition-colors",
+                "flex w-full items-center cursor-pointer justify-between rounded-lg px-3 py-2 text-left transition-colors",
                 active
-                  ? "border-primary/20 bg-primary/10"
-                  : "border-transparent hover:bg-accent/40"
+                  ? "bg-primary/10 ring-1 ring-inset ring-primary/20"
+                  : "hover:bg-accent/40"
               )}
             >
               <div className="flex items-center gap-3">

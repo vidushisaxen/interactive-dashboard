@@ -16,6 +16,7 @@ import {
   getPoolChartData,
 } from "./dashboard-data";
 import { AnimatedFadeUp, AnimatedTextReveal } from "@/lib/animations";
+import { cn, getTrendDirection } from "@/lib/utils";
 import { useScreenSkeleton } from "@/hooks/use-screen-skeleton";
 
 function PoolDetailsSkeleton() {
@@ -101,7 +102,7 @@ export default function PoolDetailsScreen({ pool }) {
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <AnimatedFadeUp delay={0.1}>
-          <Card className="h-full border border-border shadow-sm">
+          <Card className="h-full">
             <CardHeader className="gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="outline" className="rounded-full">
@@ -115,40 +116,42 @@ export default function PoolDetailsScreen({ pool }) {
               </div>
               <CardTitle className="text-lg font-semibold tracking-tight">Pool overview</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <p className="text-sm leading-6 text-muted-foreground">{pool.description}</p>
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+              <div className="space-y-6">
+                <p className="text-sm leading-6 text-muted-foreground">{pool.description}</p>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-xl border border-border bg-background/45 p-4">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">Top holdings</p>
-                  <div className="mt-3 space-y-2">
-                    {pool.topHoldings.map((holding) => (
-                      <div key={holding} className="flex items-center justify-between text-sm">
-                        <span>{holding}</span>
-                        <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
-                      </div>
-                    ))}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-xl border border-border/60 bg-background/45 p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground">Top holdings</p>
+                    <div className="mt-3 space-y-2">
+                      {pool.topHoldings.map((holding) => (
+                        <div key={holding} className="flex items-center justify-between text-sm">
+                          <span>{holding}</span>
+                          <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                <div className="rounded-xl border border-border bg-background/45 p-4">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">Snapshot</p>
-                  <div className="mt-3 space-y-3 text-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Benchmark</span>
-                      <span className="font-medium">{pool.benchmark}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Risk</span>
-                      <span className="font-medium">{pool.riskLevel}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Rebalance</span>
-                      <span className="font-medium">{pool.rebalance}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Manager</span>
-                      <span className="font-medium">{pool.manager}</span>
+                  <div className="rounded-xl border border-border/60 bg-background/45 p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground">Snapshot</p>
+                    <div className="mt-3 space-y-3 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Benchmark</span>
+                        <span className="font-medium">{pool.benchmark}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Risk</span>
+                        <span className="font-medium">{pool.riskLevel}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Rebalance</span>
+                        <span className="font-medium">{pool.rebalance}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Manager</span>
+                        <span className="font-medium">{pool.manager}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -158,34 +161,48 @@ export default function PoolDetailsScreen({ pool }) {
         </AnimatedFadeUp>
 
         <AnimatedFadeUp delay={0.16}>
-          <Card className="h-full border border-border shadow-sm">
+          <Card className="h-full">
             <CardHeader>
               <CardTitle className="text-lg font-semibold tracking-tight">Current info</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
-              {[
-                ["Assets under management", rangeStats.aum],
-                ["Net flow", rangeStats.flow],
-                ["Return", rangeStats.return],
-                ["Drawdown", rangeStats.drawdown],
-                ["Benchmark", pool.benchmark],
-                ["Category", pool.feeTier],
-              ].map(([label, value], index) => (
-                <AnimatedFadeUp key={label} delay={0.18 + index * 0.04}>
-                  <div className="flex items-center justify-between gap-4 text-sm">
-                    <span className="text-muted-foreground">{label}</span>
-                    <span className="font-medium">{value}</span>
-                  </div>
-                </AnimatedFadeUp>
-              ))}
+            <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+              <div className="space-y-3">
+	                {[
+	                  ["Assets under management", rangeStats.aum],
+	                  ["Net flow", rangeStats.flow],
+	                  ["Return", rangeStats.return],
+	                  ["Drawdown", rangeStats.drawdown],
+	                  ["Benchmark", pool.benchmark],
+	                  ["Category", pool.feeTier],
+	                ].map(([label, value], index) => (
+	                  <AnimatedFadeUp key={label} delay={0.18 + index * 0.04}>
+	                    <div className="flex items-center justify-between gap-4 text-sm">
+	                      <span className="text-muted-foreground">{label}</span>
+	                      <span
+	                        className={cn(
+	                          "font-medium",
+	                          (label === "Return" || label === "Drawdown") &&
+	                            getTrendDirection(value) === "up" &&
+	                            "text-(--status-success)",
+	                          (label === "Return" || label === "Drawdown") &&
+	                            getTrendDirection(value) === "down" &&
+	                            "text-(--status-danger)"
+	                        )}
+	                      >
+	                        {value}
+	                      </span>
+	                    </div>
+	                  </AnimatedFadeUp>
+	                ))}
+              </div>
             </CardContent>
           </Card>
         </AnimatedFadeUp>
       </div>
 
       <AnimatedFadeUp delay={0.22}>
-        <Card className="border border-border shadow-sm">
-          <CardContent className="space-y-6 pt-6">
+        <Card>
+          <CardContent className="space-y-6">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">
@@ -213,11 +230,16 @@ export default function PoolDetailsScreen({ pool }) {
                 <div className="space-y-1">
                   <AnimatedTextReveal>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-3xl font-semibold tracking-tight">{formattedValue}</span>
-                      <span className={delta >= 0 ? "text-sm text-primary" : "text-sm text-destructive"}>
-                        {delta >= 0 ? "+" : ""}
-                        {delta.toFixed(2)}%
-                      </span>
+	                      <span className="text-3xl font-semibold tracking-tight">{formattedValue}</span>
+	                      <span
+	                        className={cn(
+	                          "text-sm",
+	                          delta >= 0 ? "text-(--status-success)" : "text-(--status-danger)"
+	                        )}
+	                      >
+	                        {delta >= 0 ? "+" : ""}
+	                        {delta.toFixed(2)}%
+	                      </span>
                       <span className="text-sm text-muted-foreground">{activeRange} view</span>
                     </div>
                   </AnimatedTextReveal>

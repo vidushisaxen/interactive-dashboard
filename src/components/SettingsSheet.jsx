@@ -23,6 +23,7 @@ const SettingsSheet = ({ open, onOpenChange }) => {
   const { theme, toggleTheme } = useTheme();
   const closeIconRef = useRef(null);
   const saveIconRef = useRef(null);
+  const settingIconRefs = useRef({});
   const [settings, setSettings] = useState({
     language: "English",
     notifications: true,
@@ -143,6 +144,10 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                   const Icon = item.icon;
 
                   const isToggle = item.kind === "toggle";
+                  const handleEnter = () =>
+                    settingIconRefs.current[item.key]?.startAnimation?.();
+                  const handleLeave = () =>
+                    settingIconRefs.current[item.key]?.stopAnimation?.();
 
                   const rowClassName =
                     "flex w-full items-center justify-between rounded-lg border  border border-border bg-background/60 px-4 py-3 text-left transition-colors hover:bg-accent/40";
@@ -152,7 +157,12 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                       <div className="flex items-center gap-3">
                         <AnimatedFadeUp delay={0.02 * itemIndex} duration={0.4}>
                           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                            <Icon className="h-4.5 w-4.5" />
+                            <Icon
+                              ref={(node) => {
+                                settingIconRefs.current[item.key] = node;
+                              }}
+                              className="h-4.5 w-4.5"
+                            />
                           </div>
                         </AnimatedFadeUp>
 
@@ -228,6 +238,8 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                           onClick={() =>
                             handleToggle(item.key, !getSettingValue(item.key))
                           }
+                          onMouseEnter={handleEnter}
+                          onMouseLeave={handleLeave}
                           onKeyDown={(event) => {
                             if (event.key === "Enter" || event.key === " ") {
                               event.preventDefault();
@@ -242,6 +254,8 @@ const SettingsSheet = ({ open, onOpenChange }) => {
                         <button
                           type="button"
                           onClick={() => cycleSetting(item.key)}
+                          onMouseEnter={handleEnter}
+                          onMouseLeave={handleLeave}
                           className={`${rowClassName} cursor-pointer`}
                         >
                           {rowContent}

@@ -48,7 +48,7 @@ function RequestMoneySkeleton() {
       </header>
 
       {/* STATUS */}
-      <div className="rounded-lg border border-border p-4 space-y-2">
+      <div className="rounded-lg bg-muted/20 p-4 space-y-2">
         <Skeleton className="h-4 w-36" />
         <Skeleton className="h-3 w-full max-w-2xl" />
       </div>
@@ -110,7 +110,7 @@ function RequestMoneySkeleton() {
             {[1, 2, 3, 4].map((_, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4"
+                className="flex items-center justify-between rounded-lg bg-muted/20 p-4"
               >
                 <Skeleton className="h-4 w-40" />
                 <Skeleton className="h-4 w-20" />
@@ -128,7 +128,7 @@ function RequestMoneySkeleton() {
             {[1, 2, 3].map((_, i) => (
               <div
                 key={i}
-                className="rounded-lg border border-border p-4 space-y-3"
+                className="rounded-lg bg-background/50 p-4 space-y-3"
               >
                 <div className="flex items-center justify-between">
                   <div className="space-y-2">
@@ -211,10 +211,10 @@ const RequestMoneyScreen = () => {
         </div>
       </AnimatedFadeUp>
 
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-6">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-6 xl:items-stretch">
           <div className="space-y-6 xl:col-span-3">
           <AnimatedFadeUp delay={0.12}>
-            <Card className=" border border-border">
+            <Card className="h-full">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Payment request builder
@@ -225,7 +225,8 @@ const RequestMoneyScreen = () => {
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+                <div className="space-y-6">
                 <Tabs value={tab} onValueChange={setTab}>
                   <TabsList className="grid h-auto w-full grid-cols-3 rounded-lg p-1 gap-2">
                     <TabsTrigger value="person" className="rounded-lg h-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
@@ -243,7 +244,7 @@ const RequestMoneyScreen = () => {
                 {tab === "person" && (
                   <div className="space-y-4 min-h-100">
                     <Field
-                      icon={UserRound}
+                      // icon={UserRound}
                       label="Recipient"
                       placeholder="@username"
                       value={form.recipient}
@@ -252,7 +253,7 @@ const RequestMoneyScreen = () => {
                       }
                     />
                     <Field
-                      icon={ReceiptText}
+                      // icon={ReceiptText}
                       label="Amount"
                       placeholder="$0.00"
                       value={form.amount}
@@ -264,7 +265,7 @@ const RequestMoneyScreen = () => {
                       }
                     />
                     <Field
-                      icon={ReceiptText}
+                      // icon={ReceiptText}
                       label="Reason"
                       placeholder="March expense split"
                       value={form.reason}
@@ -280,7 +281,7 @@ const RequestMoneyScreen = () => {
                           setForm((prev) => ({ ...prev, currency: value }))
                         }
                       >
-                        <SelectTrigger className="h-12 rounded-lg">
+                        <SelectTrigger className="h-11! rounded-lg w-full">
                           <SelectValue placeholder="Select currency" />
                         </SelectTrigger>
                         <SelectContent>
@@ -319,7 +320,7 @@ const RequestMoneyScreen = () => {
                 {tab === "email" && (
                   <div className="space-y-4 min-h-100">
                     <Field
-                      icon={Mail}
+                      // icon={Mail}
                       label="Email address"
                       placeholder="billing@example.com"
                       value={form.email}
@@ -328,7 +329,7 @@ const RequestMoneyScreen = () => {
                       }
                     />
                     <Field
-                      icon={ReceiptText}
+                      // icon={ReceiptText}
                       label="Amount"
                       placeholder="$0.00"
                       value={form.amount}
@@ -340,7 +341,7 @@ const RequestMoneyScreen = () => {
                       }
                     />
                     <Field
-                      icon={SendHorizontal}
+                      // icon={SendHorizontal}
                       label="Message"
                       placeholder="Invoice #2041"
                       value={form.message}
@@ -458,6 +459,7 @@ const RequestMoneyScreen = () => {
                     Send request
                   </Button>
                 </div>
+                </div>
               </CardContent>
             </Card>
           </AnimatedFadeUp>
@@ -465,7 +467,7 @@ const RequestMoneyScreen = () => {
 
         <div className="space-y-6 xl:col-span-3">
           <AnimatedFadeUp delay={0.14}>
-            <Card className=" border border-border">
+            <Card className="h-full">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Collection snapshot
@@ -475,17 +477,19 @@ const RequestMoneyScreen = () => {
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-4">
-                <MetricRow label="Collected this week" value="$8,942" />
-                <MetricRow label="Average payment time" value="4.2 hours" />
-                <MetricRow label="Open requests" value="12" />
-                <MetricRow label="Most effective channel" value="Email" />
+              <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+                <div className="space-y-3">
+                  <MetricRow label="Collected this week" value="$8,942" />
+                  <MetricRow label="Average payment time" value="4.2 hours" />
+                  <MetricRow label="Open requests" value="12" />
+                  <MetricRow label="Most effective channel" value="Email" />
+                </div>
               </CardContent>
             </Card>
           </AnimatedFadeUp>
 
           <AnimatedFadeUp delay={0.18}>
-            <Card className=" border border-border">
+            <Card className="h-full">
               <CardHeader>
                 <CardTitle className="text-base font-semibold tracking-tight">
                   Recent requests
@@ -496,27 +500,29 @@ const RequestMoneyScreen = () => {
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-4">
-                {REQUEST_RECENT_REQUESTS.map((item) => (
-                  <div
-                    key={`${item.name}-${item.method}`}
-                    className="rounded-lg border border-border p-4"
-                  >
-                    <div className="flex items-center justify-between gap-4">
-                      <div>
-                        <p className="text-sm font-medium">{item.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {item.method}
-                        </p>
+              <CardContent className="min-h-0 flex-1 overflow-auto pr-1">
+                <div className="space-y-3">
+                  {REQUEST_RECENT_REQUESTS.map((item) => (
+                    <div
+                      key={`${item.name}-${item.method}`}
+                      className="rounded-lg bg-muted/20 p-4"
+                    >
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium">{item.name}</p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {item.method}
+                          </p>
+                        </div>
+                        <p className="shrink-0 text-sm font-semibold">{item.amount}</p>
                       </div>
-                      <p className="text-sm font-semibold">{item.amount}</p>
+                      <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+                        <Clock3 className="h-3.5 w-3.5" />
+                        <span>{item.status}</span>
+                      </div>
                     </div>
-                    <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
-                      <Clock3 className="h-3.5 w-3.5" />
-                      <span>{item.status}</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </AnimatedFadeUp>
@@ -544,7 +550,7 @@ const Field = ({ icon: Icon, label, placeholder, value, onChange }) => (
 );
 
 const MetricRow = ({ label, value }) => (
-  <div className="flex items-center justify-between rounded-lg border border-border bg-muted/20 p-4">
+  <div className="flex items-center justify-between rounded-lg bg-muted/20 p-4">
     <span className="text-sm text-muted-foreground">{label}</span>
     <span className="text-sm font-semibold">{value}</span>
   </div>

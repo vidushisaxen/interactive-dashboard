@@ -33,7 +33,7 @@ const TransactionRow = ({ item, positive, onSelect }) => {
     >
       <div
         className={cn(
-          "flex h-11 w-11 items-center justify-center rounded-lg",
+          "flex h-11 w-11 items-center justify-center rounded-full ring-1 ring-[color:var(--card-border)]",
           positive
             ? "bg-(--status-success-soft) text-(--status-success)"
             : "bg-primary/10 text-primary"
@@ -42,7 +42,7 @@ const TransactionRow = ({ item, positive, onSelect }) => {
         <Icon ref={iconRef} className="h-4.5 w-4.5" />
       </div>
 
-      <div className=" flex-1">
+      <div className="">
         <div className="truncate text-sm font-medium">{item.title}</div>
         <div className="mt-0.5 truncate text-xs text-muted-foreground">
           {item.subtitle}
@@ -74,17 +74,19 @@ const TransactionsCard = ({
   onViewAll,
 }) => {
   return (
-    <Card className=" border border-border shadow-sm">
-      <CardContent className="space-y-5 p-6">
+    <Card className="h-full">
+      <CardContent className="flex min-h-0 flex-1 flex-col gap-5">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-3">
             <Badge variant="secondary" className="w-fit">
               Transactions
             </Badge>
 
-            <div>
+            <div >
               <h3 className="text-base font-semibold tracking-tight">{title}</h3>
-              <p className="mt-1 text-sm text-muted-foreground w-[10vw]">{subtitle}</p>
+              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+                {subtitle}
+              </p>
             </div>
           </div>
 
@@ -105,7 +107,7 @@ const TransactionsCard = ({
 
         <Separator />
 
-        <div className="space-y-2">
+        <div className="min-h-0 flex-1 space-y-2 overflow-auto pr-1">
           {transactions.map((item) => {
             const positive = item.positive;
 

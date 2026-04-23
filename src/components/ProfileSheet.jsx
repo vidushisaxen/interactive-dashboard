@@ -5,7 +5,7 @@ import {
   CircleHelp,
   Crown,
 } from "@/components/icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -20,7 +20,7 @@ import {
   AnimatedTextReveal,
   AnimatedFadeUp,
 } from "@/lib/animations";
-import { PROFILE_ACTION_DETAILS, PROFILE_ACTIONS } from "./dashboard-data";
+import {PROFILE_ACTIONS } from "./dashboard-data";
 
 const ProfileSheet = ({
   open,
@@ -29,6 +29,8 @@ const ProfileSheet = ({
 }) => {
   const [openHelp, setOpenHelp] = useState(false);
   const [selectedAction, setSelectedAction] = useState("profile");
+  const actionIconRefs = useRef({});
+  const helpIconRef = useRef(null);
 
   return (
     <>
@@ -126,24 +128,6 @@ const ProfileSheet = ({
                   </AnimatedTextReveal>
                 </div>
               </AnimatedSlideIn>
-
-              <AnimatedSlideIn direction="right" duration={0.45} delay={0.12}>
-                <div className="flex items-start gap-3 rounded-lg border border-primary/15 bg-primary/5 p-4">
-                  <div className="mt-0.5 rounded-full bg-primary/10 p-2 text-primary">
-                    <CheckCircle2 className="h-4 w-4" />
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-medium">
-                      {PROFILE_ACTIONS.find((item) => item.id === selectedAction)?.label}
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {PROFILE_ACTION_DETAILS[selectedAction]}
-                    </p>
-                  </div>
-                </div>
-              </AnimatedSlideIn>
-
               <div className="space-y-3">
                 {PROFILE_ACTIONS.map((item, index) => {
                   const Icon = item.icon;
@@ -162,10 +146,17 @@ const ProfileSheet = ({
                           setSelectedAction(item.id);
                           onNav?.(item.id);
                         }}
+                        onMouseEnter={() => actionIconRefs.current[item.id]?.startAnimation?.()}
+                        onMouseLeave={() => actionIconRefs.current[item.id]?.stopAnimation?.()}
                         className="h-12 w-full justify-start cursor-pointer rounded-lg"
                       >
                         <AnimatedFadeUp delay={0.02} duration={0.3}>
-                          <Icon className="mr-3 h-4 w-4" />
+                          <Icon
+                            ref={(node) => {
+                              actionIconRefs.current[item.id] = node;
+                            }}
+                            className="mr-3 h-4 w-4"
+                          />
                         </AnimatedFadeUp>
 
                         <AnimatedTextReveal y={8} blur="3px" duration={0.3}>
@@ -181,10 +172,12 @@ const ProfileSheet = ({
                     type="button"
                     variant="outline"
                     onClick={() => setOpenHelp(true)}
+                    onMouseEnter={() => helpIconRef.current?.startAnimation?.()}
+                    onMouseLeave={() => helpIconRef.current?.stopAnimation?.()}
                     className="h-12 w-full justify-start cursor-pointer rounded-lg"
                   >
                     <AnimatedFadeUp delay={0.02} duration={0.3}>
-                      <CircleHelp className="mr-3 h-4 w-4" />
+                      <CircleHelp ref={helpIconRef} className="mr-3 h-4 w-4" />
                     </AnimatedFadeUp>
 
                     <AnimatedTextReveal y={8} blur="3px" duration={0.3}>

@@ -37,6 +37,7 @@ const HelpActionButton = ({ variant, onClick, children }) => {
 
 const HelpSheet = ({ open, onOpenChange }) => {
   const [activeItem, setActiveItem] = useState(HELP_ITEMS[1]);
+  const helpIconRefs = useRef({});
 
   return (
     <SidePanel
@@ -99,11 +100,20 @@ const HelpSheet = ({ open, onOpenChange }) => {
                 duration={0.45}
                 delay={0.1 + index * 0.05}
               >
-                <div className="flex items-center justify-between rounded-lg border  border border-border bg-background/60 p-4 transition-colors hover:bg-accent/40">
+                <div
+                  onMouseEnter={() => helpIconRefs.current[item.title]?.startAnimation?.()}
+                  onMouseLeave={() => helpIconRefs.current[item.title]?.stopAnimation?.()}
+                  className="flex items-center justify-between rounded-lg border  border border-border bg-background/60 p-4 transition-colors hover:bg-accent/40"
+                >
                   <div className="flex min-w-0 items-center gap-3">
                     <AnimatedFadeUp delay={0.02} duration={0.35}>
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                        <Icon className="h-4.5 w-4.5" />
+                        <Icon
+                          ref={(node) => {
+                            helpIconRefs.current[item.title] = node;
+                          }}
+                          className="h-4.5 w-4.5"
+                        />
                       </div>
                     </AnimatedFadeUp>
 

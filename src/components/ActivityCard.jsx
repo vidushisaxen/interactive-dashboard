@@ -24,7 +24,7 @@ const ActivityCard = () => {
   }, [activeRange, currentMetric]);
 
   return (
-    <Card className=" border border-border bg-card shadow-sm">
+    <Card className="h-full">
       <CardHeader className="space-y-4 pb-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-1">
@@ -58,7 +58,7 @@ const ActivityCard = () => {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-5">
+      <CardContent className="flex min-h-0 flex-1 flex-col gap-5">
         <div className="flex flex-wrap gap-3">
           {Object.entries(ACTIVITY_METRICS).map(([key, item]) => {
             const active = activeMetric === key;
@@ -98,7 +98,7 @@ const ActivityCard = () => {
           })}
         </div>
 
-        <div className="rounded-lg border  border-border bg-background/50 p-4">
+        <div className="min-h-0 flex-1 rounded-lg border border-border/60 bg-background/50 p-4 overflow-auto">
           <div className="mb-3 flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground">Overview</p>
